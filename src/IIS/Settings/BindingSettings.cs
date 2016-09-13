@@ -40,7 +40,7 @@
 
             public BindingProtocol BindingProtocol { get; set; }
 
-            public string BindingInformation
+            public virtual string BindingInformation
             {
                 get
                 {

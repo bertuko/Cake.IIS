@@ -75,29 +75,5 @@ namespace Cake.IIS.Tests
             Assert.NotNull(site);
             Assert.True(site.State == ObjectState.Stopped);
         }
-
-        [Fact]
-        public void Should_Add_Binding()
-        {
-            // Arrange
-            var settings = CakeHelper.GetWebsiteSettings();
-            CakeHelper.DeleteWebsite(settings.Name);
-            WebsiteManager manager = CakeHelper.CreateWebsiteManager();
-            manager.Create(settings);
-            BindingSettings bindingSettings = new BindingSettings(settings.Name)
-            {
-                BindingProtocol = BindingProtocol.Ftp,
-                Port = 21,
-            };
-
-            // Act
-            manager.AddBinding(bindingSettings);
-
-            // Assert
-            var website = CakeHelper.GetWebsite(settings.Name);
-            Assert.NotNull(website);
-            Assert.Equal(2, website.Bindings.Count);
-            Assert.Contains(website.Bindings, b => b.Protocol == BindingProtocol.Ftp.ToString());
-        }
     }
 }

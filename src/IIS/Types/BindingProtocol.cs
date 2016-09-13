@@ -19,6 +19,26 @@ namespace Cake.IIS
             get { return new BindingProtocol(Uri.UriSchemeHttps); }
         }
 
+        public static BindingProtocol NetTcp
+        {
+            get { return new BindingProtocol(Uri.UriSchemeNetTcp); }
+        }
+
+        public static BindingProtocol NetPipe
+        {
+            get { return new BindingProtocol(Uri.UriSchemeNetPipe); }
+        }
+
+        public static BindingProtocol NetMsmq
+        {
+            get { return new BindingProtocol("net.msmq"); }
+        }
+
+        public static BindingProtocol MsmqFormatName
+        {
+            get { return new BindingProtocol("msmq.formatname"); }
+        }
+
         private BindingProtocol(string name)
         {
             Name = name;

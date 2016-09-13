@@ -56,6 +56,10 @@
     <Compile Include="Manager\Types\WebFarmManager.cs" />
     <Compile Include="Settings\ApplicationSettings.cs" />
     <Compile Include="Settings\BindingSettings.cs" />
+    <Compile Include="Settings\Bindings\MsmqFormatNameBindingSettings.cs" />
+    <Compile Include="Settings\Bindings\NetMsmqBindingSettings.cs" />
+    <Compile Include="Settings\Bindings\NetPipeBindingSettings.cs" />
+    <Compile Include="Settings\Bindings\NetTcpBindingSettings.cs" />
     <Compile Include="Settings\WebFarmSettings.cs" />
     <Compile Include="Types\IdentityType.cs" />
     <Compile Include="Settings\ApplicationPoolSettings.cs" />
