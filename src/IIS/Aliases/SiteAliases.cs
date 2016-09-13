@@ -1,7 +1,7 @@
 ﻿#region Using Statements
     using Cake.Core;
     using Cake.Core.Annotations;
-
+    using Cake.IIS.Settings;
     using Microsoft.Web.Administration;
 #endregion
 
@@ -180,7 +180,7 @@ namespace Cake.IIS
         /// <param name="siteName">The site name.</param>
         /// <param name="settings">The binding settings.</param>
         [CakeMethodAlias]
-        public static void AddSiteBinding(this ICakeContext context, string siteName, BindingSettings settings)
+        public static void AddSiteBinding(this ICakeContext context, string siteName, IBindingSettings settings)
         {
             context.AddSiteBinding("", siteName, settings);
         }
@@ -193,7 +193,7 @@ namespace Cake.IIS
         /// <param name="siteName">The site name.</param>
         /// <param name="settings">The binding settings.</param>
         [CakeMethodAlias]
-        public static void AddSiteBinding(this ICakeContext context, string server, string siteName, BindingSettings settings)
+        public static void AddSiteBinding(this ICakeContext context, string server, string siteName, IBindingSettings settings)
         {
             using (ServerManager manager = BaseManager.Connect(server))
             {
@@ -210,7 +210,7 @@ namespace Cake.IIS
         /// <param name="siteName">The site name.</param>
         /// <param name="settings">The binding settings.</param>
         [CakeMethodAlias]
-        public static void RemoveSiteBinding(this ICakeContext context, string siteName, BindingSettings settings)
+        public static void RemoveSiteBinding(this ICakeContext context, string siteName, IBindingSettings settings)
         {
             context.RemoveSiteBinding("", siteName, settings);
         }
@@ -223,7 +223,7 @@ namespace Cake.IIS
         /// <param name="siteName">The site name.</param>
         /// <param name="settings">The binding settings.</param>
         [CakeMethodAlias]
-        public static void RemoveSiteBinding(this ICakeContext context, string server, string siteName, BindingSettings settings)
+        public static void RemoveSiteBinding(this ICakeContext context, string server, string siteName, IBindingSettings settings)
         {
             using (ServerManager manager = BaseManager.Connect(server))
             {

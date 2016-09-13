@@ -1,5 +1,7 @@
 ﻿#region Using Statements
     using Cake.Core.IO;
+    using Cake.IIS.Settings;
+
 #endregion
 
 
@@ -32,7 +34,7 @@ namespace Cake.IIS
 
             public string Name { get; set; }
 
-            public BindingSettings DefaultBinding { get; set; }
+            public IBindingSettings DefaultBinding { get; set; }
 
             public ApplicationPoolSettings ApplicationPool { get; set; }
 

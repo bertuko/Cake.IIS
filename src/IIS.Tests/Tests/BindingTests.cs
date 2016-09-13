@@ -1,4 +1,5 @@
-﻿using Cake.IIS.Settings.Bindings;
+﻿using Cake.IIS.Settings;
+using Cake.IIS.Settings.Bindings;
 using Xunit;
 
 namespace Cake.IIS.Tests
@@ -10,9 +11,8 @@ namespace Cake.IIS.Tests
         {
             // Arrange
             var settings = CreateWebSite();
-            BindingSettings bindingSettings = new BindingSettings
+            CustomBindingSettings bindingSettings = new CustomBindingSettings(BindingProtocol.Ftp)
             {
-                BindingProtocol = BindingProtocol.Ftp,
                 Port = 21,
             };
 
@@ -32,7 +32,7 @@ namespace Cake.IIS.Tests
         {
             // Arrange
             var settings = CreateWebSite();
-            BindingSettings bindingSettings = new NetTcpBindingSettings();
+            IBindingSettings bindingSettings = new NetTcpBindingSettings();
 
             // Act
             Act(settings.Name, bindingSettings);
@@ -50,7 +50,7 @@ namespace Cake.IIS.Tests
         {
             // Arrange
             var settings = CreateWebSite();
-            BindingSettings bindingSettings = new NetPipeBindingSettings();
+            IBindingSettings bindingSettings = new NetPipeBindingSettings();
 
             // Act
             Act(settings.Name, bindingSettings);
@@ -68,7 +68,7 @@ namespace Cake.IIS.Tests
         {
             // Arrange
             var settings = CreateWebSite();
-            BindingSettings bindingSettings = new NetMsmqBindingSettings();
+            IBindingSettings bindingSettings = new NetMsmqBindingSettings();
 
             // Act
             Act(settings.Name, bindingSettings);
@@ -86,7 +86,7 @@ namespace Cake.IIS.Tests
         {
             // Arrange
             var settings = CreateWebSite();
-            BindingSettings bindingSettings = new MsmqFormatNameBindingSettings();
+            IBindingSettings bindingSettings = new MsmqFormatNameBindingSettings();
 
             // Act
             Act(settings.Name, bindingSettings);
@@ -110,7 +110,7 @@ namespace Cake.IIS.Tests
             return settings;
         }
 
-        private void Act(string siteName, BindingSettings bindingSettings)
+        private void Act(string siteName, IBindingSettings bindingSettings)
         {
             WebsiteManager manager = CakeHelper.CreateWebsiteManager();
             manager.AddBinding(siteName, bindingSettings);

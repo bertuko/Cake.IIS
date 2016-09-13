@@ -1,17 +1,14 @@
-﻿namespace Cake.IIS
+﻿namespace Cake.IIS.Settings.Bindings
 {
-    public class BindingSettings
+    public class CustomBindingSettings : IBindingSecuritySettings
     {
         #region Constructor (1)
 
-            public BindingSettings()
+            public CustomBindingSettings(BindingProtocol bindingProtocol)
             {
-                this.BindingProtocol = BindingProtocol.Http;
-
-                this.IpAddress       = "*";
-                this.Port            = 80;
-                this.HostName        = "*";
+                this.BindingProtocol = bindingProtocol;
             }
+
         #endregion
 
 
@@ -29,7 +26,7 @@
 
             public string CertificateStoreName { get; set; }
 
-            public BindingProtocol BindingProtocol { get; set; }
+            public BindingProtocol BindingProtocol { get; private set; }
 
             public virtual string BindingInformation
             {

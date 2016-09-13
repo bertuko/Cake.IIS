@@ -6,7 +6,7 @@
 
     using Cake.Core;
     using Cake.Core.Diagnostics;
-
+    using Cake.IIS.Settings;
     using Microsoft.Web.Administration;
 #endregion
 
@@ -55,14 +55,9 @@ namespace Cake.IIS
                     throw new ArgumentException("Site name cannot be null!");
                 }
 
-                if (settings.DefaultBindingSettings == null)
+                if (settings.DefaultBinding == null)
                 {
                     throw new ArgumentException("Default binding cannot be null!");
-                }
-
-                if (string.IsNullOrWhiteSpace(settings.DefaultBindingSettings.HostName))
-                {
-                    throw new ArgumentException("Host name cannot be null!");
                 }
 
 
@@ -109,18 +104,22 @@ namespace Cake.IIS
                 //Site Settings
                 site = _Server.Sites.Add(
                     settings.Name,
-                    settings.DefaultBindingSettings.BindingProtocol.ToString().ToLower(),
-                    settings.DefaultBindingSettings.BindingInformation,
+                    settings.DefaultBinding.BindingProtocol.ToString().ToLower(),
+                    settings.DefaultBinding.BindingInformation,
                     this.GetPhysicalDirectory(settings));
 
-                if (settings.DefaultBindingSettings.CertificateHash != null)
+                var securitySettings = settings.DefaultBinding as IBindingSecuritySettings;
+                if (securitySettings != null)
                 {
-                    site.Bindings[0].CertificateHash = settings.DefaultBindingSettings.CertificateHash;
-                }
+                    if (securitySettings.CertificateHash != null)
+                    {
+                        site.Bindings[0].CertificateHash = securitySettings.CertificateHash;
+                    }
 
-                if (!String.IsNullOrEmpty(settings.DefaultBindingSettings.CertificateStoreName))
-                {
-                    site.Bindings[0].CertificateStoreName = settings.DefaultBindingSettings.CertificateStoreName;
+                    if (!String.IsNullOrEmpty(securitySettings.CertificateStoreName))
+                    {
+                        site.Bindings[0].CertificateStoreName = securitySettings.CertificateStoreName;
+                    }
                 }
 
                 site.ServerAutoStart = settings.ServerAutoStart;
@@ -371,7 +370,7 @@ namespace Cake.IIS
             /// <param name="siteName">The site name.</param>
             /// <param name="settings">The settings of the binding</param>
             /// <returns>If the binding was added.</returns>
-            public bool AddBinding(string siteName, BindingSettings settings)
+            public bool AddBinding(string siteName, IBindingSettings settings)
             {
                 if (settings == null)
                 {
@@ -403,14 +402,18 @@ namespace Cake.IIS
                     newBinding.Protocol = settings.BindingProtocol.ToString();
                     newBinding.BindingInformation = settings.BindingInformation;
 
-                    if (settings.CertificateHash != null)
+                    var securitySettings = settings as IBindingSecuritySettings;
+                    if (securitySettings != null)
                     {
-                        newBinding.CertificateHash = settings.CertificateHash;
-                    }
+                        if (securitySettings.CertificateHash != null)
+                        {
+                            newBinding.CertificateHash = securitySettings.CertificateHash;
+                        }
 
-                    if (!String.IsNullOrEmpty(settings.CertificateStoreName))
-                    {
-                        newBinding.CertificateStoreName = settings.CertificateStoreName;
+                        if (!String.IsNullOrEmpty(securitySettings.CertificateStoreName))
+                        {
+                            newBinding.CertificateStoreName = securitySettings.CertificateStoreName;
+                        }
                     }
 
                     site.Bindings.Add(newBinding);
@@ -431,7 +434,7 @@ namespace Cake.IIS
             /// <param name="siteName">The site name.</param>
             /// <param name="settings">The settings of the binding</param>
             /// <returns>If the binding was removed.</returns>
-            public bool RemoveBinding(string siteName, BindingSettings settings)
+            public bool RemoveBinding(string siteName, IBindingSettings settings)
             {
                 if (settings == null)
                 {

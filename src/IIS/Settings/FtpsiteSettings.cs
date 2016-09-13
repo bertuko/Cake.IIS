@@ -1,4 +1,6 @@
-﻿namespace Cake.IIS
+﻿using Cake.IIS.Settings.Bindings;
+
+namespace Cake.IIS
 {
     public class FtpsiteSettings : SiteSettings
     {
@@ -6,9 +8,8 @@
             public FtpsiteSettings()
                 : base()
             {
-                DefaultBindingSettings = new BindingSettings
+                DefaultBinding = new CustomBindingSettings(BindingProtocol.Ftp)
                 {
-                    BindingProtocol = BindingProtocol.Ftp,
                     Port = 21,
                 };
             }

@@ -1,16 +1,18 @@
 ﻿namespace Cake.IIS.Settings.Bindings
 {
-    public class NetMsmqBindingSettings : BindingSettings
+    public sealed class NetMsmqBindingSettings : IBindingSettings
     {
         public NetMsmqBindingSettings()
         {
             this.BindingProtocol = BindingProtocol.NetMsmq;
-            this.IpAddress = null;
-            this.Port = 0;
             this.HostName = "localhost";
         }
 
-        public override string BindingInformation
+        public string HostName { get; set; }
+
+        public BindingProtocol BindingProtocol { get; private set; }
+
+        public string BindingInformation
         {
             get { return string.Format("{0}", HostName); }
         }

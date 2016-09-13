@@ -5,6 +5,7 @@
     using System.Threading;
 
     using Cake.Core;
+    using Cake.IIS.Settings.Bindings;
     using Microsoft.Web.Administration;
 
     using NSubstitute;
@@ -94,9 +95,8 @@ namespace Cake.IIS.Tests
                 return new WebsiteSettings
                 {
                     Name = "Superman",
-                    DefaultBindingSettings = new BindingSettings
+                    DefaultBinding = new CustomBindingSettings(BindingProtocol.Http)
                     {
-                        BindingProtocol = BindingProtocol.Http,
                         HostName = "superman.web",
                         Port = 80,
                     },
