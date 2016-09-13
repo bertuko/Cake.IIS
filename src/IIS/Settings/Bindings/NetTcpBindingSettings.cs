@@ -2,7 +2,7 @@
 {
     public class NetTcpBindingSettings : BindingSettings
     {
-        public NetTcpBindingSettings(string siteName) : base(siteName)
+        public NetTcpBindingSettings()
         {
             this.BindingProtocol = BindingProtocol.NetTcp;
             this.IpAddress = null;

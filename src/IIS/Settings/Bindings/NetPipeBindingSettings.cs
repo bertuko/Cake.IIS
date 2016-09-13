@@ -2,7 +2,7 @@
 {
     public class NetPipeBindingSettings : BindingSettings
     {
-        public NetPipeBindingSettings(string siteName) : base(siteName)
+        public NetPipeBindingSettings()
         {
             this.BindingProtocol = BindingProtocol.NetPipe;
             this.IpAddress = null;

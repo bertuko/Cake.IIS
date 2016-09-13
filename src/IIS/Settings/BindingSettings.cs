@@ -2,15 +2,10 @@
 {
     public class BindingSettings
     {
-        #region Constructor (2)
+        #region Constructor (1)
 
-            internal BindingSettings()
+            public BindingSettings()
             {
-            }
-
-            public BindingSettings(string siteName)
-            {
-                this.Name            = siteName;
                 this.BindingProtocol = BindingProtocol.Http;
 
                 this.IpAddress       = "*";
@@ -23,11 +18,7 @@
 
 
 
-        #region Properties (6)
-            public string Name { get; set; }
-
-
-
+        #region Properties (7)
             public string IpAddress { get; set; }
 
             public int Port { get; set; }

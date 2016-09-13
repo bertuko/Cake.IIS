@@ -2,7 +2,7 @@
 {
     public class NetMsmqBindingSettings : BindingSettings
     {
-        public NetMsmqBindingSettings(string siteName) : base(siteName)
+        public NetMsmqBindingSettings()
         {
             this.BindingProtocol = BindingProtocol.NetMsmq;
             this.IpAddress = null;

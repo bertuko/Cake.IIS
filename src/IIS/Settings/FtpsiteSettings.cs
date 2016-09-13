@@ -6,8 +6,11 @@
             public FtpsiteSettings()
                 : base()
             {
-                this.BindingProtocol               = BindingProtocol.Ftp;
-                this.Port                          = 21;
+                DefaultBindingSettings = new BindingSettings
+                {
+                    BindingProtocol = BindingProtocol.Ftp,
+                    Port = 21,
+                };
             }
         #endregion
     }

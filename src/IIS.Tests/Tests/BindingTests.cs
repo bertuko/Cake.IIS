@@ -10,14 +10,14 @@ namespace Cake.IIS.Tests
         {
             // Arrange
             var settings = CreateWebSite();
-            BindingSettings bindingSettings = new BindingSettings(settings.Name)
+            BindingSettings bindingSettings = new BindingSettings
             {
                 BindingProtocol = BindingProtocol.Ftp,
                 Port = 21,
             };
 
             // Act
-            Act(bindingSettings);
+            Act(settings.Name, bindingSettings);
 
             // Assert
             var website = CakeHelper.GetWebsite(settings.Name);
@@ -32,10 +32,10 @@ namespace Cake.IIS.Tests
         {
             // Arrange
             var settings = CreateWebSite();
-            BindingSettings bindingSettings = new NetTcpBindingSettings(settings.Name);
+            BindingSettings bindingSettings = new NetTcpBindingSettings();
 
             // Act
-            Act(bindingSettings);
+            Act(settings.Name, bindingSettings);
 
             // Assert
             var website = CakeHelper.GetWebsite(settings.Name);
@@ -50,10 +50,10 @@ namespace Cake.IIS.Tests
         {
             // Arrange
             var settings = CreateWebSite();
-            BindingSettings bindingSettings = new NetPipeBindingSettings(settings.Name);
+            BindingSettings bindingSettings = new NetPipeBindingSettings();
 
             // Act
-            Act(bindingSettings);
+            Act(settings.Name, bindingSettings);
 
             // Assert
             var website = CakeHelper.GetWebsite(settings.Name);
@@ -68,10 +68,10 @@ namespace Cake.IIS.Tests
         {
             // Arrange
             var settings = CreateWebSite();
-            BindingSettings bindingSettings = new NetMsmqBindingSettings(settings.Name);
+            BindingSettings bindingSettings = new NetMsmqBindingSettings();
 
             // Act
-            Act(bindingSettings);
+            Act(settings.Name, bindingSettings);
 
             // Assert
             var website = CakeHelper.GetWebsite(settings.Name);
@@ -86,10 +86,10 @@ namespace Cake.IIS.Tests
         {
             // Arrange
             var settings = CreateWebSite();
-            BindingSettings bindingSettings = new MsmqFormatNameBindingSettings(settings.Name);
+            BindingSettings bindingSettings = new MsmqFormatNameBindingSettings();
 
             // Act
-            Act(bindingSettings);
+            Act(settings.Name, bindingSettings);
 
             // Assert
             var website = CakeHelper.GetWebsite(settings.Name);
@@ -110,10 +110,10 @@ namespace Cake.IIS.Tests
             return settings;
         }
 
-        private void Act(BindingSettings bindingSettings)
+        private void Act(string siteName, BindingSettings bindingSettings)
         {
             WebsiteManager manager = CakeHelper.CreateWebsiteManager();
-            manager.AddBinding(bindingSettings);
+            manager.AddBinding(siteName, bindingSettings);
         }
     }
 }

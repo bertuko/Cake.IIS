@@ -2,7 +2,7 @@
 {
     public class MsmqFormatNameBindingSettings : BindingSettings
     {
-        public MsmqFormatNameBindingSettings(string siteName) : base(siteName)
+        public MsmqFormatNameBindingSettings()
         {
             this.BindingProtocol = BindingProtocol.MsmqFormatName;
             this.IpAddress = null;

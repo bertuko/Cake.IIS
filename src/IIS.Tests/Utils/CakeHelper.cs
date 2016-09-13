@@ -94,11 +94,14 @@ namespace Cake.IIS.Tests
                 return new WebsiteSettings
                 {
                     Name = "Superman",
-                    BindingProtocol = BindingProtocol.Http,
-                    HostName = "superman.web",
+                    DefaultBindingSettings = new BindingSettings
+                    {
+                        BindingProtocol = BindingProtocol.Http,
+                        HostName = "superman.web",
+                        Port = 80,
+                    },
                     PhysicalDirectory = "./Test/",
                     ApplicationPool = CakeHelper.GetAppPoolSettings(),
-                    Port = 80,
                     ServerAutoStart = true,
                     Overwrite = false
                 };

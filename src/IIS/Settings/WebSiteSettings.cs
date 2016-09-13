@@ -6,8 +6,11 @@
             public WebsiteSettings()
                 : base()
             {
-                this.BindingProtocol = BindingProtocol.Http;
-                this.Port = 80;
+                this.DefaultBinding = new BindingSettings
+                {
+                    BindingProtocol = BindingProtocol.Http,
+                    Port = 80
+                };
             }
         #endregion
     }

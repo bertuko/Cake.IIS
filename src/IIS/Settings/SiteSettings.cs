@@ -6,7 +6,7 @@
 
 namespace Cake.IIS
 {
-    public abstract class SiteSettings : BindingSettings, IDirectorySettings
+    public abstract class SiteSettings : IDirectorySettings
     {
         #region Constructor (1)
             public SiteSettings()
@@ -23,14 +23,16 @@ namespace Cake.IIS
 
 
 
-        #region Properties (10)
+        #region Properties (11)
             public string ComputerName { get; set; }
 
             public DirectoryPath WorkingDirectory { get; set; }
 
             public DirectoryPath PhysicalDirectory { get; set; }
 
+            public string Name { get; set; }
 
+            public BindingSettings DefaultBinding { get; set; }
 
             public ApplicationPoolSettings ApplicationPool { get; set; }
 
@@ -47,7 +49,6 @@ namespace Cake.IIS
             public long TraceFailedRequestsMaxLogFiles { get; set; }
 
 
-        
             public bool ServerAutoStart { get; set; }
 
             public bool Overwrite { get; set; }
