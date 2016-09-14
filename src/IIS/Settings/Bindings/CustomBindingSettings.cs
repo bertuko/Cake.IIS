@@ -1,6 +1,6 @@
 ﻿namespace Cake.IIS.Settings.Bindings
 {
-    public class CustomBindingSettings : IBindingSecuritySettings
+    public class CustomBindingSettings : ISecureBindingSettings
     {
         #region Constructor (1)
 

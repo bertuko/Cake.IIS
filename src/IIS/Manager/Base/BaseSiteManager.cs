@@ -108,7 +108,7 @@ namespace Cake.IIS
                     settings.DefaultBinding.BindingInformation,
                     this.GetPhysicalDirectory(settings));
 
-                var securitySettings = settings.DefaultBinding as IBindingSecuritySettings;
+                var securitySettings = settings.DefaultBinding as ISecureBindingSettings;
                 if (securitySettings != null)
                 {
                     if (securitySettings.CertificateHash != null)
@@ -402,7 +402,7 @@ namespace Cake.IIS
                     newBinding.Protocol = settings.BindingProtocol.ToString();
                     newBinding.BindingInformation = settings.BindingInformation;
 
-                    var securitySettings = settings as IBindingSecuritySettings;
+                    var securitySettings = settings as ISecureBindingSettings;
                     if (securitySettings != null)
                     {
                         if (securitySettings.CertificateHash != null)

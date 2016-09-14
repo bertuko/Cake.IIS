@@ -55,11 +55,13 @@
     <Compile Include="Manager\Types\ApplicationPoolManager.cs" />
     <Compile Include="Manager\Types\WebFarmManager.cs" />
     <Compile Include="Settings\ApplicationSettings.cs" />
+    <Compile Include="Settings\Bindings\IBindings.cs" />
+    <Compile Include="Settings\Bindings\IISBindings.cs" />
     <Compile Include="Settings\Bindings\CustomBindingSettings.cs" />
     <Compile Include="Settings\Bindings\HttpBindingSettings.cs" />
     <Compile Include="Settings\Bindings\HttpsBindingSettings.cs" />
     <Compile Include="Settings\IBindingSettings.cs" />
-    <Compile Include="Settings\IBindingSecuritySettings.cs" />
+    <Compile Include="Settings\ISecureBindingSettings.cs" />
     <Compile Include="Settings\Bindings\MsmqFormatNameBindingSettings.cs" />
     <Compile Include="Settings\Bindings\NetMsmqBindingSettings.cs" />
     <Compile Include="Settings\Bindings\NetPipeBindingSettings.cs" />

@@ -1,6 +1,6 @@
 ﻿namespace Cake.IIS.Settings.Bindings
 {
-    public sealed class HttpsBindingSettings : IBindingSecuritySettings
+    public sealed class HttpsBindingSettings : ISecureBindingSettings
     {
         public HttpsBindingSettings()
         {

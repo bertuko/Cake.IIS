@@ -8,7 +8,7 @@ namespace Cake.IIS
             public WebsiteSettings()
                 : base()
             {
-                this.DefaultBinding = new HttpBindingSettings();
+                this.DefaultBinding = new IISBindings().Http;
             }
         #endregion
     }

@@ -8,10 +8,7 @@ namespace Cake.IIS
             public FtpsiteSettings()
                 : base()
             {
-                DefaultBinding = new CustomBindingSettings(BindingProtocol.Ftp)
-                {
-                    Port = 21,
-                };
+                DefaultBinding = new IISBindings().Ftp;
             }
         #endregion
     }
