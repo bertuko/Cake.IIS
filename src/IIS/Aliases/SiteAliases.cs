@@ -2,6 +2,7 @@
     using Cake.Core;
     using Cake.Core.Annotations;
     using Cake.IIS.Settings;
+    using Cake.IIS.Settings.Bindings;
     using Microsoft.Web.Administration;
 #endregion
 
@@ -16,6 +17,17 @@ namespace Cake.IIS
     [CakeNamespaceImport("Microsoft.Web.Administration")]
     public static class SiteAliases
     {
+        /// <summary>
+        /// Gets pre-defined bindings
+        /// </summary>
+        /// <param name="context">The context</param>
+        /// <returns>Predefined bindings for IIS</returns>
+        [CakePropertyAlias]
+        public static IBindings IISBindings(this ICakeContext context)
+        {
+            return new IISBindings();
+        }
+
         /// <summary>
         /// Checks if site exists on local IIS.
         /// </summary>
