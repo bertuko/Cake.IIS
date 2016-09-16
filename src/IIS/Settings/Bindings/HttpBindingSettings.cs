@@ -1,9 +1,11 @@
-﻿namespace Cake.IIS.Settings.Bindings
+﻿using Cake.IIS.Settings.Bindings.FluentAPI;
+
+namespace Cake.IIS.Settings.Bindings
 {
     /// <summary>
     /// Class to represent and configure http binding.
     /// </summary>
-    public sealed class HttpBindingSettings : IBindingSettings
+    public sealed class HttpBindingSettings : IHttpBindingSettings, IBindingSettings
     {
         /// <summary>
         /// Creates new predefined instance of <see cref="HttpBindingSettings"/>.
@@ -44,6 +46,29 @@
             {
                 return string.Format(@"{0}:{1}:{2}", IpAddress, Port, HostName);
             }
+        }
+
+        IHttpBindingSettings IHttpBindingSettings.Port(int port)
+        {
+            Port = port;
+            return this;
+        }
+
+        IHttpBindingSettings IHttpBindingSettings.HostName(string name)
+        {
+            HostName = name;
+            return this;
+        }
+
+        IHttpBindingSettings IHttpBindingSettings.IpAddress(string ipAddress)
+        {
+            IpAddress = ipAddress;
+            return this;
+        }
+
+        public HttpBindingSettings Instance
+        {
+            get { return this; }
         }
     }
 }

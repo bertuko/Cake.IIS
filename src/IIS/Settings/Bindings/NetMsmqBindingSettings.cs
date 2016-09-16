@@ -1,9 +1,11 @@
-﻿namespace Cake.IIS.Settings.Bindings
+﻿using Cake.IIS.Settings.Bindings.FluentAPI;
+
+namespace Cake.IIS.Settings.Bindings
 {
     /// <summary>
     /// Class to represent and configure net.msmq binding.
     /// </summary>
-    public sealed class NetMsmqBindingSettings : IBindingSettings
+    public sealed class NetMsmqBindingSettings : INetMsmqBindingSettings, IBindingSettings
     {
         /// <summary>
         /// Creates new predefined instance of <see cref="NetMsmqBindingSettings"/>.
@@ -27,6 +29,17 @@
         public string BindingInformation
         {
             get { return string.Format("{0}", HostName); }
+        }
+
+        INetMsmqBindingSettings INetMsmqBindingSettings.HostName(string name)
+        {
+            HostName = name;
+            return this;
+        }
+
+        public NetMsmqBindingSettings Instance
+        {
+            get { return this; }
         }
     }
 }

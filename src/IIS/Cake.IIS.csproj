@@ -55,7 +55,15 @@
     <Compile Include="Manager\Types\ApplicationPoolManager.cs" />
     <Compile Include="Manager\Types\WebFarmManager.cs" />
     <Compile Include="Settings\ApplicationSettings.cs" />
-    <Compile Include="Settings\Bindings\IBindings.cs" />
+    <Compile Include="Settings\Bindings\FluentAPI\IBindings.cs" />
+    <Compile Include="Settings\Bindings\FluentAPI\ICustomBindingSettings.cs" />
+    <Compile Include="Settings\Bindings\FluentAPI\IHttpBindingSettings.cs" />
+    <Compile Include="Settings\Bindings\FluentAPI\IHttpsBindingSettings.cs" />
+    <Compile Include="Settings\Bindings\FluentAPI\IMsmqFormatNameBindingSettings.cs" />
+    <Compile Include="Settings\Bindings\FluentAPI\INetMsmqBindingSettings.cs" />
+    <Compile Include="Settings\Bindings\FluentAPI\INetPipeBindingSettings.cs" />
+    <Compile Include="Settings\Bindings\FluentAPI\INetTcpBindingSettings.cs" />
+    <Compile Include="Settings\Bindings\FtpBindingSettings.cs" />
     <Compile Include="Settings\Bindings\IISBindings.cs" />
     <Compile Include="Settings\Bindings\CustomBindingSettings.cs" />
     <Compile Include="Settings\Bindings\HttpBindingSettings.cs" />

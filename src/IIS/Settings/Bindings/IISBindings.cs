@@ -1,82 +1,93 @@
-﻿namespace Cake.IIS.Settings.Bindings
+﻿using System;
+using Cake.IIS.Settings.Bindings.FluentAPI;
+
+namespace Cake.IIS.Settings.Bindings
 {
     internal class IISBindings : IBindings
     {
-        /// <summary>
-        /// Gets http binding (port: 80)
-        /// </summary>
-        /// <value>New instance of <see cref="HttpBindingSettings"/></value>
-        public HttpBindingSettings Http
+        private readonly Action<IBindingSettings> _bindingCreationRelay;
+
+        public IISBindings()
         {
-            get { return new HttpBindingSettings(); }
         }
 
-        /// <summary>
-        /// Gets https binding (port: 443)
-        /// </summary>
-        public HttpsBindingSettings Https
+        public IISBindings(Action<IBindingSettings> bindingCreationRelay)
         {
-            get { return new HttpsBindingSettings(); }
+            _bindingCreationRelay = bindingCreationRelay;
         }
 
-        /// <summary>
-        /// Gets ftp binding (port: 21)
-        /// </summary>
-        public CustomBindingSettings Ftp
+        /// <inheritdoc />
+        public IHttpBindingSettings Http()
         {
-            get
+            var httpBindingSettings = new HttpBindingSettings();
+            NotifyAboutCreation(httpBindingSettings);
+            return httpBindingSettings;
+        }
+
+        /// <inheritdoc />
+        public IHttpsBindingSettings Https()
+        {
+            var httpsBindingSettings = new HttpsBindingSettings();
+            NotifyAboutCreation(httpsBindingSettings);
+            return httpsBindingSettings;
+        }
+
+        /// <inheritdoc />
+        public ICustomBindingSettings Ftp()
+        {
+            var ftpBindingSettings = new FtpBindingSettings();
+            NotifyAboutCreation(ftpBindingSettings);
+            return ftpBindingSettings;
+        }
+
+        /// <inheritdoc />
+        public INetTcpBindingSettings NetTcp()
+        {
+            var netTcpBindingSettings = new NetTcpBindingSettings();
+            NotifyAboutCreation(netTcpBindingSettings);
+            return netTcpBindingSettings;
+        }
+
+        /// <inheritdoc />
+        public INetPipeBindingSettings NetPipe()
+        {
+            var netPipeBindingSettings = new NetPipeBindingSettings();
+            NotifyAboutCreation(netPipeBindingSettings);
+            return netPipeBindingSettings;
+        }
+
+        /// <inheritdoc />
+        public INetMsmqBindingSettings NetMsmq()
+        {
+            var netMsmqBindingSettings = new NetMsmqBindingSettings();
+            NotifyAboutCreation(netMsmqBindingSettings);
+            return netMsmqBindingSettings;
+        }
+
+        /// <inheritdoc />
+        public IMsmqFormatNameBindingSettings MsmqFormatName()
+        {
+            var msmqFormatNameBindingSettings = new MsmqFormatNameBindingSettings();
+            NotifyAboutCreation(msmqFormatNameBindingSettings);
+            return msmqFormatNameBindingSettings;
+        }
+
+        /// <inheritdoc />
+        public ICustomBindingSettings CustomBinding(BindingProtocol protocol)
+        {
+            var customBindingSettings = new CustomBindingSettings(protocol);
+            NotifyAboutCreation(customBindingSettings);
+            return customBindingSettings;
+        }
+
+
+        private void NotifyAboutCreation(IBindingSettings bindingSettings)
+        {
+            var relay = _bindingCreationRelay;
+            if (relay != null)
             {
-                return new CustomBindingSettings(BindingProtocol.Ftp)
-                {
-                    Port = 21,
-                };
+                relay(bindingSettings);
             }
-        }
-
-        /// <summary>
-        /// Gets ftp (FTP-SSL/FTP-Secure) binding (port: 21)
-        /// </summary>
-        public CustomBindingSettings Ftps
-        {
-            get
-            {
-                return new CustomBindingSettings(BindingProtocol.Ftp)
-                {
-                    Port = 21
-                };
-            }
-        }
-
-        /// <summary>
-        /// Gets net.tcp binding (port: 808)
-        /// </summary>
-        public NetTcpBindingSettings NetTcp
-        {
-            get { return new NetTcpBindingSettings(); }
-        }
-
-        /// <summary>
-        /// Gets net.pipe binding
-        /// </summary>
-        public NetPipeBindingSettings NetPipe
-        {
-            get { return new NetPipeBindingSettings(); }
-        }
-
-        /// <summary>
-        /// Gets net.msmq binding
-        /// </summary>
-        public NetMsmqBindingSettings NetMsmq
-        {
-            get { return new NetMsmqBindingSettings(); }
-        }
-
-        /// <summary>
-        /// Gets msmq.formatname binding
-        /// </summary>
-        public MsmqFormatNameBindingSettings MsmqFormatName
-        {
-            get { return new MsmqFormatNameBindingSettings(); }
         }
     }
 }

@@ -3,6 +3,7 @@
     using Cake.Core.Annotations;
     using Cake.IIS.Settings;
     using Cake.IIS.Settings.Bindings;
+    using Cake.IIS.Settings.Bindings.FluentAPI;
     using Microsoft.Web.Administration;
 #endregion
 

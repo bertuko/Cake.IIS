@@ -92,19 +92,22 @@ namespace Cake.IIS.Tests
 
             public static WebsiteSettings GetWebsiteSettings()
             {
-                return new WebsiteSettings
+                var websiteSettings = new WebsiteSettings
                 {
                     Name = "Superman",
-                    DefaultBinding = new CustomBindingSettings(BindingProtocol.Http)
-                    {
-                        HostName = "superman.web",
-                        Port = 80,
-                    },
                     PhysicalDirectory = "./Test/",
                     ApplicationPool = CakeHelper.GetAppPoolSettings(),
                     ServerAutoStart = true,
                     Overwrite = false
                 };
+
+                websiteSettings.ChangeBindingTo()
+                    .CustomBinding(BindingProtocol.Http)
+                    .HostName("superman.web")
+                    .Port(80)
+                    .IpAddress("*");
+
+                return websiteSettings;
             }
 
             public static WebFarmSettings GetWebFarmSettings()

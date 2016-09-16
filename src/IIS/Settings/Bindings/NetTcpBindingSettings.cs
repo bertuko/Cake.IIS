@@ -1,9 +1,11 @@
-﻿namespace Cake.IIS.Settings.Bindings
+﻿using Cake.IIS.Settings.Bindings.FluentAPI;
+
+namespace Cake.IIS.Settings.Bindings
 {
     /// <summary>
     /// Class to represent and configure net.tcp binding.
     /// </summary>
-    public sealed class NetTcpBindingSettings : IBindingSettings
+    public sealed class NetTcpBindingSettings : INetTcpBindingSettings, IBindingSettings
     {
         /// <summary>
         /// Creates new predefined instance of <see cref="NetTcpBindingSettings"/>.
@@ -34,6 +36,23 @@
         public string BindingInformation
         {
             get { return string.Format("{0}:{1}", Port, HostName); }
+        }
+
+        INetTcpBindingSettings INetTcpBindingSettings.Port(int port)
+        {
+            Port = port;
+            return this;
+        }
+
+        INetTcpBindingSettings INetTcpBindingSettings.HostName(string name)
+        {
+            HostName = name;
+            return this;
+        }
+
+        NetTcpBindingSettings INetTcpBindingSettings.Instance
+        {
+            get { return this; }
         }
     }
 }

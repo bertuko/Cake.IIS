@@ -1,6 +1,4 @@
-﻿using Cake.IIS.Settings.Bindings;
-
-namespace Cake.IIS
+﻿namespace Cake.IIS
 {
     public class WebsiteSettings : SiteSettings
     {
@@ -8,7 +6,8 @@ namespace Cake.IIS
             public WebsiteSettings()
                 : base()
             {
-                this.DefaultBinding = new IISBindings().Http;
+                ChangeBindingTo().Http()
+                    .Port(80);
             }
         #endregion
     }

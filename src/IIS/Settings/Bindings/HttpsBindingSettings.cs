@@ -1,9 +1,11 @@
-﻿namespace Cake.IIS.Settings.Bindings
+﻿using Cake.IIS.Settings.Bindings.FluentAPI;
+
+namespace Cake.IIS.Settings.Bindings
 {
     /// <summary>
     /// Class to represent and configure https binding.
     /// </summary>
-    public sealed class HttpsBindingSettings : ISecureBindingSettings
+    public sealed class HttpsBindingSettings : IHttpsBindingSettings, ISecureBindingSettings
     {
         /// <summary>
         /// Creates new predefined instance of <see cref="HttpsBindingSettings"/>.
@@ -51,5 +53,40 @@
 
         /// <inheritdoc />
         public string CertificateStoreName { get; set; }
+
+        IHttpsBindingSettings IHttpsBindingSettings.Port(int port)
+        {
+            Port = port;
+            return this;
+        }
+
+        IHttpsBindingSettings IHttpsBindingSettings.HostName(string name)
+        {
+            HostName = name;
+            return this;
+        }
+
+        IHttpsBindingSettings IHttpsBindingSettings.IpAddress(string ipAddress)
+        {
+            IpAddress = ipAddress;
+            return this;
+        }
+
+        IHttpsBindingSettings IHttpsBindingSettings.CertificateStoreName(string storeName)
+        {
+            CertificateStoreName = storeName;
+            return this;
+        }
+
+        IHttpsBindingSettings IHttpsBindingSettings.CertificateHash(byte[] hash)
+        {
+            CertificateHash = hash;
+            return this;
+        }
+
+        HttpsBindingSettings IHttpsBindingSettings.Instance
+        {
+            get { return this; }
+        }
     }
 }

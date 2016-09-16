@@ -55,7 +55,7 @@ namespace Cake.IIS
                     throw new ArgumentException("Site name cannot be null!");
                 }
 
-                if (settings.DefaultBinding == null)
+                if (settings.Binding == null)
                 {
                     throw new ArgumentException("Default binding cannot be null!");
                 }
@@ -102,23 +102,24 @@ namespace Cake.IIS
 
 
                 //Site Settings
+                var binding = settings.Binding;
                 site = _Server.Sites.Add(
                     settings.Name,
-                    settings.DefaultBinding.BindingProtocol.ToString().ToLower(),
-                    settings.DefaultBinding.BindingInformation,
+                    binding.BindingProtocol.ToString().ToLower(),
+                    binding.BindingInformation,
                     this.GetPhysicalDirectory(settings));
 
-                var securitySettings = settings.DefaultBinding as ISecureBindingSettings;
-                if (securitySettings != null)
+                var securityInfo = settings.Binding as ISecureBindingSettings;
+                if (securityInfo != null)
                 {
-                    if (securitySettings.CertificateHash != null)
+                    if (securityInfo.CertificateHash != null)
                     {
-                        site.Bindings[0].CertificateHash = securitySettings.CertificateHash;
+                        site.Bindings[0].CertificateHash = securityInfo.CertificateHash;
                     }
 
-                    if (!String.IsNullOrEmpty(securitySettings.CertificateStoreName))
+                    if (!String.IsNullOrEmpty(securityInfo.CertificateStoreName))
                     {
-                        site.Bindings[0].CertificateStoreName = securitySettings.CertificateStoreName;
+                        site.Bindings[0].CertificateStoreName = securityInfo.CertificateStoreName;
                     }
                 }
 
