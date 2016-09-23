@@ -7,9 +7,11 @@ namespace Cake.IIS.Settings.Bindings
     /// </summary>
     /// <remarks>
     /// This class is obsolete and may be removed in future releases.
-    /// Please use it only to configure the binding by:
+    /// Please use it only to add/remove the binding by:
     /// <see cref="SiteAliases.AddSiteBinding(Cake.Core.ICakeContext,Cake.IIS.Settings.Bindings.BindingSettings)"/>
     /// <see cref="SiteAliases.AddSiteBinding(Cake.Core.ICakeContext,string,Cake.IIS.Settings.Bindings.BindingSettings)"/>
+    /// <see cref="SiteAliases.RemoveSiteBinding(Cake.Core.ICakeContext,string,Cake.IIS.Settings.Bindings.BindingSettings)"/>
+    /// <see cref="SiteAliases.RemoveSiteBinding(Cake.Core.ICakeContext,string,string,Cake.IIS.Settings.Bindings.BindingSettings)"/>
     /// </remarks>
     [Obsolete("Use CustomBindingSettings class")]
     public class BindingSettings : CustomBindingSettings

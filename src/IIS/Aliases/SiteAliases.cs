@@ -192,6 +192,9 @@ namespace Cake.IIS
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="settings">The site binding settings.</param>
+        /// <remarks>
+        /// This method is obsolete and may be removed in future releases.
+        /// </remarks>
         [CakeMethodAlias]
         [Obsolete("Use AddBinding method instead.")]
         public static void AddSiteBinding(this ICakeContext context, BindingSettings settings)
@@ -205,6 +208,9 @@ namespace Cake.IIS
         /// <param name="context">The context.</param>
         /// <param name="server">The remote server name.</param>
         /// <param name="settings">The site binding settings.</param>
+        /// <remarks>
+        /// This method is obsolete and may be removed in future releases.
+        /// </remarks>
         [CakeMethodAlias]
         [Obsolete("Use AddBinding method instead.")]
         public static void AddSiteBinding(this ICakeContext context, string server, BindingSettings settings)
@@ -253,6 +259,9 @@ namespace Cake.IIS
         /// <param name="context">The context.</param>
         /// <param name="siteName">The site name.</param>
         /// <param name="settings">The binding settings.</param>
+        /// <remarks>
+        /// This method is obsolete and may be removed in future releases.
+        /// </remarks>
         [CakeMethodAlias]
         [Obsolete("Use RemoveBinding method instead.")]
         public static void RemoveSiteBinding(this ICakeContext context, string siteName, BindingSettings settings)
@@ -267,6 +276,9 @@ namespace Cake.IIS
         /// <param name="server">The remote server name.</param>
         /// <param name="siteName">The site name.</param>
         /// <param name="settings">The binding settings.</param>
+        /// <remarks>
+        /// This method is obsolete and may be removed in future releases.
+        /// </remarks>
         [CakeMethodAlias]
         [Obsolete("Use RemoveBinding method instead.")]
         public static void RemoveSiteBinding(this ICakeContext context, string server, string siteName, BindingSettings settings)
