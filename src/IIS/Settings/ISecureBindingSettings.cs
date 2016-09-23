@@ -8,11 +8,11 @@
         /// <summary>
         /// Gets or sets hash for specific certificate.
         /// </summary>
-        byte[] CertificateHash { get; set; }
+        byte[] CertificateHash { get; }
 
         /// <summary>
         /// Gets or sets the name of Certificate Store
         /// </summary>
-        string CertificateStoreName { get; set; }
+        string CertificateStoreName { get; }
     }
 }
