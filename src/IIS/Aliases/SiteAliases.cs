@@ -1,4 +1,5 @@
 ﻿#region Using Statements
+    using System;
     using Cake.Core;
     using Cake.Core.Annotations;
     using Cake.IIS.Settings;
@@ -190,12 +191,42 @@ namespace Cake.IIS
         /// Add site binding to local IIS.
         /// </summary>
         /// <param name="context">The context.</param>
+        /// <param name="settings">The site binding settings.</param>
+        [CakeMethodAlias]
+        [Obsolete("Use AddBinding method instead.")]
+        public static void AddSiteBinding(this ICakeContext context, BindingSettings settings)
+        {
+            context.AddSiteBinding("", settings);
+        }
+
+        /// <summary>
+        /// Add site binding to remote IIS.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="server">The remote server name.</param>
+        /// <param name="settings">The site binding settings.</param>
+        [CakeMethodAlias]
+        [Obsolete("Use AddBinding method instead.")]
+        public static void AddSiteBinding(this ICakeContext context, string server, BindingSettings settings)
+        {
+            using (ServerManager manager = BaseManager.Connect(server))
+            {
+                WebsiteManager
+                    .Using(context.Environment, context.Log, manager)
+                    .AddBinding(settings.Name, settings);
+            }
+        }
+
+        /// <summary>
+        /// Add site binding to local IIS.
+        /// </summary>
+        /// <param name="context">The context.</param>
         /// <param name="siteName">The site name.</param>
         /// <param name="settings">The binding settings.</param>
         [CakeMethodAlias]
-        public static void AddSiteBinding(this ICakeContext context, string siteName, IBindingSettings settings)
+        public static void AddBinding(this ICakeContext context, string siteName, IBindingSettings settings)
         {
-            context.AddSiteBinding("", siteName, settings);
+            context.AddBinding("", siteName, settings);
         }
 
         /// <summary>
@@ -206,7 +237,7 @@ namespace Cake.IIS
         /// <param name="siteName">The site name.</param>
         /// <param name="settings">The binding settings.</param>
         [CakeMethodAlias]
-        public static void AddSiteBinding(this ICakeContext context, string server, string siteName, IBindingSettings settings)
+        public static void AddBinding(this ICakeContext context, string server, string siteName, IBindingSettings settings)
         {
             using (ServerManager manager = BaseManager.Connect(server))
             {

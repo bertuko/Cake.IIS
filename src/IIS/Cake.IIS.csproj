@@ -55,6 +55,7 @@
     <Compile Include="Manager\Types\ApplicationPoolManager.cs" />
     <Compile Include="Manager\Types\WebFarmManager.cs" />
     <Compile Include="Settings\ApplicationSettings.cs" />
+    <Compile Include="Settings\Bindings\BindingSettings.cs" />
     <Compile Include="Settings\Bindings\FluentAPI\IBindings.cs" />
     <Compile Include="Settings\Bindings\FluentAPI\ICustomBindingSettings.cs" />
     <Compile Include="Settings\Bindings\FluentAPI\IHttpBindingSettings.cs" />

@@ -38,7 +38,7 @@ namespace Cake.IIS.Settings.Bindings
         public string CertificateStoreName { get; set; }
 
         /// <inheritdoc />
-        public BindingProtocol BindingProtocol { get; private set; }
+        public BindingProtocol BindingProtocol { get; set; }
 
         /// <inheritdoc />
         public virtual string BindingInformation
