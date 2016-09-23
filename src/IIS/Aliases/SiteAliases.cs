@@ -254,7 +254,8 @@ namespace Cake.IIS
         /// <param name="siteName">The site name.</param>
         /// <param name="settings">The binding settings.</param>
         [CakeMethodAlias]
-        public static void RemoveSiteBinding(this ICakeContext context, string siteName, IBindingSettings settings)
+        [Obsolete("Use RemoveBinding method instead.")]
+        public static void RemoveSiteBinding(this ICakeContext context, string siteName, BindingSettings settings)
         {
             context.RemoveSiteBinding("", siteName, settings);
         }
@@ -267,7 +268,38 @@ namespace Cake.IIS
         /// <param name="siteName">The site name.</param>
         /// <param name="settings">The binding settings.</param>
         [CakeMethodAlias]
-        public static void RemoveSiteBinding(this ICakeContext context, string server, string siteName, IBindingSettings settings)
+        [Obsolete("Use RemoveBinding method instead.")]
+        public static void RemoveSiteBinding(this ICakeContext context, string server, string siteName, BindingSettings settings)
+        {
+            using (ServerManager manager = BaseManager.Connect(server))
+            {
+                WebsiteManager
+                    .Using(context.Environment, context.Log, manager)
+                    .RemoveBinding(siteName, settings);
+            }
+        }
+
+        /// <summary>
+        /// Removes site binding from local IIS.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="siteName">The site name.</param>
+        /// <param name="settings">The binding settings.</param>
+        [CakeMethodAlias]
+        public static void RemoveBinding(this ICakeContext context, string siteName, IBindingSettings settings)
+        {
+            context.RemoveBinding("", siteName, settings);
+        }
+
+        /// <summary>
+        /// Removes site binding from remote IIS.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="server">The remote server name.</param>
+        /// <param name="siteName">The site name.</param>
+        /// <param name="settings">The binding settings.</param>
+        [CakeMethodAlias]
+        public static void RemoveBinding(this ICakeContext context, string server, string siteName, IBindingSettings settings)
         {
             using (ServerManager manager = BaseManager.Connect(server))
             {
