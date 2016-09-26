@@ -5,7 +5,9 @@
     using System.Threading;
 
     using Cake.Core;
+    using Cake.IIS.Settings;
     using Cake.IIS.Settings.Bindings;
+    using Cake.IIS.Settings.Bindings.FluentAPI;
     using Microsoft.Web.Administration;
 
     using NSubstitute;
@@ -101,11 +103,10 @@ namespace Cake.IIS.Tests
                     Overwrite = false
                 };
 
-                websiteSettings.ChangeBindingTo()
-                    .CustomBinding(BindingProtocol.Http)
-                    .HostName("superman.web")
-                    .Port(80)
-                    .IpAddress("*");
+                websiteSettings.Binding = IISBindings.Http()
+                    .SetHostName("superman.web")
+                    .SetIpAddress("*")
+                    .SetPort(80);
 
                 return websiteSettings;
             }

@@ -1,9 +1,9 @@
 ﻿namespace Cake.IIS.Settings.Bindings
 {
     /// <summary>
-    /// Class to represent and configure ftp binding.
+    /// Class to configure ftp binding.
     /// </summary>
-    public class FtpBindingSettings : CustomBindingSettings
+    public sealed class FtpBindingSettings : BindingSettingsBase, IFtpBindingSettings
     {
         /// <summary>
         /// Creates new predefined instance of <see cref="FtpBindingSettings"/>.

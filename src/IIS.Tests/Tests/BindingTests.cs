@@ -1,5 +1,6 @@
 ﻿using Cake.IIS.Settings;
 using Cake.IIS.Settings.Bindings;
+using Cake.IIS.Settings.Bindings.FluentAPI;
 using Xunit;
 
 namespace Cake.IIS.Tests
@@ -11,11 +12,7 @@ namespace Cake.IIS.Tests
         {
             // Arrange
             var settings = CreateWebSite();
-            CustomBindingSettings bindingSettings = new CustomBindingSettings(BindingProtocol.Ftp)
-            {
-                Port = 21,
-            };
-
+            var bindingSettings = new FtpBindingSettings();
             // Act
             Act(settings.Name, bindingSettings);
 

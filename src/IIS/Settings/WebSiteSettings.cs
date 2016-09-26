@@ -1,13 +1,13 @@
-﻿namespace Cake.IIS
+﻿using Cake.IIS.Settings;
+
+namespace Cake.IIS
 {
     public class WebsiteSettings : SiteSettings
     {
         #region Constructor (1)
             public WebsiteSettings()
-                : base()
             {
-                ChangeBindingTo().Http()
-                    .Port(80);
+                Binding = IISBindings.Http();
             }
         #endregion
     }

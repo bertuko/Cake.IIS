@@ -6,7 +6,7 @@
 
     using Cake.Core;
     using Cake.Core.Diagnostics;
-    using Cake.IIS.Settings;
+    using Cake.IIS.Settings.Bindings.FluentAPI;
     using Microsoft.Web.Administration;
 #endregion
 
@@ -55,13 +55,6 @@ namespace Cake.IIS
                     throw new ArgumentException("Site name cannot be null!");
                 }
 
-                if (settings.Binding == null)
-                {
-                    throw new ArgumentException("Default binding cannot be null!");
-                }
-
-
-
                 //Get Site
                 Site site = _Server.Sites.FirstOrDefault(p => p.Name == settings.Name);
 
@@ -102,27 +95,24 @@ namespace Cake.IIS
 
 
                 //Site Settings
-                var binding = settings.Binding;
+                IBindingSettings binding = settings.Binding ?? settings;
                 site = _Server.Sites.Add(
                     settings.Name,
                     binding.BindingProtocol.ToString().ToLower(),
                     binding.BindingInformation,
                     this.GetPhysicalDirectory(settings));
 
-                var securityInfo = settings.Binding as ISecureBindingSettings;
-                if (securityInfo != null)
-                {
-                    if (securityInfo.CertificateHash != null)
-                    {
-                        site.Bindings[0].CertificateHash = securityInfo.CertificateHash;
-                    }
+                var certificateInfo = binding as ICertificateBindingSettings ?? settings;
 
-                    if (!String.IsNullOrEmpty(securityInfo.CertificateStoreName))
-                    {
-                        site.Bindings[0].CertificateStoreName = securityInfo.CertificateStoreName;
-                    }
+                if (certificateInfo.CertificateHash != null)
+                {
+                    site.Bindings[0].CertificateHash = certificateInfo.CertificateHash;
                 }
 
+                if (!String.IsNullOrEmpty(certificateInfo.CertificateStoreName))
+                {
+                    site.Bindings[0].CertificateStoreName = certificateInfo.CertificateStoreName;
+                }
                 site.ServerAutoStart = settings.ServerAutoStart;
                 site.ApplicationDefaults.ApplicationPoolName = settings.ApplicationPool.Name;
 
@@ -403,7 +393,7 @@ namespace Cake.IIS
                     newBinding.Protocol = settings.BindingProtocol.ToString();
                     newBinding.BindingInformation = settings.BindingInformation;
 
-                    var securitySettings = settings as ISecureBindingSettings;
+                    var securitySettings = settings as ICertificateBindingSettings;
                     if (securitySettings != null)
                     {
                         if (securitySettings.CertificateHash != null)

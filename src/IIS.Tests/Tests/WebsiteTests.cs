@@ -1,5 +1,7 @@
 ﻿#region Using Statements
+    using Cake.IIS.Settings;
     using Cake.IIS.Settings.Bindings;
+    using Cake.IIS.Settings.Bindings.FluentAPI;
     using Microsoft.Web.Administration;
     using Xunit;
 #endregion
@@ -34,11 +36,10 @@ namespace Cake.IIS.Tests
             const string expectedIpAddress = "*";
             const int expectedPort = 981;
 
-            settings.ChangeBindingTo()
-                .Http()
-                .HostName(expectedHostName)
-                .IpAddress(expectedIpAddress)
-                .Port(expectedPort);
+            settings.Binding = IISBindings.Http()
+                .SetHostName(expectedHostName)
+                .SetIpAddress(expectedIpAddress)
+                .SetPort(expectedPort);
 
             CakeHelper.DeleteWebsite(settings.Name);
 
@@ -73,7 +74,7 @@ namespace Cake.IIS.Tests
                 IpAddress = expectedIpAddress,
                 Port = expectedPort,
             };
-            settings.ChangeBinding(binding);
+            settings.Binding = binding;
 
             CakeHelper.DeleteWebsite(settings.Name);
 

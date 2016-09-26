@@ -1,4 +1,6 @@
-﻿namespace Cake.IIS
+﻿using Cake.IIS.Settings;
+
+namespace Cake.IIS
 {
     public class FtpsiteSettings : SiteSettings
     {
@@ -6,7 +8,7 @@
             public FtpsiteSettings()
                 : base()
             {
-                ChangeBindingTo().Ftp();
+                this.Binding = IISBindings.Ftp();
             }
         #endregion
     }

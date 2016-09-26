@@ -1,4 +1,4 @@
-﻿namespace Cake.IIS.Settings
+﻿namespace Cake.IIS.Settings.Bindings.FluentAPI
 {
     /// <summary>
     /// Binding settings for IIS site.

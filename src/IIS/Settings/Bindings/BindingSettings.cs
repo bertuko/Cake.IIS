@@ -3,18 +3,18 @@
 namespace Cake.IIS.Settings.Bindings
 {
     /// <summary>
-    /// Class to represent and configure any type of IIS binding (secure or not).
+    /// Class to configure any type of IIS binding (secure or not).
     /// </summary>
     /// <remarks>
     /// This class is obsolete and may be removed in future releases.
     /// Please use it only to add/remove the binding by:
-    /// <see cref="SiteAliases.AddSiteBinding(Cake.Core.ICakeContext,Cake.IIS.Settings.Bindings.BindingSettings)"/>
-    /// <see cref="SiteAliases.AddSiteBinding(Cake.Core.ICakeContext,string,Cake.IIS.Settings.Bindings.BindingSettings)"/>
-    /// <see cref="SiteAliases.RemoveSiteBinding(Cake.Core.ICakeContext,string,Cake.IIS.Settings.Bindings.BindingSettings)"/>
-    /// <see cref="SiteAliases.RemoveSiteBinding(Cake.Core.ICakeContext,string,string,Cake.IIS.Settings.Bindings.BindingSettings)"/>
+    /// <see cref="SiteAliases.AddSiteBinding(Core.ICakeContext,BindingSettings)"/>
+    /// <see cref="SiteAliases.AddSiteBinding(Core.ICakeContext,string,BindingSettings)"/>
+    /// <see cref="SiteAliases.RemoveSiteBinding(Core.ICakeContext,string,BindingSettings)"/>
+    /// <see cref="SiteAliases.RemoveSiteBinding(Core.ICakeContext,string,string,BindingSettings)"/>
     /// </remarks>
-    [Obsolete("Use CustomBindingSettings class")]
-    public class BindingSettings : CustomBindingSettings
+    [Obsolete("Use CustomBindingSettings class or IISBindings factory class.")]
+    public class BindingSettings : BindingSettingsBase, ICustomBindingSettings
     {
         /// <summary>
         /// Creates new instance of <see cref="BindingSettings"/>.
