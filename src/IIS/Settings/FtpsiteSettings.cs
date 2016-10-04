@@ -1,4 +1,6 @@
-﻿namespace Cake.IIS
+﻿using Cake.IIS.Settings;
+
+namespace Cake.IIS
 {
     public class FtpsiteSettings : SiteSettings
     {
@@ -6,8 +8,7 @@
             public FtpsiteSettings()
                 : base()
             {
-                this.BindingProtocol               = BindingProtocol.Ftp;
-                this.Port                          = 21;
+                this.Binding = IISBindings.Ftp();
             }
         #endregion
     }

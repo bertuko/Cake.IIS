@@ -1,4 +1,7 @@
 ﻿#region Using Statements
+    using Cake.IIS.Settings;
+    using Cake.IIS.Settings.Bindings;
+    using Cake.IIS.Settings.Bindings.FluentAPI;
     using Microsoft.Web.Administration;
     using Xunit;
 #endregion
@@ -22,6 +25,72 @@ namespace Cake.IIS.Tests
 
             // Assert
             Assert.NotNull(CakeHelper.GetWebsite(settings.Name));
+        }
+
+        [Fact]
+        public void Should_Create_Website_With_Fluently_Defined_Binding()
+        {
+            // Arrange
+            var settings = CakeHelper.GetWebsiteSettings();
+            const string expectedHostName = "superman123.web";
+            const string expectedIpAddress = "*";
+            const int expectedPort = 981;
+
+            settings.Binding = IISBindings.Http()
+                .SetHostName(expectedHostName)
+                .SetIpAddress(expectedIpAddress)
+                .SetPort(expectedPort);
+
+            CakeHelper.DeleteWebsite(settings.Name);
+
+            // Act
+            WebsiteManager manager = CakeHelper.CreateWebsiteManager();
+            manager.Create(settings);
+
+            // Assert
+            var binding = settings.Binding;
+            var website = CakeHelper.GetWebsite(settings.Name);
+            Assert.NotNull(website);
+            Assert.Equal(1, website.Bindings.Count);
+            Assert.Contains(website.Bindings, b => b.Protocol == BindingProtocol.Http.ToString() &&
+                                                   b.BindingInformation == binding.BindingInformation &&
+                                                   b.BindingInformation.Contains(expectedPort.ToString()) &&
+                                                   b.BindingInformation.Contains(expectedHostName) &&
+                                                   b.BindingInformation.Contains(expectedIpAddress));
+        }
+
+        [Fact]
+        public void Should_Create_Website_With_Directly_Defined_Binding()
+        {
+            // Arrange
+            var settings = CakeHelper.GetWebsiteSettings();
+            const string expectedHostName = "superman123.web";
+            const string expectedIpAddress = "*";
+            const int expectedPort = 981;
+
+            var binding = new HttpBindingSettings
+            {
+                HostName = expectedHostName,
+                IpAddress = expectedIpAddress,
+                Port = expectedPort,
+            };
+            settings.Binding = binding;
+
+            CakeHelper.DeleteWebsite(settings.Name);
+
+            // Act
+            WebsiteManager manager = CakeHelper.CreateWebsiteManager();
+            manager.Create(settings);
+
+            // Assert
+            var website = CakeHelper.GetWebsite(settings.Name);
+            Assert.NotNull(website);
+            Assert.Equal(1, website.Bindings.Count);
+            Assert.Contains(website.Bindings, b => b.Protocol == BindingProtocol.Http.ToString() &&
+                                                   b.BindingInformation == binding.BindingInformation &&
+                                                   b.BindingInformation.Contains(expectedPort.ToString()) &&
+                                                   b.BindingInformation.Contains(expectedHostName) &&
+                                                   b.BindingInformation.Contains(expectedIpAddress));
         }
 
         [Fact]

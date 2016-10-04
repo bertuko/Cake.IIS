@@ -55,7 +55,31 @@
     <Compile Include="Manager\Types\ApplicationPoolManager.cs" />
     <Compile Include="Manager\Types\WebFarmManager.cs" />
     <Compile Include="Settings\ApplicationSettings.cs" />
-    <Compile Include="Settings\BindingSettings.cs" />
+    <Compile Include="Settings\Bindings\BindingSettings.cs" />
+    <Compile Include="Settings\Bindings\CustomBindingSettings.cs" />
+    <Compile Include="Settings\Bindings\FluentAPI\FluentApiExtensions.cs" />
+    <Compile Include="Settings\IFtpBindingSettings.cs" />
+    <Compile Include="Settings\Bindings\FluentAPI\IHostBindingSettings.cs" />
+    <Compile Include="Settings\Bindings\FluentAPI\IIpAddressBindingSettings.cs" />
+    <Compile Include="Settings\Bindings\FluentAPI\IPortBindingSettings.cs" />
+    <Compile Include="Settings\ICustomBindingSettings.cs" />
+    <Compile Include="Settings\IHttpBindingSettings.cs" />
+    <Compile Include="Settings\IHttpsBindingSettings.cs" />
+    <Compile Include="Settings\IMsmqFormatNameBindingSettings.cs" />
+    <Compile Include="Settings\INetMsmqBindingSettings.cs" />
+    <Compile Include="Settings\INetPipeBindingSettings.cs" />
+    <Compile Include="Settings\INetTcpBindingSettings.cs" />
+    <Compile Include="Settings\Bindings\FtpBindingSettings.cs" />
+    <Compile Include="Settings\Bindings\BindingSettingsBase.cs" />
+    <Compile Include="Settings\Bindings\HttpBindingSettings.cs" />
+    <Compile Include="Settings\Bindings\HttpsBindingSettings.cs" />
+    <Compile Include="Settings\Bindings\FluentAPI\IBindingSettings.cs" />
+    <Compile Include="Settings\Bindings\FluentAPI\ICertificateBindingSettings.cs" />
+    <Compile Include="Settings\Bindings\MsmqFormatNameBindingSettings.cs" />
+    <Compile Include="Settings\Bindings\NetMsmqBindingSettings.cs" />
+    <Compile Include="Settings\Bindings\NetPipeBindingSettings.cs" />
+    <Compile Include="Settings\Bindings\NetTcpBindingSettings.cs" />
+    <Compile Include="Settings\IISBindings.cs" />
     <Compile Include="Settings\WebFarmSettings.cs" />
     <Compile Include="Types\IdentityType.cs" />
     <Compile Include="Settings\ApplicationPoolSettings.cs" />
@@ -80,6 +104,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
