@@ -5,9 +5,6 @@
     using System.Threading;
 
     using Cake.Core;
-    using Cake.IIS.Settings;
-    using Cake.IIS.Settings.Bindings;
-    using Cake.IIS.Settings.Bindings.FluentAPI;
     using Microsoft.Web.Administration;
 
     using NSubstitute;
@@ -94,21 +91,17 @@ namespace Cake.IIS.Tests
 
             public static WebsiteSettings GetWebsiteSettings()
             {
-                var websiteSettings = new WebsiteSettings
+                return new WebsiteSettings
                 {
                     Name = "Superman",
+                    BindingProtocol = BindingProtocol.Http,
+                    HostName = "superman.web",
                     PhysicalDirectory = "./Test/",
                     ApplicationPool = CakeHelper.GetAppPoolSettings(),
+                    Port = 80,
                     ServerAutoStart = true,
                     Overwrite = false
                 };
-
-                websiteSettings.Binding = IISBindings.Http()
-                    .SetHostName("superman.web")
-                    .SetIpAddress("*")
-                    .SetPort(80);
-
-                return websiteSettings;
             }
 
             public static WebFarmSettings GetWebFarmSettings()

@@ -1,9 +1,7 @@
 ﻿#region Using Statements
-    using System;
     using Cake.Core;
     using Cake.Core.Annotations;
-    using Cake.IIS.Settings.Bindings;
-    using Cake.IIS.Settings.Bindings.FluentAPI;
+
     using Microsoft.Web.Administration;
 #endregion
 
@@ -180,11 +178,7 @@ namespace Cake.IIS
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="settings">The site binding settings.</param>
-        /// <remarks>
-        /// This method is obsolete and may be removed in future releases.
-        /// </remarks>
         [CakeMethodAlias]
-        [Obsolete("Use AddBinding method instead.")]
         public static void AddSiteBinding(this ICakeContext context, BindingSettings settings)
         {
             context.AddSiteBinding("", settings);
@@ -196,48 +190,14 @@ namespace Cake.IIS
         /// <param name="context">The context.</param>
         /// <param name="server">The remote server name.</param>
         /// <param name="settings">The site binding settings.</param>
-        /// <remarks>
-        /// This method is obsolete and may be removed in future releases.
-        /// </remarks>
         [CakeMethodAlias]
-        [Obsolete("Use AddBinding method instead.")]
         public static void AddSiteBinding(this ICakeContext context, string server, BindingSettings settings)
         {
             using (ServerManager manager = BaseManager.Connect(server))
             {
                 WebsiteManager
                     .Using(context.Environment, context.Log, manager)
-                    .AddBinding(settings.Name, settings);
-            }
-        }
-
-        /// <summary>
-        /// Add site binding to local IIS.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="siteName">The site name.</param>
-        /// <param name="settings">The binding settings.</param>
-        [CakeMethodAlias]
-        public static void AddBinding(this ICakeContext context, string siteName, IBindingSettings settings)
-        {
-            context.AddBinding("", siteName, settings);
-        }
-
-        /// <summary>
-        /// Add site binding to remote IIS.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="server">The remote server name.</param>
-        /// <param name="siteName">The site name.</param>
-        /// <param name="settings">The binding settings.</param>
-        [CakeMethodAlias]
-        public static void AddBinding(this ICakeContext context, string server, string siteName, IBindingSettings settings)
-        {
-            using (ServerManager manager = BaseManager.Connect(server))
-            {
-                WebsiteManager
-                    .Using(context.Environment, context.Log, manager)
-                    .AddBinding(siteName, settings);
+                    .AddBinding(settings);
             }
         }
 
@@ -245,16 +205,11 @@ namespace Cake.IIS
         /// Removes site binding from local IIS.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="siteName">The site name.</param>
-        /// <param name="settings">The binding settings.</param>
-        /// <remarks>
-        /// This method is obsolete and may be removed in future releases.
-        /// </remarks>
+        /// <param name="settings">The site binding settings.</param>
         [CakeMethodAlias]
-        [Obsolete("Use RemoveBinding method instead.")]
-        public static void RemoveSiteBinding(this ICakeContext context, string siteName, BindingSettings settings)
+        public static void RemoveSiteBinding(this ICakeContext context, BindingSettings settings)
         {
-            context.RemoveSiteBinding("", siteName, settings);
+            context.RemoveSiteBinding("", settings);
         }
 
         /// <summary>
@@ -262,50 +217,15 @@ namespace Cake.IIS
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="server">The remote server name.</param>
-        /// <param name="siteName">The site name.</param>
-        /// <param name="settings">The binding settings.</param>
-        /// <remarks>
-        /// This method is obsolete and may be removed in future releases.
-        /// </remarks>
+        /// <param name="settings">The site binding settings.</param>
         [CakeMethodAlias]
-        [Obsolete("Use RemoveBinding method instead.")]
-        public static void RemoveSiteBinding(this ICakeContext context, string server, string siteName, BindingSettings settings)
+        public static void RemoveSiteBinding(this ICakeContext context, string server, BindingSettings settings)
         {
             using (ServerManager manager = BaseManager.Connect(server))
             {
                 WebsiteManager
                     .Using(context.Environment, context.Log, manager)
-                    .RemoveBinding(siteName, settings);
-            }
-        }
-
-        /// <summary>
-        /// Removes site binding from local IIS.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="siteName">The site name.</param>
-        /// <param name="settings">The binding settings.</param>
-        [CakeMethodAlias]
-        public static void RemoveBinding(this ICakeContext context, string siteName, IBindingSettings settings)
-        {
-            context.RemoveBinding("", siteName, settings);
-        }
-
-        /// <summary>
-        /// Removes site binding from remote IIS.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="server">The remote server name.</param>
-        /// <param name="siteName">The site name.</param>
-        /// <param name="settings">The binding settings.</param>
-        [CakeMethodAlias]
-        public static void RemoveBinding(this ICakeContext context, string server, string siteName, IBindingSettings settings)
-        {
-            using (ServerManager manager = BaseManager.Connect(server))
-            {
-                WebsiteManager
-                    .Using(context.Environment, context.Log, manager)
-                    .RemoveBinding(siteName, settings);
+                    .RemoveBinding(settings);
             }
         }
 
