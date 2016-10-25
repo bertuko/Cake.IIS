@@ -80,9 +80,9 @@ namespace Cake.IIS
         /// <param name="context">The context.</param>
         /// <param name="settings">The site application settings.</param>
         [CakeMethodAlias]
-        public static void SiteApplicationExists(this ICakeContext context, ApplicationSettings settings)
+        public static bool SiteApplicationExists(this ICakeContext context, ApplicationSettings settings)
         {
-            context.SiteApplicationExists("", settings);
+            return context.SiteApplicationExists("", settings);
         }
 
         /// <summary>
