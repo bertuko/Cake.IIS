@@ -114,7 +114,10 @@ Task("Website-Create")
     CreateWebsite("remote-server-name", new WebsiteSettings()
     {
         Name = "MyBlog",
-        HostName = "blog.website.com",
+        Binding = IISBindings.Http
+                    .SetHostName("blog.website.com")
+                    .SetIpAddress("*")
+                    .SetPort(80),
         PhysicalDirectory = "C:/Websites/Blog",
 
         ApplicationPool = new ApplicationPoolSettings()
