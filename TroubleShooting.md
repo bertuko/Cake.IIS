@@ -47,8 +47,7 @@ Firewall rule for DCOM port mapper (command line)
 netsh advfirewall firewall add rule name="AllowDCOMPortMapperForIISConfiguration" dir=in action=allow profile=domain protocol=tcp localport=135 service=RpcSs
 
 Things to consider:  
-
-1. Add remoteip restrictions based on your network.  For example, to lock down to a static ip, you would add remoteip=198.168.10.25  
+Add remoteip restrictions based on your network.  For example, to lock down to a static ip, you would add remoteip=198.168.10.25  
 
 remoteip can be based on a subnet as well.
 
@@ -57,8 +56,7 @@ Firewall rule for DCOM access to IIS configuration COM objects (command line)
 netsh advfirewall firewall add rule name="AHADMINAccessForIISConfiguration" dir=in action=allow profile=domain protocol=tcp program=%windir%\system32\dllhost.exe
 
 Things to consider:  
-1. Add remoteip restrictions
-2. Restrict the AHADMIN to a specific port
+Adding remoteip restrictions to the firewall rule and restricting the AHADMIN to a specific port
 
 See http://mvolo.com/connecting-to-iis-70-configuration-remotely-with-microsoftwebadministration/ for more information and explanation.
 
