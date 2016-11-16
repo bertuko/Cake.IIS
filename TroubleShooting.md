@@ -24,11 +24,7 @@ Error: The configuration section 'webFarms' cannot be read because it is missing
 
 ### Solution
 * Install WebFarm Framework
-http://www.microsoft.com/en-us/download/details.aspx?id=27723
-
-
-
-### Error message
+http://www.microsoft.com/en-us/download/details
 ```
 Microsoft.Web.Administration.ServerManagerException : Application pools cannot be started unless the Windows Activation Service (WAS) is running.
 ```
@@ -44,4 +40,24 @@ Retrieving the COM class factory for remote component with CLSID {2B72133B-3F5B-
 ```
 
 ### Solution
-* Disable windows firewall
+* Windows Firewall is blocking DCOM access.  Adjust your firewall to allow DCOM port mapper (RpcSs service) on TCP port 135 & allow DCOM to access IIS configuration COM objects (windows\system32\dllhost.exe).
+
+Firewall rule for DCOM port mapper (command line)
+
+netsh advfirewall firewall add rule name="AllowDCOMPortMapperForIISConfiguration" dir=in action=allow profile=domain protocol=tcp localport=135 service=RpcSs
+
+Things to consider:  
+Add remoteip restrictions based on your network.  For example, to lock down to a static ip, you would add remoteip=198.168.10.25  
+
+remoteip can be based on a subnet as well.
+
+Firewall rule for DCOM access to IIS configuration COM objects (command line)
+
+netsh advfirewall firewall add rule name="AHADMINAccessForIISConfiguration" dir=in action=allow profile=domain protocol=tcp program=%windir%\system32\dllhost.exe
+
+Things to consider:  
+Adding remoteip restrictions to the firewall rule and restricting the AHADMIN to a specific port
+
+See http://mvolo.com/connecting-to-iis-70-configuration-remotely-with-microsoftwebadministration/ for more information and explanation.
+
+* Last option - Disable windows firewall
