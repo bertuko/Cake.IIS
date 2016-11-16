@@ -10,8 +10,7 @@ namespace Cake.IIS.Tests
         public void Should_Create_Application()
         {
             // Arrange
-            var websiteSettings = CakeHelper.GetWebsiteSettings();
-            CakeHelper.DeleteWebsite(websiteSettings.Name);
+            var websiteSettings = CakeHelper.GetWebsiteSettings("Superman");
             CakeHelper.CreateWebsite(websiteSettings);
 
             var appSettings = CakeHelper.GetApplicationSettings(websiteSettings.Name);
@@ -23,14 +22,15 @@ namespace Cake.IIS.Tests
             // Assert
             Assert.True(added);
             Assert.NotNull(CakeHelper.GetApplication(websiteSettings.Name, appSettings.ApplicationPath));
+
+            CakeHelper.DeleteWebsite(websiteSettings.Name);
         }
 
         [Fact]
         public void Should_Create_Application_With_Predefined_EnabledProtocols()
         {
             // Arrange
-            var websiteSettings = CakeHelper.GetWebsiteSettings();
-            CakeHelper.DeleteWebsite(websiteSettings.Name);
+            var websiteSettings = CakeHelper.GetWebsiteSettings("Batman");
             CakeHelper.CreateWebsite(websiteSettings);
 
             var appSettings = CakeHelper.GetApplicationSettings(websiteSettings.Name);
@@ -50,6 +50,8 @@ namespace Cake.IIS.Tests
             Assert.Contains(BindingProtocol.NetPipe.ToString(), 
                 application.EnabledProtocols, 
                 StringComparison.OrdinalIgnoreCase);
+
+            CakeHelper.DeleteWebsite(websiteSettings.Name);
         }
     }
 }

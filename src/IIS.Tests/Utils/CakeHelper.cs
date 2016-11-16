@@ -68,11 +68,11 @@ namespace Cake.IIS.Tests
 
 
             //Settings
-            public static ApplicationPoolSettings GetAppPoolSettings()
+            public static ApplicationPoolSettings GetAppPoolSettings(string name = "DC")
             {
                 return new ApplicationPoolSettings
                 {
-                    Name = "Superman",
+                    Name = name,
                     IdentityType = IdentityType.NetworkService,
                     Autostart = true,
                     MaxProcesses = 1,
@@ -89,11 +89,11 @@ namespace Cake.IIS.Tests
                 };
             }
 
-            public static WebsiteSettings GetWebsiteSettings()
+            public static WebsiteSettings GetWebsiteSettings(string name = "Superman")
             {
                 WebsiteSettings settings = new WebsiteSettings
                 {
-                    Name = "Superman",
+                    Name = name,
                     PhysicalDirectory = "./Test/",
                     ApplicationPool = CakeHelper.GetAppPoolSettings(),
                     ServerAutoStart = true,
@@ -101,7 +101,7 @@ namespace Cake.IIS.Tests
                 };
 
                 settings.Binding = IISBindings.Http
-                    .SetHostName("superman.web")
+                    .SetHostName(name + ".web")
                     .SetIpAddress("*")
                     .SetPort(80);
 
