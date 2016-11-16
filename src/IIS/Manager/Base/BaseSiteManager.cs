@@ -364,6 +364,7 @@ namespace Cake.IIS
             /// <summary>
             /// Adds a binding to a IIS site
             /// </summary>
+            /// <param name="siteName">The website name</param>
             /// <param name="settings">The settings of the binding</param>
             /// <returns>If the binding was added.</returns>
             public bool AddBinding(string siteName, BindingSettings settings)
@@ -423,6 +424,7 @@ namespace Cake.IIS
             /// <summary>
             /// Removes a binding to a IIS site
             /// </summary>
+            /// <param name="siteName">The website name</param>
             /// <param name="settings">The settings of the binding</param>
             /// <returns>If the binding was removed.</returns>
             public bool RemoveBinding(string siteName, BindingSettings settings)

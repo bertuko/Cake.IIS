@@ -3,6 +3,9 @@
 
 namespace Cake.IIS
 {
+    /// <summary>
+    /// Helper class to expose common bindings
+    /// </summary>
     public static class IISBindings
     {
         /// <summary>

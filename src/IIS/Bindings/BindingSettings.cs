@@ -72,7 +72,7 @@ namespace Cake.IIS
         
 
 
-        // <summary>
+        /// <summary>
         /// Gets IIS binding information
         /// </summary>
         /// <returns>

@@ -2,6 +2,9 @@
 
 namespace Cake.IIS
 {
+    /// <summary>
+    /// Class to set the protocol for a website binding
+    /// </summary>
     public class BindingProtocol
     {
         /// <value>

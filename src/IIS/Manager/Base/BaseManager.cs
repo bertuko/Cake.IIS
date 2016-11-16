@@ -18,9 +18,19 @@ namespace Cake.IIS
     public abstract class BaseManager
     {
         #region Fields (3)
+            /// <summary>
+            /// Cake environment
+            /// </summary>
             protected readonly ICakeEnvironment _Environment;
+
+            /// <summary>
+            /// Cake log
+            /// </summary>
             protected readonly ICakeLog _Log;
 
+            /// <summary>
+            /// IIS server manager
+            /// </summary>
             protected ServerManager _Server;
         #endregion
 
