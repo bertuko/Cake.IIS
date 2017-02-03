@@ -113,6 +113,7 @@ namespace Cake.IIS
                 pool = _Server.ApplicationPools.Add(settings.Name);
 
                 pool.AutoStart             = settings.Autostart;
+
                 pool.Enable32BitAppOnWin64 = settings.Enable32BitAppOnWin64;
                 pool.ManagedRuntimeVersion = settings.ManagedRuntimeVersion;
                 pool.ManagedPipelineMode   = settings.ClassicManagedPipelineMode
