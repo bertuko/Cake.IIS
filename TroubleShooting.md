@@ -19,6 +19,16 @@ Error: Cannot read configuration file due to insufficient permissions
 
 ### Error message
 ```
+Unable to cast COM object of type 'System.__ComObject' to interface type 'Microsoft.Web.Administration.Interop.IAppHostWritableAdminManager'. 
+```
+
+### Solution
+* Make sure you have IIS installed on the machine you are running the script from.
+
+
+
+### Error message
+```
 Error: The configuration section 'webFarms' cannot be read because it is missing a section declaration
 ```
 
