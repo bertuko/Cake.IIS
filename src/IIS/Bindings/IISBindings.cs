@@ -1,4 +1,7 @@
-﻿using Cake.IIS.Bindings;
+﻿#region Using Statements
+using Cake.IIS.Bindings;
+#endregion
+
 
 
 namespace Cake.IIS

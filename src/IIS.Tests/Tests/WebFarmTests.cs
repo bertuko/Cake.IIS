@@ -1,6 +1,5 @@
 ﻿#region Using Statements
-    using Microsoft.Web.Administration;
-    using Xunit;
+using Xunit;
 #endregion
 
 

@@ -20,7 +20,10 @@ namespace Cake.IIS.Bindings
         /// <inheritdoc cref="BindingSettings.BindingInformation"/>
         public override string BindingInformation
         {
-            get { return string.Format("{0}", HostName); }
+            get
+            {
+                return $"{HostName}";
+            }
         }
     }
 }

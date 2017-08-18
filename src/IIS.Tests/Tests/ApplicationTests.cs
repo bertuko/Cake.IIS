@@ -1,6 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region Using Statements
+using System;
+
 using Xunit;
+#endregion
+
+
 
 namespace Cake.IIS.Tests
 {

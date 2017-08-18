@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+
 
 namespace Cake.IIS
 {
@@ -82,7 +83,7 @@ namespace Cake.IIS
         {
             get
             {
-                return string.Format(@"{0}:{1}:{2}", IpAddress, Port, HostName);
+                return $"{IpAddress}:{Port}:{HostName}";
             }
         }
         #endregion

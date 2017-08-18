@@ -2,12 +2,12 @@
 {
     public class FtpsiteSettings : SiteSettings
     {
-        #region Constructor (1)
-            public FtpsiteSettings()
-                : base()
-            {
-                this.Binding = IISBindings.Ftp;
-            }
+        #region Constructors (1)
+        public FtpsiteSettings()
+            : base()
+        {
+            this.Binding = IISBindings.Ftp;
+        }
         #endregion
     }
 }

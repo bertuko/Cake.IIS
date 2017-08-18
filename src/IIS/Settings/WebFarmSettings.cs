@@ -3,10 +3,10 @@
     public class WebFarmSettings
     {
         #region Constructor (1)
-            public WebFarmSettings()
-            {
+        public WebFarmSettings()
+        {
 
-            }
+        }
         #endregion
 
 
@@ -14,13 +14,13 @@
 
 
         #region Properties (3)
-            public string Name { get; set; }
+        public string Name { get; set; }
 
-            public string[] Servers { get; set; }
+        public string[] Servers { get; set; }
         
 
 
-            public bool Overwrite { get; set; }
+        public bool Overwrite { get; set; }
         #endregion
     }
 }

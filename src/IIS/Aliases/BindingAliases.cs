@@ -1,8 +1,8 @@
 ﻿#region Using Statements
-    using System;
-    using Cake.Core;
-    using Cake.Core.Annotations;
-    using Microsoft.Web.Administration;
+using Cake.Core;
+using Cake.Core.Annotations;
+
+using Microsoft.Web.Administration;
 #endregion
 
 
