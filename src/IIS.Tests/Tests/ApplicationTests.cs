@@ -57,5 +57,37 @@ namespace Cake.IIS.Tests
 
             CakeHelper.DeleteWebsite(websiteSettings.Name);
         }
+
+        [Theory]
+        [InlineData(true,false,true)]
+        [InlineData(false,true,false)]
+        public void Should_Set_Authentication(bool annon,bool basic,bool win)
+        {
+
+            // Arrange
+            var websiteName = "Batman";
+            CakeHelper.DeleteWebsite(websiteName);
+            var websiteSettings = CakeHelper.GetWebsiteSettings(websiteName);
+            CakeHelper.CreateWebsite(websiteSettings);
+
+            var appSettings = CakeHelper.GetApplicationSettings(websiteName);
+
+            appSettings.Authentication = CakeHelper.GetAuthenticationSettings(annon, basic, win);
+
+            // Act
+            WebsiteManager manager = CakeHelper.CreateWebsiteManager();
+            var added = manager.AddApplication(appSettings);
+
+            //Assert
+            Assert.True(added);
+            var authentication = CakeHelper.ReadAuthenticationSettings(websiteName);
+
+            Assert.Equal(annon, authentication.EnableAnonymousAuthentication);
+            Assert.Equal(basic, authentication.EnableBasicAuthentication);
+            Assert.Equal(win, authentication.EnableWindowsAuthentication);
+
+            CakeHelper.DeleteWebsite(websiteName);
+
+        }
     }
 }
