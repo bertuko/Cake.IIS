@@ -69,6 +69,46 @@ namespace Cake.IIS
             }
         }
 
+        public void SetWebConfiguration(string siteName, string applicationPath, Action<Configuration> configurationAction)
+        {
+            if (siteName == null)
+            {
+                throw new ArgumentNullException(nameof(siteName));
+            }
+
+            if (configurationAction == null)
+            {
+                throw new ArgumentNullException(nameof(configurationAction));
+            }
+
+            Configuration config;
+            
+            // Get Site
+            var site = _Server.Sites.SingleOrDefault(p => p.Name == siteName);
+            if (site == null)
+            {
+                throw new Exception("Site '" + siteName + "' does not exist.");
+            }
+
+            // Check for the application if needed
+            if (applicationPath != null)
+            {
+                // Get Application
+                var app = site.Applications.SingleOrDefault(p => p.Path == applicationPath);
+                if (app == null)
+                {
+                    throw new Exception("Application '" + applicationPath + "' does not exist.");
+                }
+                config = app.GetWebConfiguration();
+            }
+            else
+            {
+                config = site.GetWebConfiguration();
+            }
+
+            configurationAction(config);
+        }
+
         public void SetWebConfiguration(WebsiteWebConfigurationSettings settings)
         {
             Configuration config;
@@ -96,7 +136,7 @@ namespace Cake.IIS
             {
                 config = site.GetWebConfiguration();
             }
-            
+
             // Set all the values
             foreach (var values in settings.ConfigurationValues)
             {

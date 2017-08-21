@@ -54,6 +54,7 @@
     <Compile Include="Aliases\VirtualDirectoryAliases.cs" />
     <Compile Include="Aliases\WebConfigurationAliases.cs" />
     <Compile Include="Aliases\WebFarmAliases.cs" />
+    <Compile Include="Extensions\ConfigurationExtensions.cs" />
     <Compile Include="Interfaces\IDirectorySettings.cs" />
     <Compile Include="Manager\Base\BaseManager.cs" />
     <Compile Include="Manager\Types\ApplicationPoolManager.cs" />
