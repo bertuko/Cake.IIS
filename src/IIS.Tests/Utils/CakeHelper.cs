@@ -55,7 +55,7 @@ namespace Cake.IIS.Tests
 
             return manager;
         }
-        
+
         public static WebFarmManager CreateWebFarmManager()
         {
             WebFarmManager manager = new WebFarmManager(CakeHelper.CreateEnvironment(), new DebugLog());
@@ -171,8 +171,38 @@ namespace Cake.IIS.Tests
         {
             using (var serverManager = new ServerManager())
             {
-                var site = serverManager.Sites.FirstOrDefault(x => x.Name == siteName) ;
+                var site = serverManager.Sites.FirstOrDefault(x => x.Name == siteName);
                 return site != null ? site.Applications.FirstOrDefault(a => a.Path == appPath) : null;
+            }
+        }
+
+        public static object GetWebConfigurationValue(string siteName, string appPath, string section, string key)
+        {
+            using (var serverManager = new ServerManager())
+            {
+                var site = serverManager.Sites.FirstOrDefault(x => x.Name == siteName);
+                Configuration config;
+                if (appPath != null)
+                {
+                    var app = site?.Applications.FirstOrDefault(a => a.Path == appPath);
+                    config = app?.GetWebConfiguration();
+                }
+                else
+                {
+                    config = site?.GetWebConfiguration();
+                }
+                var sectionObject = config?.GetSection(section);
+                return sectionObject?[key];
+            }
+        }
+
+        public static Configuration GetWebConfiguration(string siteName, string appPath)
+        {
+            using (var serverManager = new ServerManager())
+            {
+                var site = serverManager.Sites.FirstOrDefault(x => x.Name == siteName);
+                var app = site != null ? site.Applications.FirstOrDefault(a => a.Path == appPath) : null;
+                return app?.GetWebConfiguration();
             }
         }
 
@@ -328,6 +358,25 @@ namespace Cake.IIS.Tests
 
                 return farms.FirstOrDefault(f => f.GetAttributeValue("name").ToString() == name);
             }
+        }
+
+        public static void CreateWebConfig(WebsiteSettings settings)
+        {
+            // Make sure the physical directory exists (for configs)
+            if (Directory.Exists(settings.PhysicalDirectory.FullPath))
+            {
+                Directory.Delete(settings.PhysicalDirectory.FullPath, true);
+            }
+            Directory.CreateDirectory(settings.PhysicalDirectory.FullPath);
+
+            // Create an empty web.config
+            var webConfig = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<configuration>\r\n</configuration>";
+            File.WriteAllText(Path.Combine(settings.PhysicalDirectory.FullPath, "web.config"), webConfig);
+        }
+
+        public static void CreateWebConfig(ApplicationSettings appSettings)
+        {
+            throw new NotImplementedException("Todo");
         }
         #endregion
     }

@@ -52,11 +52,13 @@
     <Compile Include="Aliases\BindingAliases.cs" />
     <Compile Include="Aliases\ApplicationAliases.cs" />
     <Compile Include="Aliases\VirtualDirectoryAliases.cs" />
+    <Compile Include="Aliases\WebConfigurationAliases.cs" />
     <Compile Include="Aliases\WebFarmAliases.cs" />
     <Compile Include="Interfaces\IDirectorySettings.cs" />
     <Compile Include="Manager\Base\BaseManager.cs" />
     <Compile Include="Manager\Types\ApplicationPoolManager.cs" />
     <Compile Include="Manager\Types\WebFarmManager.cs" />
+    <Compile Include="Settings\WebConfigurationSettings.cs" />
     <Compile Include="Settings\ApplicationSettings.cs" />
     <Compile Include="Bindings\BindingSettings.cs" />
     <Compile Include="Extensions\BindingExtensions.cs" />

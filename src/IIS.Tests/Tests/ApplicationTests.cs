@@ -48,12 +48,58 @@ namespace Cake.IIS.Tests
             Assert.True(added);
             var application = CakeHelper.GetApplication(websiteSettings.Name, appSettings.ApplicationPath);
             Assert.NotNull(application);
-            Assert.Contains(BindingProtocol.Http.ToString(), 
-                application.EnabledProtocols, 
+            Assert.Contains(BindingProtocol.Http.ToString(),
+                application.EnabledProtocols,
                 StringComparison.OrdinalIgnoreCase);
-            Assert.Contains(BindingProtocol.NetPipe.ToString(), 
-                application.EnabledProtocols, 
+            Assert.Contains(BindingProtocol.NetPipe.ToString(),
+                application.EnabledProtocols,
                 StringComparison.OrdinalIgnoreCase);
+
+            CakeHelper.DeleteWebsite(websiteSettings.Name);
+        }
+
+        [Fact]
+        public void Should_Create_Application_With_DirectoryBrowsing()
+        {
+            // Arrange
+            var websiteSettings = CakeHelper.GetWebsiteSettings("Hulk");
+            var appSettings = CakeHelper.GetApplicationSettings(websiteSettings.Name);
+            var configSettings = new ApplicationWebConfigurationSettings { SiteName = websiteSettings.Name, ApplicationPath = appSettings.ApplicationPath }.EnableDirectoryBrowsing(true);
+            // Make sure the web.config exists
+            CakeHelper.CreateWebConfig(appSettings);
+
+            // Act
+            var manager = CakeHelper.CreateWebsiteManager();
+            manager.Create(websiteSettings);
+            manager.AddApplication(appSettings);
+            manager.SetWebConfiguration(configSettings);
+
+            // Assert
+            var value = CakeHelper.GetWebConfigurationValue(websiteSettings.Name, appSettings.ApplicationPath, "system.webServer/directoryBrowse", "enabled");
+            Assert.True((bool)value);
+
+            CakeHelper.DeleteWebsite(websiteSettings.Name);
+        }
+
+        [Fact]
+        public void Should_Create_Application_Without_DirectoryBrowsing()
+        {
+            // Arrange
+            var websiteSettings = CakeHelper.GetWebsiteSettings("Smash");
+            var appSettings = CakeHelper.GetApplicationSettings(websiteSettings.Name);
+            var configSettings = new ApplicationWebConfigurationSettings { SiteName = websiteSettings.Name, ApplicationPath = appSettings.ApplicationPath }.EnableDirectoryBrowsing(false);
+            // Make sure the web.config exists
+            CakeHelper.CreateWebConfig(appSettings);
+
+            // Act
+            var manager = CakeHelper.CreateWebsiteManager();
+            manager.Create(websiteSettings);
+            manager.AddApplication(appSettings);
+            manager.SetWebConfiguration(configSettings);
+
+            // Assert
+            var value = CakeHelper.GetWebConfigurationValue(websiteSettings.Name, appSettings.ApplicationPath, "system.webServer/directoryBrowse", "enabled");
+            Assert.False((bool)value);
 
             CakeHelper.DeleteWebsite(websiteSettings.Name);
         }

@@ -1,4 +1,7 @@
 #region Using Statements
+
+using System;
+using System.Linq;
 using Microsoft.Web.Administration;
 
 using Cake.Core;
@@ -31,7 +34,7 @@ namespace Cake.IIS
 
 
 
-        #region Methods (2)
+        #region Methods (3)
         /// <summary>
         /// Creates a new instance of the <see cref="WebsiteManager" /> class.
         /// </summary>
@@ -58,13 +61,52 @@ namespace Cake.IIS
         {
             bool exists;
             Site site = base.CreateSite(settings, out exists);
-                
+
             if (!exists)
             {
                 _Server.CommitChanges();
                 _Log.Information("Web Site '{0}' created.", settings.Name);
             }
         }
+
+        public void SetWebConfiguration(WebsiteWebConfigurationSettings settings)
+        {
+            Configuration config;
+
+            // Get Site
+            var site = _Server.Sites.SingleOrDefault(p => p.Name == settings.SiteName);
+            if (site == null)
+            {
+                throw new Exception("Site '" + settings.SiteName + "' does not exist.");
+            }
+
+            // Check for the application if needed
+            var applicationWebConfigSettings = settings as ApplicationWebConfigurationSettings;
+            if (applicationWebConfigSettings != null)
+            {
+                // Get Application
+                var app = site.Applications.SingleOrDefault(p => p.Path == applicationWebConfigSettings.ApplicationPath);
+                if (app == null)
+                {
+                    throw new Exception("Application '" + applicationWebConfigSettings.ApplicationPath + "' does not exist.");
+                }
+                config = app.GetWebConfiguration();
+            }
+            else
+            {
+                config = site.GetWebConfiguration();
+            }
+            
+            // Set all the values
+            foreach (var values in settings.ConfigurationValues)
+            {
+                var directoryBrowseSection = config.GetSection(values.Section);
+                directoryBrowseSection[values.Key] = values.Value;
+            }
+            // Commit the values
+            _Server.CommitChanges();
+        }
+
         #endregion
     }
 }
