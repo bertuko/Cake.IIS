@@ -1,4 +1,4 @@
-#region Using Statements
+﻿#region Using Statements
 using System;
 using System.Linq;
 using System.IO;
@@ -128,18 +128,6 @@ namespace Cake.IIS.Tests
                 Servers = new string[] { "Gotham", "Metroplis" }
             };
         }
-
-        public static AuthenticationSettings GetAuthenticationSettings(bool anonymous, bool basic, bool windows)
-        {
-            return new AuthenticationSettings()
-            {
-                EnableAnonymousAuthentication = anonymous,
-                EnableBasicAuthentication = basic,
-                EnableWindowsAuthentication = windows
-            };
-        }
-
-     
 
 
 
@@ -300,34 +288,7 @@ namespace Cake.IIS.Tests
             }
         }
 
-            //Authentication
-            public static AuthenticationSettings ReadAuthenticationSettings(string websiteName)
-            {
-                var element = "system.webServer/security/authentication/{0}";
-                var anon = GetSectionElementValue<bool>(string.Format(element, "anonymousAuthentication"), "enabled", websiteName);
-                var basic = GetSectionElementValue<bool>(string.Format(element, "basicAuthentication"), "enabled", websiteName);
-                var windows = GetSectionElementValue<bool>(string.Format(element, "windowsAuthentication"), "enabled", websiteName);
 
-                return  new AuthenticationSettings()
-                {
-                    EnableWindowsAuthentication = windows,
-                    EnableBasicAuthentication = basic,
-                    EnableAnonymousAuthentication = anon
-                };
-
-            }
-
-            //General
-            public static T GetSectionElementValue<T>(string elementPath, string attributeName, string location)
-            {
-                using (var serverManager = new ServerManager())
-                {
-                    var config = serverManager.GetApplicationHostConfiguration();
-                    var element =config.GetSection(elementPath, location);
-                    var t = typeof(T);
-                    return (T)Convert.ChangeType( element[attributeName], t);
-                }
-            }
 
         //WebFarm
         public static void CreateWebFarm(WebFarmSettings settings)

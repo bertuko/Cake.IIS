@@ -1,9 +1,8 @@
 #region Using Statements
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text.RegularExpressions;
-    using System.Threading;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 
 using Cake.Core;
 using Cake.Core.Diagnostics;
@@ -155,25 +154,40 @@ namespace Cake.IIS
             if (settings != null)
             {
                 //Authentication
-                var config = _Server.GetApplicationHostConfiguration();              
-                var sectionName = "system." + server + "/security/authentication/{0}";
-                  
+                var config = _Server.GetApplicationHostConfiguration();
+
+                var locationPath = site + appPath;
+                var authentication = config.GetSection("system." + server + "/security/authorization", locationPath);
+
+
+
                 // Anonymous Authentication
-                var anonymousAuthentication = config.GetSection(string.Format(sectionName, "anonymousAuthentication"), site);
-                anonymousAuthentication["enabled"] = settings.EnableAnonymousAuthentication;
+                var anonymousAuthentication = authentication.GetChildElement("anonymousAuthentication");
+
+                anonymousAuthentication.SetAttributeValue("enabled", settings.EnableAnonymousAuthentication);
+
                 _Log.Information("Anonymous Authentication enabled: {0}", settings.EnableAnonymousAuthentication);
 
+
+
                 // Basic Authentication
-                var basicAuthentication = config.GetSection(string.Format(sectionName, "basicAuthentication"), site);
-                basicAuthentication["enabled"] = settings.EnableBasicAuthentication;
+                var basicAuthentication = authentication.GetChildElement("basicAuthentication");
+
+                basicAuthentication.SetAttributeValue("enabled", settings.EnableBasicAuthentication);
+                basicAuthentication.SetAttributeValue("userName", settings.Username);
+                basicAuthentication.SetAttributeValue("password", settings.Password);
+
                 _Log.Information("Basic Authentication enabled: {0}", settings.EnableBasicAuthentication);
 
+
+
                 // Windows Authentication
-                var windowsAuthentication = config.GetSection(string.Format(sectionName, "windowsAuthentication"), site);
-                windowsAuthentication["enabled"] = settings.EnableWindowsAuthentication;
+                var windowsAuthentication = authentication.GetChildElement("windowsAuthentication");
+
+                windowsAuthentication.SetAttributeValue("enabled", settings.EnableWindowsAuthentication);
+
                 _Log.Information("Windows Authentication enabled: {0}", settings.EnableWindowsAuthentication);
             }
-            
         }
 
         /// <summary>
