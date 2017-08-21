@@ -360,23 +360,18 @@ namespace Cake.IIS.Tests
             }
         }
 
-        public static void CreateWebConfig(WebsiteSettings settings)
+        public static void CreateWebConfig(IDirectorySettings settings)
         {
-            // Make sure the physical directory exists (for configs)
-            if (Directory.Exists(settings.PhysicalDirectory.FullPath))
-            {
-                Directory.Delete(settings.PhysicalDirectory.FullPath, true);
-            }
-            Directory.CreateDirectory(settings.PhysicalDirectory.FullPath);
-
-            // Create an empty web.config
-            var webConfig = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<configuration>\r\n</configuration>";
-            File.WriteAllText(Path.Combine(settings.PhysicalDirectory.FullPath, "web.config"), webConfig);
+            CreateWebConfigInFolder(settings.PhysicalDirectory.FullPath);
         }
 
-        public static void CreateWebConfig(ApplicationSettings appSettings)
+        private static void CreateWebConfigInFolder(string folder)
         {
-            throw new NotImplementedException("Todo");
+            // Make sure the directory exists (for configs)
+            Directory.CreateDirectory(folder);
+
+            const string webConfig = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<configuration>\r\n</configuration>";
+            File.WriteAllText(Path.Combine(folder, "web.config"), webConfig);
         }
         #endregion
     }

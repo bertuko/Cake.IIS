@@ -100,8 +100,8 @@ namespace Cake.IIS
             // Set all the values
             foreach (var values in settings.ConfigurationValues)
             {
-                var directoryBrowseSection = config.GetSection(values.Section);
-                directoryBrowseSection[values.Key] = values.Value;
+                var section = config.GetSection(values.Section);
+                section[values.Key] = values.Value;
             }
             // Commit the values
             _Server.CommitChanges();
