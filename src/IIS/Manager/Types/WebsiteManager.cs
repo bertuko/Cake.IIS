@@ -65,6 +65,18 @@ namespace Cake.IIS
             if (!exists)
             {
                 _Server.CommitChanges();
+                // Settings which needs to be modified after the site is created.
+                var isModified = false;
+                if (settings.EnableDirectoryBrowsing)
+                {
+                    var siteConfig = site.GetWebConfiguration();
+                    siteConfig.EnableDirectoryBrowsing(true);
+                    isModified = true;
+                }
+                if (isModified)
+                {
+                    _Server.CommitChanges();
+                }
                 _Log.Information("Web Site '{0}' created.", settings.Name);
             }
         }

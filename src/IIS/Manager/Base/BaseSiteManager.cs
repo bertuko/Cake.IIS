@@ -121,13 +121,11 @@ namespace Cake.IIS
             site.ServerAutoStart = settings.ServerAutoStart;
             site.ApplicationDefaults.ApplicationPoolName = settings.ApplicationPool.Name;
 
-
             // Security
             var serverType = settings is WebsiteSettings ? "webServer" : "ftpServer";
-            var config = GetWebConfiguration();
-            config.SetAuthentication(serverType, settings.Name, "", settings.Authentication);
-            config.SetAuthorization(serverType, settings.Name, "", settings.Authorization);
-
+            var hostConfig = GetWebConfiguration();
+            hostConfig.SetAuthentication(serverType, settings.Name, "", settings.Authentication);
+            hostConfig.SetAuthorization(serverType, settings.Name, "", settings.Authorization);
 
             return site;
         }
@@ -397,34 +395,46 @@ namespace Cake.IIS
                 {
                     throw new Exception("Application '" + settings.ApplicationPath + "' already exists.");
                 }
-                else
+
+                app = site.Applications.CreateElement();
+                app.Path = settings.ApplicationPath;
+                app.ApplicationPoolName = settings.ApplicationPool;
+
+                if (!String.IsNullOrEmpty(settings.AlternateEnabledProtocols))
                 {
-                    app = site.Applications.CreateElement();
-                    app.Path = settings.ApplicationPath;
-                    app.ApplicationPoolName = settings.ApplicationPool;
-
-                    if (!String.IsNullOrEmpty(settings.AlternateEnabledProtocols))
-                    {
-                        app.EnabledProtocols = settings.AlternateEnabledProtocols;
-                    }
-
-
-                    //Get Directory
-                    VirtualDirectory vDir = app.VirtualDirectories.CreateElement();
-                    vDir.Path = settings.VirtualDirectory;
-                    vDir.PhysicalPath = this.GetPhysicalDirectory(settings);
-
-                    app.VirtualDirectories.Add(vDir);
-
-                    // Security
-                    var serverType = "webServer";
-                    var config = GetWebConfiguration();
-                    config.SetAuthentication(serverType, settings.SiteName, settings.ApplicationPath, settings.Authentication);
-                    config.SetAuthorization(serverType, settings.SiteName, settings.ApplicationPath, settings.Authorization);
+                    app.EnabledProtocols = settings.AlternateEnabledProtocols;
                 }
+
+
+                //Get Directory
+                VirtualDirectory vDir = app.VirtualDirectories.CreateElement();
+                vDir.Path = settings.VirtualDirectory;
+                vDir.PhysicalPath = this.GetPhysicalDirectory(settings);
+
+                app.VirtualDirectories.Add(vDir);
+
+                // Security
+                var serverType = "webServer";
+                var hostConfig = GetWebConfiguration();
+                hostConfig.SetAuthentication(serverType, settings.SiteName, settings.ApplicationPath, settings.Authentication);
+                hostConfig.SetAuthorization(serverType, settings.SiteName, settings.ApplicationPath, settings.Authorization);
 
                 site.Applications.Add(app);
                 _Server.CommitChanges();
+
+                // Settings that need to be modified after the app is created
+                var isModified = false;
+                if (settings.EnableDirectoryBrowsing)
+                {
+                    var appConfig = app.GetWebConfiguration();
+                    appConfig.EnableDirectoryBrowsing(true);
+                    isModified = true;
+                }
+                if (isModified)
+                {
+                    _Server.CommitChanges();
+                }
+
 
                 return true;
             }

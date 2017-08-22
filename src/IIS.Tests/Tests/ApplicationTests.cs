@@ -101,5 +101,49 @@ namespace Cake.IIS.Tests
 
             CakeHelper.DeleteWebsite(websiteSettings.Name);
         }
+
+        [Fact]
+        public void Should_Create_Application_With_DirectoryBrowsing_In_Settings()
+        {
+            // Arrange
+            var websiteSettings = CakeHelper.GetWebsiteSettings("Bruce");
+            var appSettings = CakeHelper.GetApplicationSettings(websiteSettings.Name);
+            appSettings.EnableDirectoryBrowsing = true;
+            // Make sure the web.config exists
+            CakeHelper.CreateWebConfig(appSettings);
+
+            // Act
+            var manager = CakeHelper.CreateWebsiteManager();
+            manager.Create(websiteSettings);
+            manager.AddApplication(appSettings);
+
+            // Assert
+            var value = CakeHelper.GetWebConfigurationValue(websiteSettings.Name, appSettings.ApplicationPath, "system.webServer/directoryBrowse", "enabled");
+            Assert.True((bool)value);
+
+            CakeHelper.DeleteWebsite(websiteSettings.Name);
+        }
+
+        [Fact]
+        public void Should_Create_Application_Without_DirectoryBrowsing_In_Settings()
+        {
+            // Arrange
+            var websiteSettings = CakeHelper.GetWebsiteSettings("Banner");
+            var appSettings = CakeHelper.GetApplicationSettings(websiteSettings.Name);
+            appSettings.EnableDirectoryBrowsing = false;
+            // Make sure the web.config exists
+            CakeHelper.CreateWebConfig(appSettings);
+
+            // Act
+            var manager = CakeHelper.CreateWebsiteManager();
+            manager.Create(websiteSettings);
+            manager.AddApplication(appSettings);
+
+            // Assert
+            var value = CakeHelper.GetWebConfigurationValue(websiteSettings.Name, appSettings.ApplicationPath, "system.webServer/directoryBrowse", "enabled");
+            Assert.False((bool)value);
+
+            CakeHelper.DeleteWebsite(websiteSettings.Name);
+        }
     }
 }
