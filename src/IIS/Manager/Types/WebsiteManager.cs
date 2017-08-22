@@ -34,7 +34,7 @@ namespace Cake.IIS
 
 
 
-        #region Methods (3)
+        #region Methods (2)
         /// <summary>
         /// Creates a new instance of the <see cref="WebsiteManager" /> class.
         /// </summary>
@@ -67,47 +67,6 @@ namespace Cake.IIS
                 _Server.CommitChanges();
                 _Log.Information("Web Site '{0}' created.", settings.Name);
             }
-        }
-
-        public void SetWebConfiguration(string siteName, string applicationPath, Action<Configuration> configurationAction)
-        {
-            if (configurationAction == null)
-            {
-                throw new ArgumentNullException(nameof(configurationAction));
-            }
-
-            Configuration config;
-
-            // Get Site
-            if (siteName != null)
-            {
-                var site = _Server.Sites.SingleOrDefault(p => p.Name == siteName);
-                if (site == null)
-                {
-                    throw new Exception("Site '" + siteName + "' does not exist.");
-                }
-                // Check for the application if needed
-                if (applicationPath != null)
-                {
-                    // Get Application
-                    var app = site.Applications.SingleOrDefault(p => p.Path == applicationPath);
-                    if (app == null)
-                    {
-                        throw new Exception("Application '" + applicationPath + "' does not exist.");
-                    }
-                    config = app.GetWebConfiguration();
-                }
-                else
-                {
-                    config = site.GetWebConfiguration();
-                }
-            }
-            else
-            {
-                config = _Server.GetApplicationHostConfiguration();
-            }
-            configurationAction(config);
-            _Server.CommitChanges();
         }
         #endregion
     }
