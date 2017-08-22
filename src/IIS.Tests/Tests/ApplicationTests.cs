@@ -64,7 +64,6 @@ namespace Cake.IIS.Tests
             // Arrange
             var websiteSettings = CakeHelper.GetWebsiteSettings("Hulk");
             var appSettings = CakeHelper.GetApplicationSettings(websiteSettings.Name);
-            var configSettings = new ApplicationWebConfigurationSettings { SiteName = websiteSettings.Name, ApplicationPath = appSettings.ApplicationPath }.EnableDirectoryBrowsing(true);
             // Make sure the web.config exists
             CakeHelper.CreateWebConfig(appSettings);
 
@@ -72,7 +71,7 @@ namespace Cake.IIS.Tests
             var manager = CakeHelper.CreateWebsiteManager();
             manager.Create(websiteSettings);
             manager.AddApplication(appSettings);
-            manager.SetWebConfiguration(configSettings);
+            manager.SetWebConfiguration(websiteSettings.Name, appSettings.ApplicationPath, config => config.EnableDirectoryBrowsing(true));
 
             // Assert
             var value = CakeHelper.GetWebConfigurationValue(websiteSettings.Name, appSettings.ApplicationPath, "system.webServer/directoryBrowse", "enabled");
@@ -87,7 +86,6 @@ namespace Cake.IIS.Tests
             // Arrange
             var websiteSettings = CakeHelper.GetWebsiteSettings("Smash");
             var appSettings = CakeHelper.GetApplicationSettings(websiteSettings.Name);
-            var configSettings = new ApplicationWebConfigurationSettings { SiteName = websiteSettings.Name, ApplicationPath = appSettings.ApplicationPath }.EnableDirectoryBrowsing(false);
             // Make sure the web.config exists
             CakeHelper.CreateWebConfig(appSettings);
 
@@ -95,7 +93,7 @@ namespace Cake.IIS.Tests
             var manager = CakeHelper.CreateWebsiteManager();
             manager.Create(websiteSettings);
             manager.AddApplication(appSettings);
-            manager.SetWebConfiguration(configSettings);
+            manager.SetWebConfiguration(websiteSettings.Name, appSettings.ApplicationPath, config => config.EnableDirectoryBrowsing(false));
 
             // Assert
             var value = CakeHelper.GetWebConfigurationValue(websiteSettings.Name, appSettings.ApplicationPath, "system.webServer/directoryBrowse", "enabled");

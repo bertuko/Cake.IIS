@@ -31,14 +31,13 @@ namespace Cake.IIS.Tests
         {
             // Arrange
             var websiteSettings = CakeHelper.GetWebsiteSettings("Tony");
-            var configSettings = new WebsiteWebConfigurationSettings { SiteName = websiteSettings.Name }.EnableDirectoryBrowsing(true);
             // Make sure the web.config exists
             CakeHelper.CreateWebConfig(websiteSettings);
 
             // Act
             var manager = CakeHelper.CreateWebsiteManager();
             manager.Create(websiteSettings);
-            manager.SetWebConfiguration(configSettings);
+            manager.SetWebConfiguration(websiteSettings.Name, null, config => config.EnableDirectoryBrowsing(true));
 
             // Assert
             var value = CakeHelper.GetWebConfigurationValue(websiteSettings.Name, null, "system.webServer/directoryBrowse", "enabled");
@@ -52,14 +51,13 @@ namespace Cake.IIS.Tests
         {
             // Arrange
             var websiteSettings = CakeHelper.GetWebsiteSettings("Stark");
-            var configSettings = new WebsiteWebConfigurationSettings { SiteName = websiteSettings.Name }.EnableDirectoryBrowsing(false);
             // Make sure the web.config exists
             CakeHelper.CreateWebConfig(websiteSettings);
 
             // Act
             var manager = CakeHelper.CreateWebsiteManager();
             manager.Create(websiteSettings);
-            manager.SetWebConfiguration(configSettings);
+            manager.SetWebConfiguration(websiteSettings.Name, null, config => config.EnableDirectoryBrowsing(false));
 
             // Assert
             var value = CakeHelper.GetWebConfigurationValue(websiteSettings.Name, null, "system.webServer/directoryBrowse", "enabled");

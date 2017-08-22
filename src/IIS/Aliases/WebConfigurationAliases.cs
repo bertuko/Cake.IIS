@@ -1,4 +1,5 @@
 ﻿#region Using Statements
+using System;
 using Cake.Core;
 using Cake.Core.Annotations;
 using Microsoft.Web.Administration;
@@ -14,36 +15,53 @@ namespace Cake.IIS.Aliases
     public static class WebConfigurationAliases
     {
         [CakeMethodAlias]
-        public static void SetSiteWebConfiguration(this ICakeContext context, WebsiteWebConfigurationSettings settings)
+        public static void SetHostWebConfiguration(this ICakeContext context, Action<Configuration> configurationAction)
         {
-            context.SetSiteWebConfiguration("", settings);
+            context.SetHostWebConfiguration("", configurationAction);
         }
 
         [CakeMethodAlias]
-        public static void SetSiteWebConfiguration(this ICakeContext context, string server, WebsiteWebConfigurationSettings settings)
+        public static void SetHostWebConfiguration(this ICakeContext context, string server, Action<Configuration> configurationAction)
         {
-            using (ServerManager manager = BaseManager.Connect(server))
+            using (var manager = BaseManager.Connect(server))
             {
                 WebsiteManager
                     .Using(context.Environment, context.Log, manager)
-                    .SetWebConfiguration(settings);
+                    .SetWebConfiguration(null, null, configurationAction);
             }
         }
 
         [CakeMethodAlias]
-        public static void SetApplicationWebConfiguration(this ICakeContext context, ApplicationWebConfigurationSettings settings)
+        public static void SetSiteWebConfiguration(this ICakeContext context, string siteName, Action<Configuration> configurationAction)
         {
-            context.SetApplicationWebConfiguration("", settings);
+            context.SetSiteWebConfiguration("", siteName, configurationAction);
         }
 
         [CakeMethodAlias]
-        public static void SetApplicationWebConfiguration(this ICakeContext context, string server, ApplicationWebConfigurationSettings settings)
+        public static void SetSiteWebConfiguration(this ICakeContext context, string server, string siteName, Action<Configuration> configurationAction)
         {
             using (ServerManager manager = BaseManager.Connect(server))
             {
                 WebsiteManager
                     .Using(context.Environment, context.Log, manager)
-                    .SetWebConfiguration(settings);
+                    .SetWebConfiguration(siteName, null, configurationAction);
+            }
+        }
+
+        [CakeMethodAlias]
+        public static void SetApplicationWebConfiguration(this ICakeContext context, string siteName, string applicationPath,  Action<Configuration> configurationAction)
+        {
+            context.SetApplicationWebConfiguration("", siteName, applicationPath, configurationAction);
+        }
+
+        [CakeMethodAlias]
+        public static void SetApplicationWebConfiguration(this ICakeContext context, string server, string siteName, string applicationPath, Action<Configuration> configurationAction)
+        {
+            using (ServerManager manager = BaseManager.Connect(server))
+            {
+                WebsiteManager
+                    .Using(context.Environment, context.Log, manager)
+                    .SetWebConfiguration(siteName, applicationPath, configurationAction);
             }
         }
     }
