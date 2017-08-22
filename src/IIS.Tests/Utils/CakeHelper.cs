@@ -196,16 +196,6 @@ namespace Cake.IIS.Tests
             }
         }
 
-        public static Configuration GetWebConfiguration(string siteName, string appPath)
-        {
-            using (var serverManager = new ServerManager())
-            {
-                var site = serverManager.Sites.FirstOrDefault(x => x.Name == siteName);
-                var app = site != null ? site.Applications.FirstOrDefault(a => a.Path == appPath) : null;
-                return app?.GetWebConfiguration();
-            }
-        }
-
         public static void StartWebsite(string name)
         {
             using (var server = new ServerManager())
@@ -362,14 +352,10 @@ namespace Cake.IIS.Tests
 
         public static void CreateWebConfig(IDirectorySettings settings)
         {
-            CreateWebConfigInFolder(settings.PhysicalDirectory.FullPath);
-        }
-
-        private static void CreateWebConfigInFolder(string folder)
-        {
+            var folder = settings.PhysicalDirectory.FullPath;
             // Make sure the directory exists (for configs)
             Directory.CreateDirectory(folder);
-
+            // Create the web.config
             const string webConfig = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<configuration>\r\n</configuration>";
             File.WriteAllText(Path.Combine(folder, "web.config"), webConfig);
         }
