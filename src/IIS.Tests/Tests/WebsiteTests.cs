@@ -27,6 +27,86 @@ namespace Cake.IIS.Tests
         }
 
         [Fact]
+        public void Should_Create_Website_With_DirectoryBrowsing()
+        {
+            // Arrange
+            var websiteSettings = CakeHelper.GetWebsiteSettings("Tony");
+            // Make sure the web.config exists
+            CakeHelper.CreateWebConfig(websiteSettings);
+
+            // Act
+            var manager = CakeHelper.CreateWebsiteManager();
+            manager.Create(websiteSettings);
+            manager.SetWebConfiguration(websiteSettings.Name, null, config => config.EnableDirectoryBrowsing(true));
+
+            // Assert
+            var value = CakeHelper.GetWebConfigurationValue(websiteSettings.Name, null, "system.webServer/directoryBrowse", "enabled");
+            Assert.True((bool)value);
+
+            CakeHelper.DeleteWebsite(websiteSettings.Name);
+        }
+
+        [Fact]
+        public void Should_Create_Website_Without_DirectoryBrowsing()
+        {
+            // Arrange
+            var websiteSettings = CakeHelper.GetWebsiteSettings("Stark");
+            // Make sure the web.config exists
+            CakeHelper.CreateWebConfig(websiteSettings);
+
+            // Act
+            var manager = CakeHelper.CreateWebsiteManager();
+            manager.Create(websiteSettings);
+            manager.SetWebConfiguration(websiteSettings.Name, null, config => config.EnableDirectoryBrowsing(false));
+
+            // Assert
+            var value = CakeHelper.GetWebConfigurationValue(websiteSettings.Name, null, "system.webServer/directoryBrowse", "enabled");
+            Assert.False((bool)value);
+
+            CakeHelper.DeleteWebsite(websiteSettings.Name);
+        }
+
+        [Fact]
+        public void Should_Create_Website_With_DirectoryBrowsing_In_Settings()
+        {
+            // Arrange
+            var websiteSettings = CakeHelper.GetWebsiteSettings("Iron");
+            websiteSettings.EnableDirectoryBrowsing = true;
+            // Make sure the web.config exists
+            CakeHelper.CreateWebConfig(websiteSettings);
+
+            // Act
+            var manager = CakeHelper.CreateWebsiteManager();
+            manager.Create(websiteSettings);
+
+            // Assert
+            var value = CakeHelper.GetWebConfigurationValue(websiteSettings.Name, null, "system.webServer/directoryBrowse", "enabled");
+            Assert.True((bool)value);
+
+            CakeHelper.DeleteWebsite(websiteSettings.Name);
+        }
+
+        [Fact]
+        public void Should_Create_Website_Without_DirectoryBrowsing_In_Settings()
+        {
+            // Arrange
+            var websiteSettings = CakeHelper.GetWebsiteSettings("Man");
+            websiteSettings.EnableDirectoryBrowsing = false;
+            // Make sure the web.config exists
+            CakeHelper.CreateWebConfig(websiteSettings);
+
+            // Act
+            var manager = CakeHelper.CreateWebsiteManager();
+            manager.Create(websiteSettings);
+
+            // Assert
+            var value = CakeHelper.GetWebConfigurationValue(websiteSettings.Name, null, "system.webServer/directoryBrowse", "enabled");
+            Assert.False((bool)value);
+
+            CakeHelper.DeleteWebsite(websiteSettings.Name);
+        }
+
+        [Fact]
         public void Should_Create_Website_With_Fluently_Defined_Binding()
         {
             // Arrange
@@ -107,14 +187,14 @@ namespace Cake.IIS.Tests
             // Assert
             var website = CakeHelper.GetWebsite(settings.Name);
             Assert.NotNull(website);
-            Assert.Contains(BindingProtocol.Http.ToString(), 
-                website.ApplicationDefaults.EnabledProtocols, 
+            Assert.Contains(BindingProtocol.Http.ToString(),
+                website.ApplicationDefaults.EnabledProtocols,
                 StringComparison.OrdinalIgnoreCase);
-            Assert.Contains(BindingProtocol.NetMsmq.ToString(), 
-                website.ApplicationDefaults.EnabledProtocols, 
+            Assert.Contains(BindingProtocol.NetMsmq.ToString(),
+                website.ApplicationDefaults.EnabledProtocols,
                 StringComparison.OrdinalIgnoreCase);
-            Assert.Contains(BindingProtocol.NetTcp.ToString(), 
-                website.ApplicationDefaults.EnabledProtocols, 
+            Assert.Contains(BindingProtocol.NetTcp.ToString(),
+                website.ApplicationDefaults.EnabledProtocols,
                 StringComparison.OrdinalIgnoreCase);
         }
 

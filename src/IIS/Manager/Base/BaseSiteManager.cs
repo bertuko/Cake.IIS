@@ -1,6 +1,5 @@
 #region Using Statements
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
@@ -14,7 +13,7 @@ using Microsoft.Web.Administration;
 
 namespace Cake.IIS
 {
-     /// <summary>
+    /// <summary>
     /// Base class for managing IIS sites
     /// </summary>
     public abstract class BaseSiteManager : BaseManager
@@ -122,135 +121,14 @@ namespace Cake.IIS
             site.ServerAutoStart = settings.ServerAutoStart;
             site.ApplicationDefaults.ApplicationPoolName = settings.ApplicationPool.Name;
 
-
-
-            //Security
-            string server = "";
-
-            if (settings is WebsiteSettings)
-            {
-                server = "webServer";
-            }
-            else
-            {
-                server = "ftpServer";
-            }
-
-            this.SetAuthentication(server, settings.Name, "", settings.Authentication);
-            this.SetAuthorization(server, settings.Name, "", settings.Authorization);
+            // Security
+            var serverType = settings is WebsiteSettings ? "webServer" : "ftpServer";
+            var hostConfig = GetWebConfiguration();
+            hostConfig.SetAuthentication(serverType, settings.Name, "", settings.Authentication);
+            hostConfig.SetAuthorization(serverType, settings.Name, "", settings.Authorization);
 
             return site;
         }
-
-        /// <summary>
-        /// Sets the authentication settings for the site
-        /// </summary>
-        /// /// <param name="server">The atype of server</param>
-        /// <param name="site">The name of the site</param>
-        /// <param name="appPath">The application path</param>
-        /// <param name="settings">The authentication settings</param>
-        protected void SetAuthentication(string server, string site, string appPath, AuthenticationSettings settings)
-        {
-            if (settings != null)
-            {
-                //Authentication
-                var config = _Server.GetApplicationHostConfiguration();
-
-                var locationPath = site + appPath;
-                var authentication = config.GetSection("system." + server + "/security/authorization", locationPath);
-
-
-
-                // Anonymous Authentication
-                var anonymousAuthentication = authentication.GetChildElement("anonymousAuthentication");
-
-                anonymousAuthentication.SetAttributeValue("enabled", settings.EnableAnonymousAuthentication);
-
-                _Log.Information("Anonymous Authentication enabled: {0}", settings.EnableAnonymousAuthentication);
-
-
-
-                // Basic Authentication
-                var basicAuthentication = authentication.GetChildElement("basicAuthentication");
-
-                basicAuthentication.SetAttributeValue("enabled", settings.EnableBasicAuthentication);
-                basicAuthentication.SetAttributeValue("userName", settings.Username);
-                basicAuthentication.SetAttributeValue("password", settings.Password);
-
-                _Log.Information("Basic Authentication enabled: {0}", settings.EnableBasicAuthentication);
-
-
-
-                // Windows Authentication
-                var windowsAuthentication = authentication.GetChildElement("windowsAuthentication");
-
-                windowsAuthentication.SetAttributeValue("enabled", settings.EnableWindowsAuthentication);
-
-                _Log.Information("Windows Authentication enabled: {0}", settings.EnableWindowsAuthentication);
-            }
-        }
-
-        /// <summary>
-        /// Sets the authorization settings for the site
-        /// </summary>
-        /// <param name="server">The atype of server</param>
-        /// <param name="site">The name of the site</param>
-        /// <param name="appPath">The application path</param>
-        /// <param name="settings">The authorization settings</param>
-        protected void SetAuthorization(string server, string site, string appPath, AuthorizationSettings settings)
-        {
-            if (settings != null)
-            {
-                //Authorization
-                var config = _Server.GetApplicationHostConfiguration();
-
-                var locationPath = site + appPath;
-                var authorization = config.GetSection("system." + server + "/security/authorization", locationPath);
-                var authCollection = authorization.GetCollection();
-
-                var addElement = authCollection.CreateElement("add");
-                addElement.SetAttributeValue("accessType", "Allow");
-
-                switch (settings.AuthorizationType)
-                {
-                    case AuthorizationType.AllUsers:
-                        addElement.SetAttributeValue("users", "*");
-                        _Log.Information("Authorization for all users.");
-                        break;
-
-                    case AuthorizationType.SpecifiedUser:
-                        addElement.SetAttributeValue("users", string.Join(", ", settings.Users));
-                        _Log.Information("Authorization resticted to specific users {0}.", settings.Users);
-                        break;
-
-                    case AuthorizationType.SpecifiedRoleOrUserGroup:
-                        addElement.SetAttributeValue("roles", string.Join(", ", settings.Roles));
-                        _Log.Information("Authorization resticted to specific roles {0}.", settings.Roles);
-                        break;
-                }
-
-
-
-                //Permissions
-                var permissions = new List<string>();
-
-                if (settings.CanRead)
-                {
-                    permissions.Add("Read");
-                }
-                if (settings.CanWrite)
-                {
-                    permissions.Add("Write");
-                }
-
-                addElement.SetAttributeValue("permissions", string.Join(", ", permissions));
-
-                authCollection.Clear();
-                authCollection.Add(addElement);
-            }
-        }
-
-
 
         /// <summary>
         /// Delets a site from IIS
@@ -417,7 +295,7 @@ namespace Cake.IIS
             }
             else
             {
-                throw new Exception("Site: " + siteName+ " does not exist.");
+                throw new Exception("Site: " + siteName + " does not exist.");
             }
         }
 
@@ -517,31 +395,46 @@ namespace Cake.IIS
                 {
                     throw new Exception("Application '" + settings.ApplicationPath + "' already exists.");
                 }
-                else
+
+                app = site.Applications.CreateElement();
+                app.Path = settings.ApplicationPath;
+                app.ApplicationPoolName = settings.ApplicationPool;
+
+                if (!String.IsNullOrEmpty(settings.AlternateEnabledProtocols))
                 {
-                    app = site.Applications.CreateElement();
-                    app.Path = settings.ApplicationPath;
-                    app.ApplicationPoolName = settings.ApplicationPool;
-
-                    if (!String.IsNullOrEmpty(settings.AlternateEnabledProtocols))
-                    {
-                        app.EnabledProtocols = settings.AlternateEnabledProtocols;
-                    }
-
-
-                    //Get Directory
-                    VirtualDirectory vDir = app.VirtualDirectories.CreateElement();
-                    vDir.Path = settings.VirtualDirectory;
-                    vDir.PhysicalPath = this.GetPhysicalDirectory(settings);
-
-                    app.VirtualDirectories.Add(vDir);
-                    
-                    this.SetAuthentication("webServer", settings.SiteName, settings.ApplicationPath, settings.Authentication);
-                    this.SetAuthorization("webServer", settings.SiteName, settings.ApplicationPath, settings.Authorization);
+                    app.EnabledProtocols = settings.AlternateEnabledProtocols;
                 }
+
+
+                //Get Directory
+                VirtualDirectory vDir = app.VirtualDirectories.CreateElement();
+                vDir.Path = settings.VirtualDirectory;
+                vDir.PhysicalPath = this.GetPhysicalDirectory(settings);
+
+                app.VirtualDirectories.Add(vDir);
+
+                // Security
+                var serverType = "webServer";
+                var hostConfig = GetWebConfiguration();
+                hostConfig.SetAuthentication(serverType, settings.SiteName, settings.ApplicationPath, settings.Authentication);
+                hostConfig.SetAuthorization(serverType, settings.SiteName, settings.ApplicationPath, settings.Authorization);
 
                 site.Applications.Add(app);
                 _Server.CommitChanges();
+
+                // Settings that need to be modified after the app is created
+                var isModified = false;
+                if (settings.EnableDirectoryBrowsing)
+                {
+                    var appConfig = app.GetWebConfiguration();
+                    appConfig.EnableDirectoryBrowsing(true);
+                    isModified = true;
+                }
+                if (isModified)
+                {
+                    _Server.CommitChanges();
+                }
+
 
                 return true;
             }
@@ -624,7 +517,7 @@ namespace Cake.IIS
             {
                 throw new ArgumentException("Applicaiton path cannot be null!");
             }
-                
+
 
 
             //Get Site
@@ -643,11 +536,11 @@ namespace Cake.IIS
                 throw new Exception("Application '" + settings.ApplicationPath + "' does not exist.");
             }
 
-            if(app.VirtualDirectories.Any(vd => vd.Path == settings.Path))
+            if (app.VirtualDirectories.Any(vd => vd.Path == settings.Path))
             {
                 throw new Exception("Virtual Directory '" + settings.Path + "' already exists.");
             }
-                
+
             //Get Directory
             VirtualDirectory vDir = app.VirtualDirectories.CreateElement();
             vDir.Path = settings.Path;
@@ -657,7 +550,7 @@ namespace Cake.IIS
 
             //this.SetAuthentication("webServer", settings.SiteName, settings.ApplicationPath, settings.Authentication);
             //this.SetAuthorization("webServer", settings.SiteName, settings.ApplicationPath, settings.Authorization);
-                            
+
             _Server.CommitChanges();
 
             return true;
@@ -806,6 +699,67 @@ namespace Cake.IIS
             {
                 throw new Exception("Site '" + settings.SiteName + "' does not exist.");
             }
+        }
+
+        /// <summary>
+        /// Updates the web.config of the given host/site/application.
+        /// </summary>
+        /// <param name="siteName">The name of the site.</param>
+        /// <param name="applicationPath">The path to the application.</param>
+        /// <param name="configurationAction">The action to execute on the <see cref="Configuration"/> object.</param>
+        public void SetWebConfiguration(string siteName, string applicationPath, Action<Configuration> configurationAction)
+        {
+            if (configurationAction == null)
+            {
+                throw new ArgumentNullException(nameof(configurationAction));
+            }
+
+            var config = GetWebConfiguration(siteName, applicationPath);
+            configurationAction(config);
+            _Server.CommitChanges();
+        }
+
+        /// <summary>
+        /// Gets the appropriate web.config configuration object.
+        /// This can be the ApplicationHostConfiguration, Site WebConfiguration or Application WebConfiguration.
+        /// </summary>
+        /// <param name="siteName">The name of the site.</param>
+        /// <param name="applicationPath">The path to the application.</param>
+        /// <returns></returns>
+        private Configuration GetWebConfiguration(string siteName = null, string applicationPath = null)
+        {
+            Configuration config;
+
+            if (siteName == null)
+            {
+                // No site, so use the ApplicationHostConfiguration
+                config = _Server.GetApplicationHostConfiguration();
+            }
+            else
+            {
+                // Try finding the site
+                var site = _Server.Sites.SingleOrDefault(p => p.Name == siteName);
+                if (site == null)
+                {
+                    throw new Exception($"Site '{siteName}' does not exist.");
+                }
+                if (applicationPath == null)
+                {
+                    // No application path, so use the site's WebConfiguration
+                    config = site.GetWebConfiguration();
+                }
+                else
+                {
+                    // Try finding the application
+                    var app = site.Applications.SingleOrDefault(p => p.Path == applicationPath);
+                    if (app == null)
+                    {
+                        throw new Exception($"Application '{applicationPath}' does not exist.");
+                    }
+                    config = app.GetWebConfiguration();
+                }
+            }
+            return config;
         }
         #endregion
     }
