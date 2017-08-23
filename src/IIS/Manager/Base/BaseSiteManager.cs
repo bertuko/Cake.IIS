@@ -18,7 +18,7 @@ namespace Cake.IIS
     /// </summary>
     public abstract class BaseSiteManager : BaseManager
     {
-        #region Constructors (1)
+        #region Constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseSiteManager" /> class.
         /// </summary>
@@ -35,7 +35,7 @@ namespace Cake.IIS
 
 
 
-        #region Methods (9)
+        #region Methods
         /// <summary>
         /// Creates a IIS site
         /// </summary>
@@ -427,7 +427,7 @@ namespace Cake.IIS
                 if (settings.EnableDirectoryBrowsing)
                 {
                     var appConfig = app.GetWebConfiguration();
-                    appConfig.EnableDirectoryBrowsing(true);
+                    appConfig.EnableDirectoryBrowsing();
                     isModified = true;
                 }
                 if (isModified)

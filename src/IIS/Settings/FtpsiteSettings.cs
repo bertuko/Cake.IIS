@@ -2,7 +2,7 @@
 {
     public class FtpsiteSettings : SiteSettings
     {
-        #region Constructors (1)
+        #region Constructors
         public FtpsiteSettings()
             : base()
         {

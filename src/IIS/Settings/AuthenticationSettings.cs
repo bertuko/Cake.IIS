@@ -2,7 +2,7 @@
 {
     public class AuthenticationSettings
     {
-        #region Properties (5)
+        #region Properties
         public string Username { get; set; }
 
         public string Password { get; set; }

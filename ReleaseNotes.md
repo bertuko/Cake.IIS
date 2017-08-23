@@ -1,3 +1,7 @@
+### New in 0.2.4 (Released 2017/08/23)
+* [Feature] Added configuration aliases
+* [Feature] Added enable / disable directory browsing
+
 ### New in 0.2.3 (Released 2017/08/18)
 * [Improvement] Use Cake contrib icon
 

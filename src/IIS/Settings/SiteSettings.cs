@@ -8,7 +8,7 @@ namespace Cake.IIS
 {
     public abstract class SiteSettings : IDirectorySettings
     {
-        #region Constructor (1)
+        #region Constructor
         public SiteSettings()
             : base()
         {
@@ -25,7 +25,7 @@ namespace Cake.IIS
 
 
 
-        #region Properties (10)
+        #region Properties
         public string Name { get; set; }
 
         public string ComputerName { get; set; }

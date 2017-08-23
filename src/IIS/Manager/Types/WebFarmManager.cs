@@ -17,7 +17,7 @@ namespace Cake.IIS
     /// </summary>
     public class WebFarmManager : BaseManager
     {
-        #region Constructor (1)
+        #region Constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="WebFarmManager" /> class.
         /// </summary>
@@ -34,7 +34,7 @@ namespace Cake.IIS
 
 
 
-        #region Methods (14)
+        #region Methods
         /// <summary>
         /// Creates a new instance of the <see cref="WebFarmManager" /> class.
         /// </summary>

@@ -2,7 +2,7 @@
 {
     public class WebFarmSettings
     {
-        #region Constructor (1)
+        #region Constructor
         public WebFarmSettings()
         {
 
@@ -13,7 +13,7 @@
 
 
 
-        #region Properties (3)
+        #region Properties
         public string Name { get; set; }
 
         public string[] Servers { get; set; }

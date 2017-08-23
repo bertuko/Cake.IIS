@@ -11,6 +11,7 @@ namespace Cake.IIS
     /// </summary>
     public static class IISBindings
     {
+        #region Properties
         /// <summary>
         /// Creates http binding (port: 80)
         /// </summary>
@@ -115,5 +116,6 @@ namespace Cake.IIS
                 };
             }
         }
+        #endregion
     }
 }

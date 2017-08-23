@@ -7,6 +7,7 @@ namespace Cake.IIS.Bindings
     /// </summary>
     public class PortBindingSettings : BindingSettings
     {
+        #region Constructors
         /// <summary>
         /// Creates new predefined instance of <see cref="PortBindingSettings"/>.
         /// </summary>
@@ -24,5 +25,6 @@ namespace Cake.IIS.Bindings
                 return $"{Port}:{HostName}";
             }
         }
+        #endregion
     }
 }

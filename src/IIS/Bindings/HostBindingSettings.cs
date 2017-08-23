@@ -8,6 +8,7 @@ namespace Cake.IIS.Bindings
     /// </summary>
     public sealed class HostBindingSettings : BindingSettings
     {
+        #region Constructors
         /// <summary>
         /// Creates new predefined instance of <see cref="HostBindingSettings"/>.
         /// </summary>
@@ -25,5 +26,6 @@ namespace Cake.IIS.Bindings
                 return $"{HostName}";
             }
         }
+        #endregion
     }
 }

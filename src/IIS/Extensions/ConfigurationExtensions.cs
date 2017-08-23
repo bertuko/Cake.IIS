@@ -1,5 +1,10 @@
-﻿using System.Collections.Generic;
+﻿#region Using Statements
+using System.Collections.Generic;
+
 using Microsoft.Web.Administration;
+#endregion
+
+
 
 namespace Cake.IIS
 {
@@ -8,13 +13,36 @@ namespace Cake.IIS
     /// </summary>
     public static class ConfigurationExtensions
     {
-        public static Configuration EnableDirectoryBrowsing(this Configuration config, bool enabled)
+        /// <summary>
+        /// Enables directory browsing
+        /// </summary>
+        /// <param name="config">The config object to adjust.</param>
+        public static Configuration EnableDirectoryBrowsing(this Configuration config)
         {
             var section = config.GetSection("system.webServer/directoryBrowse");
-            section["enabled"] = enabled;
+
+            section["enabled"] = true;
             section["showFlags"] = "Date, Time, Size, Extension";
+
             return config;
         }
+
+        /// <summary>
+        /// Enables directory browsing
+        /// </summary>
+        /// <param name="config">The config object to adjust.</param>
+        public static Configuration DisableDirectoryBrowsing(this Configuration config)
+        {
+            var section = config.GetSection("system.webServer/directoryBrowse");
+
+            section["enabled"] = false;
+            section["showFlags"] = "";
+
+            return config;
+        }
+
+
+
 
         /// <summary>
         /// Sets the authorization settings.

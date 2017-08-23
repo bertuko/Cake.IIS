@@ -37,7 +37,7 @@ namespace Cake.IIS.Tests
             // Act
             var manager = CakeHelper.CreateWebsiteManager();
             manager.Create(websiteSettings);
-            manager.SetWebConfiguration(websiteSettings.Name, null, config => config.EnableDirectoryBrowsing(true));
+            manager.SetWebConfiguration(websiteSettings.Name, null, config => config.EnableDirectoryBrowsing());
 
             // Assert
             var value = CakeHelper.GetWebConfigurationValue(websiteSettings.Name, null, "system.webServer/directoryBrowse", "enabled");
@@ -57,7 +57,7 @@ namespace Cake.IIS.Tests
             // Act
             var manager = CakeHelper.CreateWebsiteManager();
             manager.Create(websiteSettings);
-            manager.SetWebConfiguration(websiteSettings.Name, null, config => config.EnableDirectoryBrowsing(false));
+            manager.SetWebConfiguration(websiteSettings.Name, null, config => config.DisableDirectoryBrowsing());
 
             // Assert
             var value = CakeHelper.GetWebConfigurationValue(websiteSettings.Name, null, "system.webServer/directoryBrowse", "enabled");

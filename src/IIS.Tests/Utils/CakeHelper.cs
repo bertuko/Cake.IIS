@@ -16,7 +16,7 @@ namespace Cake.IIS.Tests
 {
     internal static class CakeHelper
     {
-        #region Functions (4)
+        #region Methods
         //Cake
         public static ICakeEnvironment CreateEnvironment()
         {

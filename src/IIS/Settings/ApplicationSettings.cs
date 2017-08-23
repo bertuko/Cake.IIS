@@ -10,7 +10,7 @@ namespace Cake.IIS
 {
     public class ApplicationSettings : IDirectorySettings
     {
-        #region Constructor (1)
+        #region Constructors
         public ApplicationSettings()
         {
 
@@ -21,7 +21,7 @@ namespace Cake.IIS
 
 
 
-        #region Properties (9)
+        #region Properties
         public string ComputerName { get; set; }
 
 

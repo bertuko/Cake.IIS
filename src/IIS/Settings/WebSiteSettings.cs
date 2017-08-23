@@ -2,13 +2,17 @@
 {
     public class WebsiteSettings : SiteSettings
     {
-        #region Constructor (1)
+        #region Constructors
         public WebsiteSettings()
             : base()
         {
             Binding = IISBindings.Http;
         }
         #endregion
+
+
+
+
 
         #region Properties
         /// <summary>

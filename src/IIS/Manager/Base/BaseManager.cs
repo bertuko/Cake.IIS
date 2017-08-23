@@ -17,7 +17,7 @@ namespace Cake.IIS
     /// </summary>
     public abstract class BaseManager
     {
-        #region Fields (3)
+        #region Fields
         /// <summary>
         /// Cake environment
         /// </summary>
@@ -38,7 +38,7 @@ namespace Cake.IIS
 
 
 
-        #region Constructors (1)
+        #region Constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseManager" /> class.
         /// </summary>
@@ -64,7 +64,7 @@ namespace Cake.IIS
 
 
 
-        #region Methods (5)
+        #region Methods
         /// <summary>
         /// Creates a IIS ServerManager
         /// </summary>
