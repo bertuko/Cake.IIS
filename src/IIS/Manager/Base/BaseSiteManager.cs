@@ -125,114 +125,11 @@ namespace Cake.IIS
             // Security
             var serverType = settings is WebsiteSettings ? "webServer" : "ftpServer";
             var hostConfig = GetWebConfiguration();
-            hostConfig.SetAuthentication(serverType, settings.Name, "", settings.Authentication);
-            hostConfig.SetAuthorization(serverType, settings.Name, "", settings.Authorization);
+            hostConfig.SetAuthentication(serverType, settings.Name, "", settings.Authentication,_Log);
+            hostConfig.SetAuthorization(serverType, settings.Name, "", settings.Authorization, _Log);
 
             return site;
         }
-
-        /// <summary>
-        /// Sets the authentication settings for the site
-        /// </summary>
-        /// /// <param name="server">The atype of server</param>
-        /// <param name="site">The name of the site</param>
-        /// <param name="appPath">The application path</param>
-        /// <param name="settings">The authentication settings</param>
-        protected void SetAuthentication(string server, string site, string appPath, AuthenticationSettings settings)
-        {
-            if (settings != null)
-            {
-                //Authentication
-                var config = _Server.GetApplicationHostConfiguration();              
-                var sectionName = "system." + server + "/security/authentication/{0}";
-                var location = site + appPath;
-                // Anonymous Authentication
-                if (settings.EnableAnonymousAuthentication.HasValue)
-                {
-                    var anonymousAuthentication = config.GetSection(string.Format(sectionName, "anonymousAuthentication"), location);
-                    anonymousAuthentication["enabled"] = settings.EnableAnonymousAuthentication;
-                    _Log.Information("Anonymous Authentication enabled: {0}", settings.EnableAnonymousAuthentication);
-                }
-                // Basic Authentication
-                if (settings.EnableBasicAuthentication.HasValue)
-                {
-                    var basicAuthentication = config.GetSection(string.Format(sectionName, "basicAuthentication"), location);
-                    basicAuthentication["enabled"] = settings.EnableBasicAuthentication;
-                    _Log.Information("Basic Authentication enabled: {0}", settings.EnableBasicAuthentication);
-                }
-
-                // Windows Authentication
-                if (settings.EnableWindowsAuthentication.HasValue)
-                {
-                    var windowsAuthentication = config.GetSection(string.Format(sectionName, "windowsAuthentication"), location);
-                    windowsAuthentication["enabled"] = settings.EnableWindowsAuthentication;
-                    _Log.Information("Windows Authentication enabled: {0}", settings.EnableWindowsAuthentication);
-                }
-            }
-            
-        }
-
-        /// <summary>
-        /// Sets the authorization settings for the site
-        /// </summary>
-        /// <param name="server">The atype of server</param>
-        /// <param name="site">The name of the site</param>
-        /// <param name="appPath">The application path</param>
-        /// <param name="settings">The authorization settings</param>
-        protected void SetAuthorization(string server, string site, string appPath, AuthorizationSettings settings)
-        {
-            if (settings != null)
-            {
-                //Authorization
-                var config = _Server.GetApplicationHostConfiguration();
-
-                var locationPath = site + appPath;
-                var authorization = config.GetSection("system." + server + "/security/authorization", locationPath);
-                var authCollection = authorization.GetCollection();
-
-                var addElement = authCollection.CreateElement("add");
-                addElement.SetAttributeValue("accessType", "Allow");
-
-                switch (settings.AuthorizationType)
-                {
-                    case AuthorizationType.AllUsers:
-                        addElement.SetAttributeValue("users", "*");
-                        _Log.Information("Authorization for all users.");
-                        break;
-
-                    case AuthorizationType.SpecifiedUser:
-                        addElement.SetAttributeValue("users", string.Join(", ", settings.Users));
-                        _Log.Information("Authorization resticted to specific users {0}.", settings.Users);
-                        break;
-
-                    case AuthorizationType.SpecifiedRoleOrUserGroup:
-                        addElement.SetAttributeValue("roles", string.Join(", ", settings.Roles));
-                        _Log.Information("Authorization resticted to specific roles {0}.", settings.Roles);
-                        break;
-                }
-
-
-
-                //Permissions
-                var permissions = new List<string>();
-
-                if (settings.CanRead)
-                {
-                    permissions.Add("Read");
-                }
-                if (settings.CanWrite)
-                {
-                    permissions.Add("Write");
-                }
-
-                addElement.SetAttributeValue("permissions", string.Join(", ", permissions));
-
-                authCollection.Clear();
-                authCollection.Add(addElement);
-            }
-        }
-
-
 
         /// <summary>
         /// Delets a site from IIS
@@ -520,8 +417,8 @@ namespace Cake.IIS
                 // Security
                 var serverType = "webServer";
                 var hostConfig = GetWebConfiguration();
-                hostConfig.SetAuthentication(serverType, settings.SiteName, settings.ApplicationPath, settings.Authentication);
-                hostConfig.SetAuthorization(serverType, settings.SiteName, settings.ApplicationPath, settings.Authorization);
+                hostConfig.SetAuthentication(serverType, settings.SiteName, settings.ApplicationPath, settings.Authentication,_Log);
+                hostConfig.SetAuthorization(serverType, settings.SiteName, settings.ApplicationPath, settings.Authorization,_Log);
 
                 site.Applications.Add(app);
                 _Server.CommitChanges();
