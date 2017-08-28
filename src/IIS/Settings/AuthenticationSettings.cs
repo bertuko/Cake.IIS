@@ -9,11 +9,11 @@
 
 
 
-        public bool EnableBasicAuthentication { get; set; }
+        public bool? EnableBasicAuthentication { get; set; }
 
-        public bool EnableWindowsAuthentication { get; set; }
+        public bool? EnableWindowsAuthentication { get; set; }
 
-        public bool EnableAnonymousAuthentication { get; set; }
+        public bool? EnableAnonymousAuthentication { get; set; }
         #endregion
     }
 }
