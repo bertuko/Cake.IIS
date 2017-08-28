@@ -14,7 +14,7 @@ namespace Cake.IIS
     /// </summary>
     public class FtpsiteManager : BaseSiteManager
     {
-        #region Constructors (1)
+        #region Constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="FtpsiteManager" /> class.
         /// </summary>
@@ -31,7 +31,7 @@ namespace Cake.IIS
 
 
 
-        #region Methods (2)
+        #region Methods
         /// <summary>
         /// Creates a new instance of the <see cref="FtpsiteManager" /> class.
         /// </summary>

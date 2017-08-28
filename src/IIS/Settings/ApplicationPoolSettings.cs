@@ -8,7 +8,7 @@ namespace Cake.IIS
 {
     public class ApplicationPoolSettings
     {
-        #region Fields (1)
+        #region Fields
         private string _Username;
         #endregion
 
@@ -16,7 +16,7 @@ namespace Cake.IIS
 
 
 
-        #region Constructor (1)
+        #region Constructors
         public ApplicationPoolSettings()
         {
             this.Name = "ASP.NET v4.0";
@@ -41,7 +41,7 @@ namespace Cake.IIS
 
 
 
-        #region Properties (8)
+        #region Properties
         public string Name { get; set; }
 
 

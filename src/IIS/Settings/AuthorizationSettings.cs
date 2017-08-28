@@ -2,7 +2,7 @@
 {
     public class AuthorizationSettings
     {
-        #region Constructors (1)
+        #region Constructors
         public AuthorizationSettings()
         {
             this.AuthorizationType = AuthorizationType.AllUsers;
@@ -16,7 +16,7 @@
 
 
 
-        #region Properties (5)
+        #region Properties
         public AuthorizationType AuthorizationType { get; set; }
 
 

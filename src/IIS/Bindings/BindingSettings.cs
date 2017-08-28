@@ -8,7 +8,7 @@ namespace Cake.IIS
     /// </summary>
     public class BindingSettings
     {
-        #region Constructor (2)
+        #region Constructors
         /// <summary>
         /// Creates new instance of <see cref="BindingSettings"/>.
         /// </summary>
@@ -31,7 +31,7 @@ namespace Cake.IIS
 
 
 
-        #region Properties (7)
+        #region Properties
         /// <summary>
         /// Gets or sets IP Address
         /// </summary>

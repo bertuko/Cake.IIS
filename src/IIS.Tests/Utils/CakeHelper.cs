@@ -16,7 +16,7 @@ namespace Cake.IIS.Tests
 {
     internal static class CakeHelper
     {
-        #region Functions (4)
+        #region Methods
         //Cake
         public static ICakeEnvironment CreateEnvironment()
         {
@@ -55,7 +55,7 @@ namespace Cake.IIS.Tests
 
             return manager;
         }
-        
+
         public static WebFarmManager CreateWebFarmManager()
         {
             WebFarmManager manager = new WebFarmManager(CakeHelper.CreateEnvironment(), new DebugLog());
@@ -171,8 +171,28 @@ namespace Cake.IIS.Tests
         {
             using (var serverManager = new ServerManager())
             {
-                var site = serverManager.Sites.FirstOrDefault(x => x.Name == siteName) ;
+                var site = serverManager.Sites.FirstOrDefault(x => x.Name == siteName);
                 return site != null ? site.Applications.FirstOrDefault(a => a.Path == appPath) : null;
+            }
+        }
+
+        public static object GetWebConfigurationValue(string siteName, string appPath, string section, string key)
+        {
+            using (var serverManager = new ServerManager())
+            {
+                var site = serverManager.Sites.FirstOrDefault(x => x.Name == siteName);
+                Configuration config;
+                if (appPath != null)
+                {
+                    var app = site?.Applications.FirstOrDefault(a => a.Path == appPath);
+                    config = app?.GetWebConfiguration();
+                }
+                else
+                {
+                    config = site?.GetWebConfiguration();
+                }
+                var sectionObject = config?.GetSection(section);
+                return sectionObject?[key];
             }
         }
 
@@ -328,6 +348,16 @@ namespace Cake.IIS.Tests
 
                 return farms.FirstOrDefault(f => f.GetAttributeValue("name").ToString() == name);
             }
+        }
+
+        public static void CreateWebConfig(IDirectorySettings settings)
+        {
+            var folder = settings.PhysicalDirectory.FullPath;
+            // Make sure the directory exists (for configs)
+            Directory.CreateDirectory(folder);
+            // Create the web.config
+            const string webConfig = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<configuration>\r\n</configuration>";
+            File.WriteAllText(Path.Combine(folder, "web.config"), webConfig);
         }
         #endregion
     }

@@ -8,7 +8,7 @@ namespace Cake.IIS
 {
     public class VirtualDirectorySettings : IDirectorySettings
     {
-        #region Constructor (1)
+        #region Constructor
         public VirtualDirectorySettings()
         {
 
@@ -19,7 +19,7 @@ namespace Cake.IIS
 
 
 
-        #region Properties (8)
+        #region Properties
         public string ComputerName { get; set; }
 
         public DirectoryPath PhysicalDirectory { get; set; }

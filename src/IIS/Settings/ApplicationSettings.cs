@@ -10,7 +10,7 @@ namespace Cake.IIS
 {
     public class ApplicationSettings : IDirectorySettings
     {
-        #region Constructor (1)
+        #region Constructors
         public ApplicationSettings()
         {
 
@@ -21,7 +21,7 @@ namespace Cake.IIS
 
 
 
-        #region Properties (9)
+        #region Properties
         public string ComputerName { get; set; }
 
 
@@ -29,11 +29,11 @@ namespace Cake.IIS
         public string SiteName { get; set; }
 
         public string ApplicationPath { get; set; }
-        
+
 
 
         public string ApplicationPool { get; set; }
-                
+
 
 
         public string VirtualDirectory { get; set; }
@@ -41,7 +41,7 @@ namespace Cake.IIS
         public DirectoryPath WorkingDirectory { get; set; }
 
         public DirectoryPath PhysicalDirectory { get; set; }
-          
+
 
 
         public AuthenticationSettings Authentication { get; set; }
@@ -49,6 +49,12 @@ namespace Cake.IIS
         public AuthorizationSettings Authorization { get; set; }
 
         public string AlternateEnabledProtocols { get; set; }
+
+
+        /// <summary>
+        /// Flag to get or set of directory browsing should be enabled.
+        /// </summary>
+        public bool EnableDirectoryBrowsing { get; set; }
 
 
         [Obsolete("Use Authentication.UserName")]

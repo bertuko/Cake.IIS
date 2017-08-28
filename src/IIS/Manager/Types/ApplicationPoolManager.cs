@@ -18,7 +18,7 @@ namespace Cake.IIS
     /// </summary>
     public class ApplicationPoolManager : BaseManager
     {
-        #region Fields (1)
+        #region Fields
         private static readonly string[] ApplicationPoolBlackList =
         {
                 "DefaultAppPool",
@@ -32,7 +32,7 @@ namespace Cake.IIS
 
 
 
-        #region Constructors (1)
+        #region Constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="ApplicationPoolManager" /> class.
         /// </summary>
@@ -49,7 +49,7 @@ namespace Cake.IIS
 
 
 
-        #region Methods (8)
+        #region Methods
         /// <summary>
         /// Creates a new instance of the <see cref="ApplicationPoolManager" /> class.
         /// </summary>
