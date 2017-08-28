@@ -156,7 +156,7 @@ namespace Cake.IIS.Tests
         {
             var path = websiteSettings.PhysicalDirectory.ToString();
             if(Directory.Exists(path))
-                Directory.Delete(path);
+                Directory.Delete(path, true);
 
             CakeHelper.DeleteWebsite(websiteSettings.Name);
         }
