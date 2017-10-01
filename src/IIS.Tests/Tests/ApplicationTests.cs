@@ -1,7 +1,8 @@
 ﻿#region Using Statements
 using System;
-
+using System.Runtime.InteropServices;
 using Xunit;
+using System.IO;
 #endregion
 
 
@@ -127,8 +128,12 @@ namespace Cake.IIS.Tests
         [Fact]
         public void Should_Create_Application_Without_DirectoryBrowsing_In_Settings()
         {
-            // Arrange
+            //Setup
+            var websiteName = "Banner";
             var websiteSettings = CakeHelper.GetWebsiteSettings("Banner");
+            Cleanup(websiteSettings);
+
+            // Arrange
             var appSettings = CakeHelper.GetApplicationSettings(websiteSettings.Name);
             appSettings.EnableDirectoryBrowsing = false;
             // Make sure the web.config exists
@@ -142,6 +147,16 @@ namespace Cake.IIS.Tests
             // Assert
             var value = CakeHelper.GetWebConfigurationValue(websiteSettings.Name, appSettings.ApplicationPath, "system.webServer/directoryBrowse", "enabled");
             Assert.False((bool)value);
+
+            //Teardown
+            Cleanup(websiteSettings);
+        }
+
+        private void Cleanup(WebsiteSettings websiteSettings)
+        {
+            var path = websiteSettings.PhysicalDirectory.ToString();
+            if(Directory.Exists(path))
+                Directory.Delete(path, true);
 
             CakeHelper.DeleteWebsite(websiteSettings.Name);
         }

@@ -1,6 +1,6 @@
 ﻿#region Using Statements
 using System.Collections.Generic;
-
+using Cake.Core.Diagnostics;
 using Microsoft.Web.Administration;
 #endregion
 
@@ -42,8 +42,6 @@ namespace Cake.IIS
         }
 
 
-
-
         /// <summary>
         /// Sets the authorization settings.
         /// </summary>
@@ -52,7 +50,7 @@ namespace Cake.IIS
         /// <param name="site">The name of the site.</param>
         /// <param name="appPath">The application path.</param>
         /// <param name="settings">The authorization settings.</param>
-        public static Configuration SetAuthorization(this Configuration config, string serverType, string site, string appPath, AuthorizationSettings settings)
+        public static Configuration SetAuthorization(this Configuration config, string serverType, string site, string appPath, AuthorizationSettings settings, ICakeLog log)
         {
             if (settings != null)
             {
@@ -104,27 +102,38 @@ namespace Cake.IIS
         /// <param name="site">The name of the site.</param>
         /// <param name="appPath">The application path.</param>
         /// <param name="settings">The authentication settings.</param>
+        /// <param name="log">ICakeLog.</param>
         /// <returns></returns>
-        public static Configuration SetAuthentication(this Configuration config, string serverType, string site, string appPath, AuthenticationSettings settings)
+        public static Configuration SetAuthentication(this Configuration config, string serverType, string site, string appPath, AuthenticationSettings settings, ICakeLog log)
         {
             if (settings != null)
             {
-                var locationPath = site + appPath;
-                var authentication = config.GetSection($"system.{serverType}/security/authorization", locationPath);
+
+                var sectionName = "system." + serverType + "/security/authentication/{0}";
+                var location = site + appPath;
 
                 // Anonymous Authentication
-                var anonymousAuthentication = authentication.GetChildElement("anonymousAuthentication");
-                anonymousAuthentication.SetAttributeValue("enabled", settings.EnableAnonymousAuthentication);
-
+                if (settings.EnableAnonymousAuthentication.HasValue)
+                {
+                    var anonymousAuthentication = config.GetSection(string.Format(sectionName, "anonymousAuthentication"), location);
+                    anonymousAuthentication["enabled"] = settings.EnableAnonymousAuthentication;
+                    log.Information("Anonymous Authentication enabled: {0}", settings.EnableAnonymousAuthentication);
+                }
                 // Basic Authentication
-                var basicAuthentication = authentication.GetChildElement("basicAuthentication");
-                basicAuthentication.SetAttributeValue("enabled", settings.EnableBasicAuthentication);
-                basicAuthentication.SetAttributeValue("userName", settings.Username);
-                basicAuthentication.SetAttributeValue("password", settings.Password);
+                if (settings.EnableBasicAuthentication.HasValue)
+                {
+                    var basicAuthentication = config.GetSection(string.Format(sectionName, "basicAuthentication"), location);
+                    basicAuthentication["enabled"] = settings.EnableBasicAuthentication;
+                    log.Information("Basic Authentication enabled: {0}", settings.EnableBasicAuthentication);
+                }
 
                 // Windows Authentication
-                var windowsAuthentication = authentication.GetChildElement("windowsAuthentication");
-                windowsAuthentication.SetAttributeValue("enabled", settings.EnableWindowsAuthentication);
+                if (settings.EnableWindowsAuthentication.HasValue)
+                {
+                    var windowsAuthentication = config.GetSection(string.Format(sectionName, "windowsAuthentication"), location);
+                    windowsAuthentication["enabled"] = settings.EnableWindowsAuthentication;
+                   log.Information("Windows Authentication enabled: {0}", settings.EnableWindowsAuthentication);
+                }
             }
             return config;
         }

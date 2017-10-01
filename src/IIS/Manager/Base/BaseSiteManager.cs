@@ -1,12 +1,13 @@
 #region Using Statements
+
 using System;
 using System.Linq;
 using System.Threading;
-
+using System.Collections.Generic;
 using Cake.Core;
 using Cake.Core.Diagnostics;
-
 using Microsoft.Web.Administration;
+
 #endregion
 
 
@@ -124,8 +125,8 @@ namespace Cake.IIS
             // Security
             var serverType = settings is WebsiteSettings ? "webServer" : "ftpServer";
             var hostConfig = GetWebConfiguration();
-            hostConfig.SetAuthentication(serverType, settings.Name, "", settings.Authentication);
-            hostConfig.SetAuthorization(serverType, settings.Name, "", settings.Authorization);
+            hostConfig.SetAuthentication(serverType, settings.Name, "", settings.Authentication,_Log);
+            hostConfig.SetAuthorization(serverType, settings.Name, "", settings.Authorization, _Log);
 
             return site;
         }
@@ -416,8 +417,8 @@ namespace Cake.IIS
                 // Security
                 var serverType = "webServer";
                 var hostConfig = GetWebConfiguration();
-                hostConfig.SetAuthentication(serverType, settings.SiteName, settings.ApplicationPath, settings.Authentication);
-                hostConfig.SetAuthorization(serverType, settings.SiteName, settings.ApplicationPath, settings.Authorization);
+                hostConfig.SetAuthentication(serverType, settings.SiteName, settings.ApplicationPath, settings.Authentication,_Log);
+                hostConfig.SetAuthorization(serverType, settings.SiteName, settings.ApplicationPath, settings.Authorization,_Log);
 
                 site.Applications.Add(app);
                 _Server.CommitChanges();
