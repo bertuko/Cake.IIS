@@ -275,6 +275,8 @@ A complete Cake example can be found [here](https://github.com/SharpeRAD/Cake.II
 
 ## TroubleShooting
 
+* Please be aware of the breaking changes that occurred with the release of [Cake v0.22.0](https://cakebuild.net/blog/2017/09/cake-v0.22.0-released), you will need to upgrade Cake in order to use Cake.IIS v0.3.0 or above.
+
 A few pointers for managing IIS can be found [here](https://github.com/SharpeRAD/Cake.IIS/blob/master/TroubleShooting.md).
 
 

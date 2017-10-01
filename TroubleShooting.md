@@ -4,6 +4,17 @@
 
 ### Error message
 ```
+Error: Failed to install addin 'Cake.IIS'
+Could not find any assemblies compatible with .NETFramework, Version=4.5
+```
+
+### Solution
+* Please be aware of the breaking changes that occurred with the release of [Cake v0.22.0](https://cakebuild.net/blog/2017/09/cake-v0.22.0-released), you will need to upgrade Cake in order to use Cake.IIS v0.3.0 or above.
+
+
+
+### Error message
+```
 An exception of type 'System.UnauthorizedAccessException' occurred in Microsoft.Web.Administration.dll but was not handled in user code
 
 Additional information: Filename: redirection.config

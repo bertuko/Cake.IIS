@@ -5,9 +5,9 @@ using System.IO;
 using System.Threading;
 
 using Cake.Core;
+using Cake.Testing;
 
 using Microsoft.Web.Administration;
-using NSubstitute;
 #endregion
 
 
@@ -20,8 +20,9 @@ namespace Cake.IIS.Tests
         //Cake
         public static ICakeEnvironment CreateEnvironment()
         {
-            var environment = Substitute.For<ICakeEnvironment>();
+            var environment = FakeEnvironment.CreateWindowsEnvironment();
             environment.WorkingDirectory = Directory.GetCurrentDirectory();
+            environment.WorkingDirectory = environment.WorkingDirectory.Combine("../../../");
 
             return environment;
         }

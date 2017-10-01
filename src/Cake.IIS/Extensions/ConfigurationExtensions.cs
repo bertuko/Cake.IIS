@@ -1,6 +1,8 @@
 ﻿#region Using Statements
 using System.Collections.Generic;
+
 using Cake.Core.Diagnostics;
+
 using Microsoft.Web.Administration;
 #endregion
 
@@ -50,7 +52,7 @@ namespace Cake.IIS
         /// <param name="site">The name of the site.</param>
         /// <param name="appPath">The application path.</param>
         /// <param name="settings">The authorization settings.</param>
-        public static Configuration SetAuthorization(this Configuration config, string serverType, string site, string appPath, AuthorizationSettings settings, ICakeLog log)
+        public static Configuration SetAuthorization(this Configuration config, string serverType, string site, string appPath, AuthorizationSettings settings)
         {
             if (settings != null)
             {
@@ -58,6 +60,9 @@ namespace Cake.IIS
                 var authorization = config.GetSection($"system.{serverType}/security/authorization", locationPath);
                 var authCollection = authorization.GetCollection();
 
+
+
+                // Users / Roles
                 var addElement = authCollection.CreateElement("add");
                 addElement.SetAttributeValue("accessType", "Allow");
 
@@ -76,8 +81,11 @@ namespace Cake.IIS
                         break;
                 }
 
+
+
                 // Permissions
                 var permissions = new List<string>();
+
                 if (settings.CanRead)
                 {
                     permissions.Add("Read");
@@ -86,6 +94,7 @@ namespace Cake.IIS
                 {
                     permissions.Add("Write");
                 }
+
                 addElement.SetAttributeValue("permissions", string.Join(", ", permissions));
 
                 authCollection.Clear();
@@ -108,22 +117,24 @@ namespace Cake.IIS
         {
             if (settings != null)
             {
-
-                var sectionName = "system." + serverType + "/security/authentication/{0}";
                 var location = site + appPath;
+                var sectionName = "system." + serverType + "/security/authentication/{0}";
 
                 // Anonymous Authentication
                 if (settings.EnableAnonymousAuthentication.HasValue)
                 {
                     var anonymousAuthentication = config.GetSection(string.Format(sectionName, "anonymousAuthentication"), location);
                     anonymousAuthentication["enabled"] = settings.EnableAnonymousAuthentication;
+
                     log.Information("Anonymous Authentication enabled: {0}", settings.EnableAnonymousAuthentication);
                 }
+
                 // Basic Authentication
                 if (settings.EnableBasicAuthentication.HasValue)
                 {
                     var basicAuthentication = config.GetSection(string.Format(sectionName, "basicAuthentication"), location);
                     basicAuthentication["enabled"] = settings.EnableBasicAuthentication;
+
                     log.Information("Basic Authentication enabled: {0}", settings.EnableBasicAuthentication);
                 }
 
@@ -132,7 +143,8 @@ namespace Cake.IIS
                 {
                     var windowsAuthentication = config.GetSection(string.Format(sectionName, "windowsAuthentication"), location);
                     windowsAuthentication["enabled"] = settings.EnableWindowsAuthentication;
-                   log.Information("Windows Authentication enabled: {0}", settings.EnableWindowsAuthentication);
+
+                    log.Information("Windows Authentication enabled: {0}", settings.EnableWindowsAuthentication);
                 }
             }
             return config;
