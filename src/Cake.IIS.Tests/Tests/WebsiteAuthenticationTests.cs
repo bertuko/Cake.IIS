@@ -29,7 +29,6 @@ namespace Cake.IIS.Tests.Tests
 
             //Teardown
             CakeHelper.DeleteWebsite(websiteName);
-
         }
     }
 }

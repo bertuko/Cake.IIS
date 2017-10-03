@@ -16,11 +16,12 @@ namespace Cake.IIS.Tests
         {
             // Arrange
             var websiteSettings = CakeHelper.GetWebsiteSettings("Superman");
-            CakeHelper.CreateWebsite(websiteSettings);
-
-            var appSettings = CakeHelper.GetApplicationSettings(websiteSettings.Name);
+            CakeHelper.DeleteWebsite(websiteSettings.Name);
 
             // Act
+            CakeHelper.CreateWebsite(websiteSettings);
+            var appSettings = CakeHelper.GetApplicationSettings(websiteSettings.Name);
+
             WebsiteManager manager = CakeHelper.CreateWebsiteManager();
             var added = manager.AddApplication(appSettings);
 
@@ -38,16 +39,17 @@ namespace Cake.IIS.Tests
             var websiteSettings = CakeHelper.GetWebsiteSettings("Batman");
             CakeHelper.CreateWebsite(websiteSettings);
 
+            // Act
             var appSettings = CakeHelper.GetApplicationSettings(websiteSettings.Name);
             appSettings.AlternateEnabledProtocols = "http,net.pipe";
 
-            // Act
             WebsiteManager manager = CakeHelper.CreateWebsiteManager();
             var added = manager.AddApplication(appSettings);
 
             // Assert
             Assert.True(added);
             var application = CakeHelper.GetApplication(websiteSettings.Name, appSettings.ApplicationPath);
+
             Assert.NotNull(application);
             Assert.Contains(BindingProtocol.Http.ToString(),
                 application.EnabledProtocols,
@@ -64,11 +66,12 @@ namespace Cake.IIS.Tests
         {
             // Arrange
             var websiteSettings = CakeHelper.GetWebsiteSettings("Hulk");
-            var appSettings = CakeHelper.GetApplicationSettings(websiteSettings.Name);
-            // Make sure the web.config exists
-            CakeHelper.CreateWebConfig(appSettings);
+            CakeHelper.DeleteWebsite(websiteSettings.Name);
 
             // Act
+            var appSettings = CakeHelper.GetApplicationSettings(websiteSettings.Name);
+            //CakeHelper.CreateWebConfig(appSettings);
+
             var manager = CakeHelper.CreateWebsiteManager();
             manager.Create(websiteSettings);
             manager.AddApplication(appSettings);
@@ -86,11 +89,12 @@ namespace Cake.IIS.Tests
         {
             // Arrange
             var websiteSettings = CakeHelper.GetWebsiteSettings("Smash");
-            var appSettings = CakeHelper.GetApplicationSettings(websiteSettings.Name);
-            // Make sure the web.config exists
-            CakeHelper.CreateWebConfig(appSettings);
+            CakeHelper.DeleteWebsite(websiteSettings.Name);
 
             // Act
+            var appSettings = CakeHelper.GetApplicationSettings(websiteSettings.Name);
+            //CakeHelper.CreateWebConfig(appSettings);
+
             var manager = CakeHelper.CreateWebsiteManager();
             manager.Create(websiteSettings);
             manager.AddApplication(appSettings);
@@ -108,12 +112,13 @@ namespace Cake.IIS.Tests
         {
             // Arrange
             var websiteSettings = CakeHelper.GetWebsiteSettings("Bruce");
-            var appSettings = CakeHelper.GetApplicationSettings(websiteSettings.Name);
-            appSettings.EnableDirectoryBrowsing = true;
-            // Make sure the web.config exists
-            CakeHelper.CreateWebConfig(appSettings);
+            CakeHelper.DeleteWebsite(websiteSettings.Name);
 
             // Act
+            var appSettings = CakeHelper.GetApplicationSettings(websiteSettings.Name);
+            appSettings.EnableDirectoryBrowsing = true;
+            //CakeHelper.CreateWebConfig(appSettings);
+
             var manager = CakeHelper.CreateWebsiteManager();
             manager.Create(websiteSettings);
             manager.AddApplication(appSettings);
@@ -129,13 +134,13 @@ namespace Cake.IIS.Tests
         public void Should_Create_Application_Without_DirectoryBrowsing_In_Settings()
         {
             //Setup
-            var websiteName = "Banner";
             var websiteSettings = CakeHelper.GetWebsiteSettings("Banner");
-            Cleanup(websiteSettings);
+            CakeHelper.DeleteWebsite(websiteSettings.Name);
 
             // Arrange
             var appSettings = CakeHelper.GetApplicationSettings(websiteSettings.Name);
             appSettings.EnableDirectoryBrowsing = false;
+
             // Make sure the web.config exists
             CakeHelper.CreateWebConfig(appSettings);
 
@@ -149,15 +154,6 @@ namespace Cake.IIS.Tests
             Assert.False((bool)value);
 
             //Teardown
-            Cleanup(websiteSettings);
-        }
-
-        private void Cleanup(WebsiteSettings websiteSettings)
-        {
-            var path = websiteSettings.PhysicalDirectory.ToString();
-            if(Directory.Exists(path))
-                Directory.Delete(path, true);
-
             CakeHelper.DeleteWebsite(websiteSettings.Name);
         }
     }

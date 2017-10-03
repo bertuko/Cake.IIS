@@ -321,35 +321,38 @@ namespace Cake.IIS.Tests
             }
         }
 
-            //Authentication
-            public static AuthenticationSettings ReadAuthenticationSettings(string siteName = null, string appPath=null )
+
+
+        //Config 
+        public static AuthenticationSettings ReadAuthenticationSettings(string siteName = null, string appPath=null )
+        {
+            var location = siteName != null ? siteName + (appPath ?? "") : null;
+            var element = "system.webServer/security/authentication/{0}";
+
+            var anon = GetSectionElementValue<bool>(string.Format(element, "anonymousAuthentication"), "enabled", location);
+            var basic = GetSectionElementValue<bool>(string.Format(element, "basicAuthentication"), "enabled", location);
+            var windows = GetSectionElementValue<bool>(string.Format(element, "windowsAuthentication"), "enabled", location);
+
+            return  new AuthenticationSettings()
             {
-                var location = siteName != null ? siteName + (appPath ?? "") : null;
-                var element = "system.webServer/security/authentication/{0}";
-                var anon = GetSectionElementValue<bool>(string.Format(element, "anonymousAuthentication"), "enabled", location);
-                var basic = GetSectionElementValue<bool>(string.Format(element, "basicAuthentication"), "enabled", location);
-                var windows = GetSectionElementValue<bool>(string.Format(element, "windowsAuthentication"), "enabled", location);
+                EnableWindowsAuthentication = windows,
+                EnableBasicAuthentication = basic,
+                EnableAnonymousAuthentication = anon
+            };
+        }
 
-                return  new AuthenticationSettings()
-                {
-                    EnableWindowsAuthentication = windows,
-                    EnableBasicAuthentication = basic,
-                    EnableAnonymousAuthentication = anon
-                };
-
-            }
-
-            //General
-            public static T GetSectionElementValue<T>(string elementPath, string attributeName, string location)
+        public static T GetSectionElementValue<T>(string elementPath, string attributeName, string location)
+        {
+            using (var serverManager = new ServerManager())
             {
-                using (var serverManager = new ServerManager())
-                {
-                    var config = serverManager.GetApplicationHostConfiguration();
-                    var element = location ==null? config.GetSection(elementPath) :  config.GetSection(elementPath, location);
-                    var t = typeof(T);
-                    return (T)Convert.ChangeType( element[attributeName], t);
-                }
+                var config = serverManager.GetApplicationHostConfiguration();
+                var element = location ==null? config.GetSection(elementPath) :  config.GetSection(elementPath, location);
+                var t = typeof(T);
+                return (T)Convert.ChangeType( element[attributeName], t);
             }
+        }
+
+
 
         //WebFarm
         public static void CreateWebFarm(WebFarmSettings settings)
@@ -394,8 +397,10 @@ namespace Cake.IIS.Tests
         public static void CreateWebConfig(IDirectorySettings settings)
         {
             var folder = settings.PhysicalDirectory.FullPath;
+
             // Make sure the directory exists (for configs)
             Directory.CreateDirectory(folder);
+
             // Create the web.config
             const string webConfig = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<configuration>\r\n</configuration>";
             File.WriteAllText(Path.Combine(folder, "web.config"), webConfig);
