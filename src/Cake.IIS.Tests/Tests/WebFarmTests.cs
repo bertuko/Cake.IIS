@@ -1,5 +1,6 @@
 ﻿#region Using Statements
 using Xunit;
+using Shouldly;
 #endregion
 
 
@@ -20,7 +21,7 @@ namespace Cake.IIS.Tests
             manager.Create(settings);
 
             // Assert
-            Assert.NotNull(CakeHelper.GetWebFarm(settings.Name));
+            CakeHelper.GetWebFarm(settings.Name).ShouldNotBeNull();
         }
 
         [Fact(Skip = "Skip on AppVeyor")]
@@ -34,7 +35,7 @@ namespace Cake.IIS.Tests
             CakeHelper.CreateWebFarmManager().Delete(settings.Name);
 
             // Assert
-            Assert.Null(CakeHelper.GetWebFarm(settings.Name));
+            CakeHelper.GetWebFarm(settings.Name).ShouldBeNull();
         }
 
 
@@ -51,7 +52,7 @@ namespace Cake.IIS.Tests
             manager.SetServerAvailable(settings.Name, settings.Servers[0]);
 
             // Assert
-            Assert.True(manager.GetServerState(settings.Name, settings.Servers[0]) == "Avaiable");
+            manager.GetServerState(settings.Name, settings.Servers[0]).ShouldBe("Avaiable");
         }
 
         [Fact(Skip = "Skip on AppVeyor")]
@@ -66,7 +67,7 @@ namespace Cake.IIS.Tests
             manager.SetServerUnavailable(settings.Name, settings.Servers[0]);
 
             // Assert
-            Assert.True(manager.GetServerState(settings.Name, settings.Servers[0]) == "Unavailable");
+            manager.GetServerState(settings.Name, settings.Servers[0]).ShouldBe("Unavailable");
         }
     }
 }

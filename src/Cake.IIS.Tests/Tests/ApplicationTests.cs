@@ -70,7 +70,7 @@ namespace Cake.IIS.Tests
 
             // Act
             var appSettings = CakeHelper.GetApplicationSettings(websiteSettings.Name);
-            //CakeHelper.CreateWebConfig(appSettings);
+            CakeHelper.CreateWebConfig(appSettings);
 
             var manager = CakeHelper.CreateWebsiteManager();
             manager.Create(websiteSettings);
@@ -93,7 +93,7 @@ namespace Cake.IIS.Tests
 
             // Act
             var appSettings = CakeHelper.GetApplicationSettings(websiteSettings.Name);
-            //CakeHelper.CreateWebConfig(appSettings);
+            CakeHelper.CreateWebConfig(appSettings);
 
             var manager = CakeHelper.CreateWebsiteManager();
             manager.Create(websiteSettings);
@@ -117,7 +117,7 @@ namespace Cake.IIS.Tests
             // Act
             var appSettings = CakeHelper.GetApplicationSettings(websiteSettings.Name);
             appSettings.EnableDirectoryBrowsing = true;
-            //CakeHelper.CreateWebConfig(appSettings);
+            CakeHelper.CreateWebConfig(appSettings);
 
             var manager = CakeHelper.CreateWebsiteManager();
             manager.Create(websiteSettings);

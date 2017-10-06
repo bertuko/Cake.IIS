@@ -1,5 +1,6 @@
 ﻿#region Using Statements
 using Xunit;
+using Shouldly;
 #endregion
 
 
@@ -20,9 +21,10 @@ namespace Cake.IIS.Tests
 
             // Assert
             var website = CakeHelper.GetWebsite(settings.Name);
-            Assert.NotNull(website);
-            Assert.Equal(2, website.Bindings.Count);
-            Assert.Contains(website.Bindings, b => b.Protocol == BindingProtocol.Ftp.ToString() &&
+
+            website.ShouldNotBeNull();
+            website.Bindings.Count.ShouldBe(2);
+            website.Bindings.ShouldContain(b => b.Protocol == BindingProtocol.Ftp.ToString() &&
                                                    b.BindingInformation == bindingSettings.BindingInformation);
         }
 
@@ -38,9 +40,10 @@ namespace Cake.IIS.Tests
 
             // Assert
             var website = CakeHelper.GetWebsite(settings.Name);
-            Assert.NotNull(website);
-            Assert.Equal(2, website.Bindings.Count);
-            Assert.Contains(website.Bindings, b => b.Protocol == BindingProtocol.NetTcp.ToString() &&
+
+            website.ShouldNotBeNull();
+            website.Bindings.Count.ShouldBe(2);
+            website.Bindings.ShouldContain(b => b.Protocol == BindingProtocol.NetTcp.ToString() &&
                                                    b.BindingInformation == bindingSettings.BindingInformation);
         }
 
@@ -56,9 +59,10 @@ namespace Cake.IIS.Tests
 
             // Assert
             var website = CakeHelper.GetWebsite(settings.Name);
-            Assert.NotNull(website);
-            Assert.Equal(2, website.Bindings.Count);
-            Assert.Contains(website.Bindings, b => b.Protocol == BindingProtocol.NetPipe.ToString() &&
+
+            website.ShouldNotBeNull();
+            website.Bindings.Count.ShouldBe(2);
+            website.Bindings.ShouldContain(b => b.Protocol == BindingProtocol.NetPipe.ToString() &&
                                                    b.BindingInformation == bindingSettings.BindingInformation);
         }
 
@@ -74,9 +78,10 @@ namespace Cake.IIS.Tests
 
             // Assert
             var website = CakeHelper.GetWebsite(settings.Name);
-            Assert.NotNull(website);
-            Assert.Equal(2, website.Bindings.Count);
-            Assert.Contains(website.Bindings, b => b.Protocol == BindingProtocol.NetMsmq.ToString() &&
+
+            website.ShouldNotBeNull();
+            website.Bindings.Count.ShouldBe(2);
+            website.Bindings.ShouldContain(b => b.Protocol == BindingProtocol.NetMsmq.ToString() &&
                                                    b.BindingInformation == bindingSettings.BindingInformation);
         }
 
@@ -92,9 +97,10 @@ namespace Cake.IIS.Tests
 
             // Assert
             var website = CakeHelper.GetWebsite(settings.Name);
-            Assert.NotNull(website);
-            Assert.Equal(2, website.Bindings.Count);
-            Assert.Contains(website.Bindings, b => b.Protocol == BindingProtocol.MsmqFormatName.ToString() &&
+
+            website.ShouldNotBeNull();
+            website.Bindings.Count.ShouldBe(2);
+            website.Bindings.ShouldContain(b => b.Protocol == BindingProtocol.MsmqFormatName.ToString() &&
                                                    b.BindingInformation == bindingSettings.BindingInformation);
         }
 
@@ -104,7 +110,9 @@ namespace Cake.IIS.Tests
         {
             // Arrange
             var settings = CakeHelper.GetWebsiteSettings();
+
             CakeHelper.DeleteWebsite(settings.Name);
+
             WebsiteManager manager = CakeHelper.CreateWebsiteManager();
             manager.Create(settings);
 
@@ -114,6 +122,7 @@ namespace Cake.IIS.Tests
         private void Act(string siteName, BindingSettings bindingSettings)
         {
             WebsiteManager manager = CakeHelper.CreateWebsiteManager();
+
             manager.AddBinding(siteName, bindingSettings);
         }
     }

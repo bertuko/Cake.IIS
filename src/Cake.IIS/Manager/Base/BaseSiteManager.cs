@@ -426,17 +426,18 @@ namespace Cake.IIS
 
                 // Settings that need to be modified after the app is created
                 var isModified = false;
+
                 if (settings.EnableDirectoryBrowsing)
                 {
                     var appConfig = app.GetWebConfiguration();
                     appConfig.EnableDirectoryBrowsing();
                     isModified = true;
                 }
+
                 if (isModified)
                 {
                     _Server.CommitChanges();
                 }
-
 
                 return true;
             }
@@ -741,10 +742,12 @@ namespace Cake.IIS
             {
                 // Try finding the site
                 var site = _Server.Sites.SingleOrDefault(p => p.Name == siteName);
+
                 if (site == null)
                 {
                     throw new Exception($"Site '{siteName}' does not exist.");
                 }
+
                 if (applicationPath == null)
                 {
                     // No application path, so use the site's WebConfiguration
@@ -754,13 +757,16 @@ namespace Cake.IIS
                 {
                     // Try finding the application
                     var app = site.Applications.SingleOrDefault(p => p.Path == applicationPath);
+
                     if (app == null)
                     {
                         throw new Exception($"Application '{applicationPath}' does not exist.");
                     }
+
                     config = app.GetWebConfiguration();
                 }
             }
+
             return config;
         }
         #endregion

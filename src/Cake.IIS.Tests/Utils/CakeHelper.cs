@@ -95,7 +95,7 @@ namespace Cake.IIS.Tests
             WebsiteSettings settings = new WebsiteSettings
             {
                 Name = name,
-                PhysicalDirectory = "./Test/",
+                PhysicalDirectory = "./Test/" + name,
                 ApplicationPool = CakeHelper.GetAppPoolSettings(),
                 ServerAutoStart = true,
                 Overwrite = false
@@ -109,15 +109,15 @@ namespace Cake.IIS.Tests
             return settings;
         }
 
-        public static ApplicationSettings GetApplicationSettings(string siteName)
+        public static ApplicationSettings GetApplicationSettings(string name)
         {
             return new ApplicationSettings
             {
                 ApplicationPath = "/Test",
                 ApplicationPool = CakeHelper.GetAppPoolSettings().Name,
                 VirtualDirectory = "/",
-                PhysicalDirectory = "./Test/App/",
-                SiteName = siteName,
+                PhysicalDirectory = "./Test/" + name,
+                SiteName = name,
             };
         }
 
@@ -396,7 +396,7 @@ namespace Cake.IIS.Tests
 
         public static void CreateWebConfig(IDirectorySettings settings)
         {
-            var folder = settings.PhysicalDirectory.FullPath;
+            var folder = Directory.GetCurrentDirectory().Replace("\\", "/").Replace("/bin/Debug/net461", "/") + settings.PhysicalDirectory.FullPath;
 
             // Make sure the directory exists (for configs)
             Directory.CreateDirectory(folder);

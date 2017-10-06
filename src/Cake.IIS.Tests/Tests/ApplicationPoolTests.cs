@@ -1,6 +1,8 @@
 ﻿#region Using Statements
 using Microsoft.Web.Administration;
+
 using Xunit;
+using Shouldly;
 #endregion
 
 
@@ -17,11 +19,11 @@ namespace Cake.IIS.Tests
 
             // Create
             CakeHelper.CreateApplicationPoolManager().Create(settings);
-            Assert.NotNull(CakeHelper.GetPool(settings.Name));
+            CakeHelper.GetPool(settings.Name).ShouldNotBeNull();
 
             // Delete
             CakeHelper.DeletePool(settings.Name);
-            Assert.Null(CakeHelper.GetPool(settings.Name));
+            CakeHelper.GetPool(settings.Name).ShouldBeNull();
         }
 
         [Fact]
@@ -39,8 +41,8 @@ namespace Cake.IIS.Tests
             // Assert
             ApplicationPool pool = CakeHelper.GetPool(settings.Name);
 
-            Assert.NotNull(pool);
-            Assert.True(pool.State == ObjectState.Started);
+            pool.ShouldNotBeNull();
+            pool.State.ShouldBe(ObjectState.Started);
 
             CakeHelper.DeletePool(settings.Name);
         }
@@ -60,8 +62,8 @@ namespace Cake.IIS.Tests
             // Assert
             ApplicationPool pool = CakeHelper.GetPool(settings.Name);
 
-            Assert.NotNull(pool);
-            Assert.True(pool.State == ObjectState.Stopped);
+            pool.ShouldNotBeNull();
+            pool.State.ShouldBe(ObjectState.Stopped);
 
             CakeHelper.DeletePool(settings.Name);
         }

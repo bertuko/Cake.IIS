@@ -1,4 +1,9 @@
-﻿using Xunit;
+﻿#region Using Statements
+using Xunit;
+using Shouldly;
+#endregion
+
+
 
 namespace Cake.IIS.Tests.Tests
 {
@@ -23,9 +28,10 @@ namespace Cake.IIS.Tests.Tests
 
             //Assert
             var authentication = CakeHelper.ReadAuthenticationSettings(websiteName);
-            Assert.Equal(anon, authentication.EnableAnonymousAuthentication);
-            Assert.Equal(basic, authentication.EnableBasicAuthentication);
-            Assert.Equal(win, authentication.EnableWindowsAuthentication);
+
+            authentication.EnableAnonymousAuthentication.ShouldBe(anon);
+            authentication.EnableBasicAuthentication.ShouldBe(basic);
+            authentication.EnableWindowsAuthentication.ShouldBe(win);
 
             //Teardown
             CakeHelper.DeleteWebsite(websiteName);

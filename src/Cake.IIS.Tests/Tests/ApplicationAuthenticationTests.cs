@@ -1,7 +1,8 @@
 ﻿#region Using Statements
-using System;
 using Xunit;
+using Shouldly;
 #endregion
+
 
 
 namespace Cake.IIS.Tests.Tests
@@ -32,11 +33,11 @@ namespace Cake.IIS.Tests.Tests
             //Assert
             Assert.True(added);
 
-            //var authentication = CakeHelper.ReadAuthenticationSettings(websiteName, appSettings.ApplicationPath);
+            var authentication = CakeHelper.ReadAuthenticationSettings(websiteName, appSettings.ApplicationPath);
 
-            //Assert.Equal(anon, authentication.EnableAnonymousAuthentication);
-            //Assert.Equal(basic, authentication.EnableBasicAuthentication);
-            //Assert.Equal(win, authentication.EnableWindowsAuthentication);
+            authentication.EnableAnonymousAuthentication.ShouldBe(anon);
+            authentication.EnableBasicAuthentication.ShouldBe(basic);
+            authentication.EnableWindowsAuthentication.ShouldBe(win);
 
             //Teardown
             CakeHelper.DeleteWebsite(websiteName);
