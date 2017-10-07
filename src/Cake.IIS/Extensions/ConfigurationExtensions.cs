@@ -1,4 +1,5 @@
 ﻿#region Using Statements
+using System;
 using System.Collections.Generic;
 
 using Cake.Core.Diagnostics;
@@ -118,12 +119,12 @@ namespace Cake.IIS
             if (settings != null)
             {
                 var locationPath = site + appPath;
-                var authentication = config.GetSection($"system.{serverType}/security/authentication", locationPath);
+                var sectionName = $"system.{serverType}/security/authentication/";
 
                 // Anonymous Authentication
                 if (settings.EnableAnonymousAuthentication.HasValue)
                 {
-                    var anonymousAuthentication = authentication.GetChildElement("anonymousAuthentication");
+                    var anonymousAuthentication = config.GetSection(sectionName + "anonymousAuthentication", locationPath);
 
                     anonymousAuthentication.SetAttributeValue("enabled", settings.EnableAnonymousAuthentication.Value);
 
@@ -133,11 +134,11 @@ namespace Cake.IIS
                 // Basic Authentication
                 if (settings.EnableBasicAuthentication.HasValue)
                 {
-                    var basicAuthentication = authentication.GetChildElement("basicAuthentication");
+                    var basicAuthentication = config.GetSection(sectionName + "basicAuthentication", locationPath);
 
                     basicAuthentication.SetAttributeValue("enabled", settings.EnableBasicAuthentication.Value);
 
-                    if (settings.EnableBasicAuthentication.Value)
+                    if (settings.EnableBasicAuthentication.Value && !String.IsNullOrEmpty(settings.Username) && !String.IsNullOrEmpty(settings.Password))
                     {
                         basicAuthentication.SetAttributeValue("userName", settings.Username);
                         basicAuthentication.SetAttributeValue("password", settings.Password);
@@ -149,7 +150,7 @@ namespace Cake.IIS
                 // Windows Authentication
                 if (settings.EnableWindowsAuthentication.HasValue)
                 {
-                    var windowsAuthentication = authentication.GetChildElement("windowsAuthentication");
+                    var windowsAuthentication = config.GetSection(sectionName + "windowsAuthentication", locationPath);
 
                     windowsAuthentication.SetAttributeValue("enabled", settings.EnableWindowsAuthentication.Value);
 

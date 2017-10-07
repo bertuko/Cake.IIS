@@ -31,8 +31,7 @@ namespace Cake.IIS.Tests.Tests
             var added = manager.AddApplication(appSettings);
 
             //Assert
-            Assert.True(added);
-
+            added.ShouldBeTrue();
             var authentication = CakeHelper.ReadAuthenticationSettings(websiteName, appSettings.ApplicationPath);
 
             authentication.EnableAnonymousAuthentication.ShouldBe(anon);
@@ -67,10 +66,10 @@ namespace Cake.IIS.Tests.Tests
             var added = manager.AddApplication(appSettings);
 
             //Assert
-            Assert.True(added);
-           // AssertAuthentication(CakeHelper.ReadAuthenticationSettings(), serverAuth);  //server Auth
-            //AssertAuthentication(CakeHelper.ReadAuthenticationSettings(websiteName), serverAuth);  //website Auth
-            //AssertAuthentication(CakeHelper.ReadAuthenticationSettings(websiteName, appSettings.ApplicationPath), appAuth);  //website Auth
+            added.ShouldBeTrue();
+            AssertAuthentication(CakeHelper.ReadAuthenticationSettings(), serverAuth);  //server Auth
+            AssertAuthentication(CakeHelper.ReadAuthenticationSettings(websiteName), serverAuth);  //website Auth
+            AssertAuthentication(CakeHelper.ReadAuthenticationSettings(websiteName, appSettings.ApplicationPath), appAuth);  //website Auth
 
             //Teardown
             CakeHelper.DeleteWebsite(websiteName);
@@ -107,9 +106,9 @@ namespace Cake.IIS.Tests.Tests
 
             AssertAuthentication(serverAuth, webAuth);
 
-            Assert.Equal(!anon, appAuth.EnableAnonymousAuthentication);
-            Assert.Equal(basic, appAuth.EnableBasicAuthentication);
-            Assert.Equal(win, appAuth.EnableWindowsAuthentication);
+            appAuth.EnableAnonymousAuthentication.ShouldBe(!anon);
+            appAuth.EnableBasicAuthentication.ShouldBe(basic);
+            appAuth.EnableWindowsAuthentication.ShouldBe(win);
 
             //Teardown
             CakeHelper.DeleteWebsite(websiteName);

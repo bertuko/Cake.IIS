@@ -1,8 +1,8 @@
 ﻿#region Using Statements
 using System;
-using System.Runtime.InteropServices;
+
 using Xunit;
-using System.IO;
+using Shouldly;
 #endregion
 
 
@@ -26,8 +26,8 @@ namespace Cake.IIS.Tests
             var added = manager.AddApplication(appSettings);
 
             // Assert
-            Assert.True(added);
-            Assert.NotNull(CakeHelper.GetApplication(websiteSettings.Name, appSettings.ApplicationPath));
+            added.ShouldBeTrue();
+            CakeHelper.GetApplication(websiteSettings.Name, appSettings.ApplicationPath).ShouldNotBeNull();
 
             CakeHelper.DeleteWebsite(websiteSettings.Name);
         }
@@ -47,16 +47,12 @@ namespace Cake.IIS.Tests
             var added = manager.AddApplication(appSettings);
 
             // Assert
-            Assert.True(added);
+            added.ShouldBeTrue();
             var application = CakeHelper.GetApplication(websiteSettings.Name, appSettings.ApplicationPath);
 
-            Assert.NotNull(application);
-            Assert.Contains(BindingProtocol.Http.ToString(),
-                application.EnabledProtocols,
-                StringComparison.OrdinalIgnoreCase);
-            Assert.Contains(BindingProtocol.NetPipe.ToString(),
-                application.EnabledProtocols,
-                StringComparison.OrdinalIgnoreCase);
+            application.ShouldNotBeNull();
+            application.EnabledProtocols.ShouldContain(BindingProtocol.Http.ToString());
+            application.EnabledProtocols.ShouldContain(BindingProtocol.NetPipe.ToString());
 
             CakeHelper.DeleteWebsite(websiteSettings.Name);
         }
@@ -79,7 +75,7 @@ namespace Cake.IIS.Tests
 
             // Assert
             var value = CakeHelper.GetWebConfigurationValue(websiteSettings.Name, appSettings.ApplicationPath, "system.webServer/directoryBrowse", "enabled");
-            Assert.True((bool)value);
+            ((bool)value).ShouldBeTrue();
 
             CakeHelper.DeleteWebsite(websiteSettings.Name);
         }
@@ -102,7 +98,7 @@ namespace Cake.IIS.Tests
 
             // Assert
             var value = CakeHelper.GetWebConfigurationValue(websiteSettings.Name, appSettings.ApplicationPath, "system.webServer/directoryBrowse", "enabled");
-            Assert.False((bool)value);
+            ((bool)value).ShouldBeFalse();
 
             CakeHelper.DeleteWebsite(websiteSettings.Name);
         }
@@ -125,7 +121,7 @@ namespace Cake.IIS.Tests
 
             // Assert
             var value = CakeHelper.GetWebConfigurationValue(websiteSettings.Name, appSettings.ApplicationPath, "system.webServer/directoryBrowse", "enabled");
-            Assert.True((bool)value);
+            ((bool)value).ShouldBeTrue();
 
             CakeHelper.DeleteWebsite(websiteSettings.Name);
         }
@@ -151,7 +147,7 @@ namespace Cake.IIS.Tests
 
             // Assert
             var value = CakeHelper.GetWebConfigurationValue(websiteSettings.Name, appSettings.ApplicationPath, "system.webServer/directoryBrowse", "enabled");
-            Assert.False((bool)value);
+            ((bool)value).ShouldBeFalse();
 
             //Teardown
             CakeHelper.DeleteWebsite(websiteSettings.Name);
