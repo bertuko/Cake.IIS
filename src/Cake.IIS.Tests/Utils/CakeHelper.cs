@@ -39,6 +39,15 @@ namespace Cake.IIS.Tests
             return manager;
         }
 
+        public static RewriteManager CreateRewriteManager()
+        {
+            RewriteManager manager = new RewriteManager(CakeHelper.CreateEnvironment(), new DebugLog());
+
+            manager.SetServer();
+
+            return manager;
+        }
+
         public static FtpsiteManager CreateFtpsiteManager()
         {
             FtpsiteManager manager = new FtpsiteManager(CakeHelper.CreateEnvironment(), new DebugLog());
@@ -87,6 +96,27 @@ namespace Cake.IIS.Tests
                 PingInterval = TimeSpan.FromSeconds(30),
                 PingResponseTime = TimeSpan.FromSeconds(90),
                 Overwrite = false
+            };
+        }
+
+        public static RewriteRuleSettings GetRewriteRuleSettings(string name)
+        {
+            return new RewriteRuleSettings
+            {
+                Name = name,
+                Pattern = "*",
+                PatternSintax = RewritePatternSintax.Wildcard,
+                IgnoreCase = true,
+                StopProcessing = true,
+                Conditions = new[]
+                {
+                    new RewriteRuleConditionSettings {ConditionInput = "{HTTPS}", Pattern = "off", IgnoreCase = true},
+                },
+                Action = new RewriteRuleRedirectAction
+                {
+                    Url = @"https://{HTTP_HOST}{REQUEST_URI}",
+                    RedirectType = RewriteRuleRedirectType.Found
+                }
             };
         }
 
@@ -140,7 +170,7 @@ namespace Cake.IIS.Tests
             };
         }
 
-     
+
 
 
 
@@ -324,7 +354,7 @@ namespace Cake.IIS.Tests
 
 
         //Config 
-        public static AuthenticationSettings ReadAuthenticationSettings(string siteName = null, string appPath=null )
+        public static AuthenticationSettings ReadAuthenticationSettings(string siteName = null, string appPath = null)
         {
             var location = siteName != null ? siteName + (appPath ?? "") : null;
             var element = "system.webServer/security/authentication/{0}";
@@ -333,7 +363,7 @@ namespace Cake.IIS.Tests
             var basic = GetSectionElementValue<bool>(string.Format(element, "basicAuthentication"), "enabled", location);
             var windows = GetSectionElementValue<bool>(string.Format(element, "windowsAuthentication"), "enabled", location);
 
-            return  new AuthenticationSettings()
+            return new AuthenticationSettings()
             {
                 EnableWindowsAuthentication = windows,
                 EnableBasicAuthentication = basic,
@@ -346,9 +376,9 @@ namespace Cake.IIS.Tests
             using (var serverManager = new ServerManager())
             {
                 var config = serverManager.GetApplicationHostConfiguration();
-                var element = location ==null? config.GetSection(elementPath) :  config.GetSection(elementPath, location);
+                var element = location == null ? config.GetSection(elementPath) : config.GetSection(elementPath, location);
                 var t = typeof(T);
-                return (T)Convert.ChangeType( element[attributeName], t);
+                return (T)Convert.ChangeType(element[attributeName], t);
             }
         }
 
@@ -405,6 +435,29 @@ namespace Cake.IIS.Tests
             const string webConfig = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<configuration>\r\n</configuration>";
             File.WriteAllText(Path.Combine(folder, "web.config"), webConfig);
         }
+
+        //Rewrite
+        public static void CreateRewriteRule(RewriteRuleSettings settings)
+        {
+            var rewriteRule = CreateRewriteManager();
+
+            rewriteRule.CreateRule(settings);
+        }
+
+        public static bool ExistsRewriteRule(string name)
+        {
+            var rewriteRule = CreateRewriteManager();
+
+            return rewriteRule.Exists(name);
+        }
+
+        public static bool DeleteRewriteRule(string name)
+        {
+            var rewriteRule = CreateRewriteManager();
+
+            return rewriteRule.DeleteRule(name);
+        }
+
         #endregion
     }
 }

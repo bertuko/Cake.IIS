@@ -52,6 +52,8 @@ Cake-Build addin that extends Cake with IIS extensions
 * Create Virtual Directory
 * Delete Virtual Directory
 * Virtual Directory Exists
+* Create Global Rewrite Rules
+* Delete Global Rewrite Rules
 
 
 
@@ -229,6 +231,17 @@ Task("WebFarm-Server-Unavailable")
     SetServerUnavailable("remote-server-name", "Batman", "Gotham");
 });
 
+Task("WebFarm-Add-Server")
+    .Description("Add a Server to a WebFarm")
+    .Does(() =>
+{
+    AddServer("remote-server-name", "farm-name", new WebFarmServerSettings
+    {
+        Address = "webfarm-server-adress",
+        HttpPort = 8080
+    });
+});
+
 Task("VirtualDirectory-Create")
     .Description("Creates a Virtual Directory")
     .Does(() => 
@@ -262,6 +275,34 @@ Task("VirtualDirectory-Exists")
         Path = "/Directory"
     });
 });
+
+Task("RewriteRule-Create")
+    .Description("Create a new rewrite global rule")
+    .Does(() => 
+{
+	CreateRewriteRule("remote-server-name", new RewriteRuleSettings
+	{
+		Name = "Redirect to HTTPS",
+		Pattern = "*",
+		PatternSintax = RewritePatternSintax.Wildcard,
+		IgnoreCase = true,
+		StopProcessing = true,
+		Conditions = new []
+		{
+			new RewriteRuleConditionSettings { ConditionInput = "{HTTPS}", Pattern = "off", IgnoreCase = true },
+		},
+		Action = new RewriteRuleRedirectAction { Url = @"https://{HTTP_HOST}{REQUEST_URI}", RedirectType = RewriteRuleRedirectType.Found }
+	});
+});
+
+
+Task("RewriteRule-Delete")
+    .Description("Delete a rewrite global rule")
+    .Does(() => 
+{
+	DeleteRewriteRule("remote-server-name", "rule-name");
+});
+
 RunTarget("Website-Create");
 ```
 

@@ -2,8 +2,20 @@ using Microsoft.Web.Administration;
 
 namespace Cake.IIS
 {
-    public class RewriteRuleNoneAction : IRewriteRuleAction
+    /// <summary>
+    /// Action to ignore the request
+    /// </summary>
+    public class RewriteRuleNoneAction : IRewriteAction
     {
+        public RewriteRuleNoneAction()
+        {
+            
+        }
+
+        /// <summary>
+        /// Method to fill the XML configirations
+        /// </summary>
+        /// <param name="elem">XML configuration element</param>
         public void FillXmlConfig(ConfigurationElement elem)
         {
             elem["type"] = "None";
