@@ -98,25 +98,33 @@ namespace Cake.IIS
             //Site Settings
             site = _Server.Sites.Add(
                 settings.Name,
-                settings.Binding.BindingProtocol.ToString().ToLower(),
-                settings.Binding.BindingInformation,
-                this.GetPhysicalDirectory(settings));
+                this.GetPhysicalDirectory(settings),
+                settings.Binding.Port);
+
 
             if (!String.IsNullOrEmpty(settings.AlternateEnabledProtocols))
             {
                 site.ApplicationDefaults.EnabledProtocols = settings.AlternateEnabledProtocols;
             }
 
+            site.Bindings.Clear();
+            var binding = site.Bindings.CreateElement();
+
+            binding.Protocol = settings.Binding.BindingProtocol.ToString().ToLower();
+            binding.BindingInformation = settings.Binding.BindingInformation;
+
 
             if (settings.Binding.CertificateHash != null)
             {
-                site.Bindings[0].CertificateHash = settings.Binding.CertificateHash;
+                binding.CertificateHash = settings.Binding.CertificateHash;
             }
 
             if (!String.IsNullOrEmpty(settings.Binding.CertificateStoreName))
             {
-                site.Bindings[0].CertificateStoreName = settings.Binding.CertificateStoreName;
+                binding.CertificateStoreName = settings.Binding.CertificateStoreName;
             }
+
+            site.Bindings.Add(binding);
 
             site.ServerAutoStart = settings.ServerAutoStart;
             site.ApplicationDefaults.ApplicationPoolName = settings.ApplicationPool.Name;
@@ -125,7 +133,7 @@ namespace Cake.IIS
             var serverType = settings is WebsiteSettings ? "webServer" : "ftpServer";
             var hostConfig = GetWebConfiguration();
 
-            hostConfig.SetAuthentication(serverType, settings.Name, "", settings.Authentication,_Log);
+            hostConfig.SetAuthentication(serverType, settings.Name, "", settings.Authentication, _Log);
             hostConfig.SetAuthorization(serverType, settings.Name, "", settings.Authorization);
 
             return site;
@@ -269,8 +277,6 @@ namespace Cake.IIS
                 {
                     throw new Exception("A binding with the same ip, port and host header already exists.");
                 }
-
-
 
                 //Add Binding
                 Binding newBinding = site.Bindings.CreateElement();
