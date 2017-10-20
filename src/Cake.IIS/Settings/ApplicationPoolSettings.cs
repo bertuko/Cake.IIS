@@ -34,6 +34,9 @@ namespace Cake.IIS
             this.IdleTimeout = TimeSpan.MinValue;
             this.ShutdownTimeLimit = TimeSpan.MinValue;
             this.StartupTimeLimit = TimeSpan.MinValue;
+            this.LoadUserProfile = true;
+            this.PingingEnabled = true;
+            this.MaxProcesses = 1;
         }
         #endregion
 
