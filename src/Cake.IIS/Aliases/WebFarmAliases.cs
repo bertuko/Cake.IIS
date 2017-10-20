@@ -137,6 +137,38 @@ namespace Cake.IIS
         }
 
         /// <summary>
+        /// Add a server to a web farm on local IIS.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="farm">The web farm name.</param>
+        /// <param name="settings">The server settings.</param>
+        /// <returns><c>true</c> if added</returns>
+        [CakeMethodAlias]
+        public static bool AddServer(this ICakeContext context, string farm, WebFarmServerSettings settings)
+        {
+            return context.AddServer("", farm, settings);
+        }
+
+        /// <summary>
+        /// Add a server to a web farm on remote IIS.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="server">The remote IIS server name.</param>
+        /// <param name="farm">The web farm name.</param>
+        /// <param name="settings">The server settings.</param>
+        /// <returns><c>true</c> if added</returns>
+        [CakeMethodAlias]
+        public static bool AddServer(this ICakeContext context, string server, string farm, WebFarmServerSettings settings)
+        {
+            using (ServerManager manager = BaseManager.Connect(server))
+            {
+                return WebFarmManager
+                    .Using(context.Environment, context.Log, manager)
+                    .AddServer(farm, settings);
+            }
+        }
+
+        /// <summary>
         /// Remove a server to from web farm on local IIS.
         /// </summary>
         /// <param name="context">The context.</param>

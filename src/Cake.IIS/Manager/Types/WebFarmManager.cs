@@ -45,7 +45,7 @@ namespace Cake.IIS
         public static WebFarmManager Using(ICakeEnvironment environment, ICakeLog log, ServerManager server)
         {
             WebFarmManager manager = new WebFarmManager(environment, log);
-            
+
             manager.SetServer(server);
 
             return manager;
@@ -186,7 +186,7 @@ namespace Cake.IIS
                 if (server == null)
                 {
                     ConfigurationElement serverElement = servers.CreateElement("server");
-                    serverElement["address"] = server;
+                    serverElement["address"] = address;
 
                     servers.Add(serverElement);
                     _Server.CommitChanges();
@@ -203,6 +203,55 @@ namespace Cake.IIS
 
             return false;
         }
+
+
+        /// <summary>
+        /// Adds a server to the WebFarm
+        /// </summary>
+        /// <param name="farm">The name of the WebFarm</param>
+        /// <param name="settings">The settings of the server</param>
+        /// <returns>If the server was added.</returns>
+        public bool AddServer(string farm, WebFarmServerSettings settings)
+        {
+            ConfigurationElement farmElement = this.GetFarm(farm);
+
+            if (farmElement != null)
+            {
+                ConfigurationElementCollection servers = farmElement.GetCollection();
+                ConfigurationElement server = servers.FirstOrDefault(f => f.GetAttributeValue("address").ToString() == settings.Address);
+
+                if (server == null)
+                {
+                    ConfigurationElement serverElement = servers.CreateElement("server");
+                    serverElement["address"] = settings.Address;
+
+                    var serverSettings = serverElement.ChildElements["applicationRequestRouting"];
+
+                    if (settings.HttpPort.HasValue)
+                        serverSettings["httpPort"] = settings.HttpPort.Value;
+
+                    if (settings.HttpsPort.HasValue)
+                        serverSettings["httpsPort"] = settings.HttpsPort.Value;
+
+                    if (settings.Weight.HasValue)
+                        serverSettings["weight"] = settings.Weight.Value;
+
+                    servers.Add(serverElement);
+                    _Server.CommitChanges();
+
+                    _Log.Information("Adding server '{0}'.", settings.Address);
+                    return true;
+                }
+                else
+                {
+                    _Log.Information("The server '{0}' already exists.", settings.Address);
+                    return false;
+                }
+            }
+
+            return false;
+        }
+
 
         /// <summary>
         /// Removes a server to the WebFarm
