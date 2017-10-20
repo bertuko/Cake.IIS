@@ -25,6 +25,7 @@ namespace Cake.IIS
         public DirectoryPath PhysicalDirectory { get; set; }
 
         public DirectoryPath WorkingDirectory { get; set; }
+
         public string SiteName { get; set; }
 
         public string ApplicationPath { get; set; }

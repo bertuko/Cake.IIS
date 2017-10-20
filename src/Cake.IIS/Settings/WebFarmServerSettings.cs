@@ -21,6 +21,8 @@
         /// </summary>
         public string Address { get; set; }
 
+
+
         /// <summary>
         /// Server HTTP port
         /// </summary>
@@ -30,6 +32,8 @@
         /// Server HTTPS port
         /// </summary>
         public int? HttpsPort { get; set; }
+
+
 
         /// <summary>
         /// Server Weight
