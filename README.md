@@ -46,7 +46,8 @@ Cake-Build addin that extends Cake with IIS extensions
 * Set server Healthy
 * Set server Unhealthy
 * Set server Available
-* Set server Unavailable
+* Set server Unavailable Immediately
+* Set server Unavailable Gracefully
 * Is server Healthy
 * Get server State
 * Create Virtual Directory
@@ -224,11 +225,18 @@ Task("WebFarm-Server-Available")
     SetServerAvailable("remote-server-name", "Batman", "Gotham");
 });
 
-Task("WebFarm-Server-Unavailable")
-    .Description("Sets a WebFarm server as unavailable")
+Task("WebFarm-Server-Unavailable-Gracefully")
+    .Description("Sets a WebFarm server as unavailable gracefully")
     .Does(() =>
 {
-    SetServerUnavailable("remote-server-name", "Batman", "Gotham");
+    SetServerUnavailableGracefully("remote-server-name", "Batman", "Gotham");
+});
+
+Task("WebFarm-Server-Unavailable-Immediately")
+    .Description("Sets a WebFarm server as unavailable immediately")
+    .Does(() =>
+{
+    SetServerUnavailableImmediately("remote-server-name", "Batman", "Gotham");
 });
 
 Task("WebFarm-Add-Server")

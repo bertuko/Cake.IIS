@@ -383,12 +383,13 @@ namespace Cake.IIS
             }
         }
 
+
         /// <summary>
-        /// Marks a server as unavailable
+        /// Marks a server as unavailable immediately
         /// </summary>
         /// <param name="farm">The name of the WebFarm</param>
         /// <param name="address">The address of the server</param>
-        public void SetServerUnavailable(string farm, string address)
+        public void SetServerUnavailableImmediately(string farm, string address)
         {
             ConfigurationElement arrElement = this.GetServerArr(farm, address);
 
@@ -400,7 +401,29 @@ namespace Cake.IIS
                 instance.Input.Attributes[0].Value = 3;
                 instance.Execute();
 
-                _Log.Information("Marking the server '{0}' as unavailable.", address);
+                _Log.Information("Marking the server '{0}' as unavailable immediately.", address);
+            }
+        }
+
+
+        /// <summary>
+        /// Marks a server as unavailable gracefully
+        /// </summary>
+        /// <param name="farm">The name of the WebFarm</param>
+        /// <param name="address">The address of the server</param>
+        public void SetServerUnavailableGracefully(string farm, string address)
+        {
+            ConfigurationElement arrElement = this.GetServerArr(farm, address);
+
+            if (arrElement != null)
+            {
+                ConfigurationMethod method = arrElement.Methods["SetState"];
+                ConfigurationMethodInstance instance = method.CreateInstance();
+
+                instance.Input.Attributes[0].Value = 2;
+                instance.Execute();
+
+                _Log.Information("Marking the server '{0}' as unavailable gracefully.", address);
             }
         }
 
