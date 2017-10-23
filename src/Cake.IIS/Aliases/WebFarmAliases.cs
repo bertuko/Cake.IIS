@@ -415,7 +415,7 @@ namespace Cake.IIS
             {
                 WebFarmManager
                     .Using(context.Environment, context.Log, manager)
-                    .SetServerUnavailableImmediately(farm, address);
+                    .SetServerUnavailableGracefully(farm, address);
             }
         }
 
