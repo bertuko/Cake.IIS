@@ -333,7 +333,7 @@ namespace Cake.IIS
         /// <param name="farm">The web farm name.</param>
         /// <param name="address">The server address.</param>
         [CakeMethodAlias]
-        [Obsolete("SetServerUnavailable is deprecated, please use SetServerUnavailableImmediately instead.", true)]
+        [Obsolete("SetServerUnavailable is deprecated, please use SetServerUnavailableImmediately or SetServerUnavailableGracefully instead.", true)]
         public static void SetServerUnavailable(this ICakeContext context, string farm, string address)
         {
             context.SetServerUnavailableImmediately("", farm, address);
@@ -347,7 +347,7 @@ namespace Cake.IIS
         /// <param name="farm">The web farm name.</param>
         /// <param name="address">The server address.</param>
         [CakeMethodAlias]
-        [Obsolete("SetServerUnavailable is deprecated, please use SetServerUnavailableImmediately instead.", true)]
+        [Obsolete("SetServerUnavailable is deprecated, please use SetServerUnavailableImmediately or SetServerUnavailableGracefully instead.", true)]
         public static void SetServerUnavailable(this ICakeContext context, string server, string farm, string address)
         {
             using (ServerManager manager = BaseManager.Connect(server))
