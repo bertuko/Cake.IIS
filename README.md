@@ -43,6 +43,8 @@ Cake-Build addin that extends Cake with IIS extensions
 * Add server to WebFarm
 * Delete server from WebFarm
 * Server exists
+* Take Server Offline
+* Bring Server Online
 * Set server Healthy
 * Set server Unhealthy
 * Set server Available
@@ -218,11 +220,18 @@ Task("WebFarm-Create")
     });
 });
 
-Task("WebFarm-Server-Available")
-    .Description("Sets a WebFarm server as available")
+Task("WebFarm-Server-Online")
+    .Description("Sets a WebFarm server as online")
     .Does(() =>
 {
-    SetServerAvailable("remote-server-name", "Batman", "Gotham");
+    BringServerOnline("remote-server-name", "Batman", "Gotham");
+});
+
+Task("WebFarm-Server-Offline")
+    .Description("Sets a WebFarm server as offline")
+    .Does(() =>
+{
+    TakeServerOffline("remote-server-name", "Batman", "Gotham");
 });
 
 Task("WebFarm-Server-Unavailable-Gracefully")

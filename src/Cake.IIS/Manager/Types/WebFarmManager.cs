@@ -319,6 +319,45 @@ namespace Cake.IIS
         }
 
 
+        /// <summary>
+        /// Marks a server as Offline (disabled)
+        /// </summary>
+        /// <param name="farmName">The name of the WebFarm</param>
+        /// <param name="address">The address of the server</param>
+        public void TakeServerOffline(string farmName, string address)
+        {
+            var farm = GetFarm(farmName);
+            var server = GetServer(farm, address);
+
+            if (server == null)
+                return;
+
+            server.SetAttributeValue("enabled", "false");
+            _Server.CommitChanges();
+
+            _Log.Information("Marking the server '{0}' as Offline.", address);
+        }
+
+        /// <summary>
+        /// Marks a server as Online (enabled)
+        /// </summary>
+        /// <param name="farmName">The name of the WebFarm</param>
+        /// <param name="address">The address of the server</param>
+        public void BringServerOnline(string farmName, string address)
+        {
+            var farm = GetFarm(farmName);
+            var server = GetServer(farm, address);
+
+            if (server == null)
+                return;
+
+            server.SetAttributeValue("enabled", "true");
+            _Server.CommitChanges();
+
+            _Log.Information("Marking the server '{0}' as Online.", address);
+        }
+
+
 
         /// <summary>
         /// Marks a server as healthy
