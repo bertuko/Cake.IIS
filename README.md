@@ -43,10 +43,13 @@ Cake-Build addin that extends Cake with IIS extensions
 * Add server to WebFarm
 * Delete server from WebFarm
 * Server exists
+* Take Server Offline
+* Bring Server Online
 * Set server Healthy
 * Set server Unhealthy
 * Set server Available
-* Set server Unavailable
+* Set server Unavailable Immediately
+* Set server Unavailable Gracefully
 * Is server Healthy
 * Get server State
 * Create Virtual Directory
@@ -217,18 +220,32 @@ Task("WebFarm-Create")
     });
 });
 
-Task("WebFarm-Server-Available")
-    .Description("Sets a WebFarm server as available")
+Task("WebFarm-Server-Online")
+    .Description("Sets a WebFarm server as online")
     .Does(() =>
 {
-    SetServerAvailable("remote-server-name", "Batman", "Gotham");
+    BringServerOnline("remote-server-name", "Batman", "Gotham");
 });
 
-Task("WebFarm-Server-Unavailable")
-    .Description("Sets a WebFarm server as unavailable")
+Task("WebFarm-Server-Offline")
+    .Description("Sets a WebFarm server as offline")
     .Does(() =>
 {
-    SetServerUnavailable("remote-server-name", "Batman", "Gotham");
+    TakeServerOffline("remote-server-name", "Batman", "Gotham");
+});
+
+Task("WebFarm-Server-Unavailable-Gracefully")
+    .Description("Sets a WebFarm server as unavailable gracefully")
+    .Does(() =>
+{
+    SetServerUnavailableGracefully("remote-server-name", "Batman", "Gotham");
+});
+
+Task("WebFarm-Server-Unavailable-Immediately")
+    .Description("Sets a WebFarm server as unavailable immediately")
+    .Does(() =>
+{
+    SetServerUnavailableImmediately("remote-server-name", "Batman", "Gotham");
 });
 
 Task("WebFarm-Add-Server")

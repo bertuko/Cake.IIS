@@ -56,7 +56,7 @@ namespace Cake.IIS.Tests
         }
 
         [Fact(Skip = "Skip on AppVeyor")]
-        public void Should_Set_Server_Unavailable()
+        public void Should_Set_Server_Unavailable_Immediately()
         {
             // Arrange
             var settings = CakeHelper.GetWebFarmSettings();
@@ -64,7 +64,22 @@ namespace Cake.IIS.Tests
 
             // Act
             WebFarmManager manager = CakeHelper.CreateWebFarmManager();
-            manager.SetServerUnavailable(settings.Name, settings.Servers[0]);
+            manager.SetServerUnavailableImmediately(settings.Name, settings.Servers[0]);
+
+            // Assert
+            manager.GetServerState(settings.Name, settings.Servers[0]).ShouldBe("Unavailable");
+        }
+
+        [Fact(Skip = "Skip on AppVeyor")]
+        public void Should_Set_Server_Unavailable_Gracefully()
+        {
+            // Arrange
+            var settings = CakeHelper.GetWebFarmSettings();
+            CakeHelper.CreateWebFarm(settings);
+
+            // Act
+            WebFarmManager manager = CakeHelper.CreateWebFarmManager();
+            manager.SetServerUnavailableGracefully(settings.Name, settings.Servers[0]);
 
             // Assert
             manager.GetServerState(settings.Name, settings.Servers[0]).ShouldBe("Unavailable");
