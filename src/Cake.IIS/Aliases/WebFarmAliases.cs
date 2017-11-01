@@ -1,4 +1,6 @@
 ﻿#region Using Statements
+
+using System;
 using Cake.Core;
 using Cake.Core.Annotations;
 
@@ -295,6 +297,66 @@ namespace Cake.IIS
         }
 
         /// <summary>
+        /// Sets server to Online in a web farm on local IIS.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="farm">The web farm name.</param>
+        /// <param name="address">The server address.</param>
+        [CakeMethodAlias]
+        public static void BringServerOnline(this ICakeContext context, string farm, string address)
+        {
+            context.BringServerOnline("", farm, address);
+        }
+
+        /// <summary>
+        /// Sets server to Online in a web farm on remote IIS.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="server">The remote IIS server name.</param>
+        /// <param name="farm">The web farm name.</param>
+        /// <param name="address">The server address.</param>
+        [CakeMethodAlias]
+        public static void BringServerOnline(this ICakeContext context, string server, string farm, string address)
+        {
+            using (ServerManager manager = BaseManager.Connect(server))
+            {
+                WebFarmManager
+                    .Using(context.Environment, context.Log, manager)
+                    .BringServerOnline(farm, address);
+            }
+        }
+
+        /// <summary>
+        /// Sets server to Offline in a web farm on local IIS.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="farm">The web farm name.</param>
+        /// <param name="address">The server address.</param>
+        [CakeMethodAlias]
+        public static void TakeServerOffline(this ICakeContext context, string farm, string address)
+        {
+            context.TakeServerOffline("", farm, address);
+        }
+
+        /// <summary>
+        /// Sets server to Offline in a web farm on remote IIS.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="server">The remote IIS server name.</param>
+        /// <param name="farm">The web farm name.</param>
+        /// <param name="address">The server address.</param>
+        [CakeMethodAlias]
+        public static void TakeServerOffline(this ICakeContext context, string server, string farm, string address)
+        {
+            using (ServerManager manager = BaseManager.Connect(server))
+            {
+                WebFarmManager
+                    .Using(context.Environment, context.Log, manager)
+                    .TakeServerOffline(farm, address);
+            }
+        }
+
+        /// <summary>
         /// Sets server to available in a web farm on local IIS.
         /// </summary>
         /// <param name="context">The context.</param>
@@ -325,32 +387,95 @@ namespace Cake.IIS
         }
 
         /// <summary>
-        /// Sets server to unavailable in a web farm on local IIS.
+        /// Sets server to unavailable immediately in a web farm on local IIS.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="farm">The web farm name.</param>
         /// <param name="address">The server address.</param>
         [CakeMethodAlias]
+        [Obsolete("SetServerUnavailable is deprecated, please use SetServerUnavailableImmediately or SetServerUnavailableGracefully instead.", true)]
         public static void SetServerUnavailable(this ICakeContext context, string farm, string address)
         {
-            context.SetServerUnavailable("", farm, address);
+            context.SetServerUnavailableImmediately("", farm, address);
         }
 
         /// <summary>
-        /// Sets server to unavailable in a web farm on remote IIS.
+        /// Sets server to unavailable immediately in a web farm on remote IIS.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="server">The remote IIS server name.</param>
         /// <param name="farm">The web farm name.</param>
         /// <param name="address">The server address.</param>
         [CakeMethodAlias]
+        [Obsolete("SetServerUnavailable is deprecated, please use SetServerUnavailableImmediately or SetServerUnavailableGracefully instead.", true)]
         public static void SetServerUnavailable(this ICakeContext context, string server, string farm, string address)
         {
             using (ServerManager manager = BaseManager.Connect(server))
             {
                 WebFarmManager
                     .Using(context.Environment, context.Log, manager)
-                    .SetServerUnavailable(farm, address);
+                    .SetServerUnavailableImmediately(farm, address);
+            }
+        }
+
+        /// <summary>
+        /// Sets server to unavailable immediately in a web farm on local IIS.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="farm">The web farm name.</param>
+        /// <param name="address">The server address.</param>
+        [CakeMethodAlias]
+        public static void SetServerUnavailableImmediately(this ICakeContext context, string farm, string address)
+        {
+            context.SetServerUnavailableImmediately("", farm, address);
+        }
+
+        /// <summary>
+        /// Sets server to unavailable immediately in a web farm on remote IIS.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="server">The remote IIS server name.</param>
+        /// <param name="farm">The web farm name.</param>
+        /// <param name="address">The server address.</param>
+        [CakeMethodAlias]
+        public static void SetServerUnavailableImmediately(this ICakeContext context, string server, string farm, string address)
+        {
+            using (ServerManager manager = BaseManager.Connect(server))
+            {
+                WebFarmManager
+                    .Using(context.Environment, context.Log, manager)
+                    .SetServerUnavailableImmediately(farm, address);
+            }
+        }
+
+
+        /// <summary>
+        /// Sets server to unavailable gracefully in a web farm on local IIS.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="farm">The web farm name.</param>
+        /// <param name="address">The server address.</param>
+        [CakeMethodAlias]
+        public static void SetServerUnavailableGracefully(this ICakeContext context, string farm, string address)
+        {
+            context.SetServerUnavailableGracefully("", farm, address);
+        }
+
+        /// <summary>
+        /// Sets server to unavailable gracefully in a web farm on remote IIS.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="server">The remote IIS server name.</param>
+        /// <param name="farm">The web farm name.</param>
+        /// <param name="address">The server address.</param>
+        [CakeMethodAlias]
+        public static void SetServerUnavailableGracefully(this ICakeContext context, string server, string farm, string address)
+        {
+            using (ServerManager manager = BaseManager.Connect(server))
+            {
+                WebFarmManager
+                    .Using(context.Environment, context.Log, manager)
+                    .SetServerUnavailableGracefully(farm, address);
             }
         }
 
