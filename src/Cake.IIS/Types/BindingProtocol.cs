@@ -16,7 +16,7 @@ namespace Cake.IIS
         /// </value>
         public static BindingProtocol Ftp
         {
-            get { return new BindingProtocol(Uri.UriSchemeFtp); }
+            get { return new BindingProtocol("ftp"); }
         }
 
         /// <value>
@@ -24,7 +24,7 @@ namespace Cake.IIS
         /// </value>
         public static BindingProtocol Http
         {
-            get { return new BindingProtocol(Uri.UriSchemeHttp); }
+            get { return new BindingProtocol("http"); }
         }
 
         /// <value>
@@ -32,7 +32,7 @@ namespace Cake.IIS
         /// </value>
         public static BindingProtocol Https
         {
-            get { return new BindingProtocol(Uri.UriSchemeHttps); }
+            get { return new BindingProtocol("https"); }
         }
 
         /// <value>
@@ -40,7 +40,7 @@ namespace Cake.IIS
         /// </value>
         public static BindingProtocol NetTcp
         {
-            get { return new BindingProtocol(Uri.UriSchemeNetTcp); }
+            get { return new BindingProtocol("net.tcp"); }
         }
 
         /// <value>
@@ -48,7 +48,7 @@ namespace Cake.IIS
         /// </value>
         public static BindingProtocol NetPipe
         {
-            get { return new BindingProtocol(Uri.UriSchemeNetPipe); }
+            get { return new BindingProtocol("net.pipe"); }
         }
 
         /// <value>

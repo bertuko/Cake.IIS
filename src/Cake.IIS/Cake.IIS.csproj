@@ -5,7 +5,7 @@
         <PackageId>Cake.IIS</PackageId>
         <OutputType>Library</OutputType>
 
-        <TargetFrameworks>net461;</TargetFrameworks>
+        <TargetFrameworks>net46;netstandard1.6;</TargetFrameworks>
 
         <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
         <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
@@ -15,12 +15,12 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <DocumentationFile>bin\Debug\net461\Cake.IIS.xml</DocumentationFile>
+        <DocumentationFile>bin\Debug\net46\Cake.IIS.xml</DocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Cake.Core" Version="0.22.0" />
 
-        <PackageReference Include="Microsoft.Web.Administration" Version="7.0.0" />
+        <PackageReference Include="Microsoft.Web.Administration" Version="10.0.0" />
     </ItemGroup>
 </Project>

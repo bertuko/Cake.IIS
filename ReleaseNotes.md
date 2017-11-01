@@ -1,3 +1,6 @@
+### New in 0.3.2 (Released 2017/12/01)
+* [Improvement] Support netstandard1.6
+
 ### New in 0.3.1 (Released 2017/10/20)
 * [Improvement] Creation of WebFarm with settings
 
