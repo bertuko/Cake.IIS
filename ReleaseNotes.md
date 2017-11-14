@@ -1,3 +1,10 @@
+### New in 0.3.2 (Released 2017/12/01)
+* [Improvement] Support netstandard1.6
+* [Improvement] Manipulate servers in WebFarm
+
+### New in 0.3.1 (Released 2017/10/20)
+* [Improvement] Creation of WebFarm with settings
+
 ### New in 0.3.0 (Released 2017/10/01)
 * [Improvement] Updated Cake reference to v0.22.0
 * [Improvement] Moved to net461 for Cake compatibility

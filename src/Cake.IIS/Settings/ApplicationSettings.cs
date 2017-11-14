@@ -51,10 +51,12 @@ namespace Cake.IIS
         public string AlternateEnabledProtocols { get; set; }
 
 
+
         /// <summary>
         /// Flag to get or set of directory browsing should be enabled.
         /// </summary>
         public bool EnableDirectoryBrowsing { get; set; }
+
 
 
         [Obsolete("Use Authentication.UserName")]

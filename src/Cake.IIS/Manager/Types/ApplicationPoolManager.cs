@@ -1,7 +1,7 @@
 #region Using Statements
 using System;
 using System.Linq;
-using System.Threading;
+using System.Threading.Tasks;
 
 using Microsoft.Web.Administration;
 
@@ -238,7 +238,7 @@ namespace Cake.IIS
                 catch (System.Runtime.InteropServices.COMException)
                 {
                     _Log.Information("Waiting for IIS to activate new config");
-                    Thread.Sleep(1000);
+                    Task.Delay(1000).Wait();
                 }
 
                 _Log.Information("Application pool '{0}' recycled.", pool.Name);
