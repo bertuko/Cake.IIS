@@ -281,7 +281,9 @@ namespace Cake.IIS
                 var timeout = 30;
 
                 while (pool.State != ObjectState.Started && timeout-- > 0)
-                    Thread.Sleep(1000);
+                {
+                    Task.Delay(1000).Wait();
+                }
 
                 if (pool.State != ObjectState.Started)
                 {
@@ -331,7 +333,9 @@ namespace Cake.IIS
                 var timeout = 30;
 
                 while (pool.State != ObjectState.Stopped && timeout-- > 0)
-                    Thread.Sleep(1000);
+                {
+                    Task.Delay(1000).Wait();
+                }
 
                 if (pool.State != ObjectState.Stopped)
                 {
