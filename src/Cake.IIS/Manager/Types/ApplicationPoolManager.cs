@@ -60,7 +60,7 @@ namespace Cake.IIS
         public static ApplicationPoolManager Using(ICakeEnvironment environment, ICakeLog log, ServerManager server)
         {
             ApplicationPoolManager manager = new ApplicationPoolManager(environment, log);
-            
+
             manager.SetServer(server);
 
             return manager;
@@ -95,28 +95,28 @@ namespace Cake.IIS
             //Get Pool
             var pool = _Server.ApplicationPools.FirstOrDefault(p => p.Name == settings.Name);
 
-            if(pool != null)
+            if (pool != null)
             {
                 _Log.Information("Application pool '{0}' already exists.", settings.Name);
 
-                if(settings.Overwrite)
+                if (settings.Overwrite)
                 {
                     _Log.Information("Application pool '{0}' will be overriden by request.", settings.Name);
                     this.Delete(settings.Name);
                 }
                 else return;
             }
-            
+
 
 
             //Add Pool
             pool = _Server.ApplicationPools.Add(settings.Name);
 
-            pool.AutoStart             = settings.Autostart;
+            pool.AutoStart = settings.Autostart;
 
             pool.Enable32BitAppOnWin64 = settings.Enable32BitAppOnWin64;
             pool.ManagedRuntimeVersion = settings.ManagedRuntimeVersion;
-            pool.ManagedPipelineMode   = settings.ClassicManagedPipelineMode
+            pool.ManagedPipelineMode = settings.ClassicManagedPipelineMode
                 ? ManagedPipelineMode.Classic
                 : ManagedPipelineMode.Integrated;
 
@@ -125,7 +125,7 @@ namespace Cake.IIS
             //Set Identity
             _Log.Information("Application pool identity type: {0}", settings.IdentityType.ToString());
 
-            switch(settings.IdentityType)
+            switch (settings.IdentityType)
             {
                 case IdentityType.LocalSystem:
                     pool.ProcessModel.IdentityType = ProcessModelIdentityType.LocalSystem;
@@ -141,8 +141,8 @@ namespace Cake.IIS
                     break;
                 case IdentityType.SpecificUser:
                     pool.ProcessModel.IdentityType = ProcessModelIdentityType.SpecificUser;
-                    pool.ProcessModel.UserName     = settings.Username;
-                    pool.ProcessModel.Password     = settings.Password;
+                    pool.ProcessModel.UserName = settings.Username;
+                    pool.ProcessModel.Password = settings.Password;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -183,7 +183,7 @@ namespace Cake.IIS
 
             _Log.Information("Application pool created.");
         }
-        
+
         /// <summary>
         /// Delete an application pool
         /// </summary>
@@ -214,7 +214,7 @@ namespace Cake.IIS
                 return false;
             }
         }
-                
+
         /// <summary>
         /// Recycle an application pool
         /// </summary>
@@ -245,7 +245,7 @@ namespace Cake.IIS
                 return true;
             }
         }
-                        
+
         /// <summary>
         /// Start an application pool
         /// </summary>
@@ -262,21 +262,39 @@ namespace Cake.IIS
             }
             else
             {
+                if (pool.State == ObjectState.Started)
+                {
+                    _Log.Information($"Pool '{name}' already started");
+                    return true;
+                }
+
                 try
                 {
                     pool.Start();
                 }
                 catch (System.Runtime.InteropServices.COMException)
                 {
-                    _Log.Information("Waiting for IIS to activate new config");
-                    Task.Delay(1000).Wait();
+                    _Log.Information($"Error on starting pool {name}");
+                    throw;
+                }
+
+                var timeout = 30;
+
+                while (pool.State != ObjectState.Started && timeout-- > 0)
+                    Thread.Sleep(1000);
+
+                if (pool.State != ObjectState.Started)
+                {
+                    var msg = $"Timeout on starting pool {name}";
+                    _Log.Information(msg);
+                    throw new Exception(msg);
                 }
 
                 _Log.Information("Application pool '{0}' started.", pool.Name);
                 return true;
             }
         }
-                        
+
         /// <summary>
         /// Stops an application pool
         /// </summary>
@@ -293,21 +311,40 @@ namespace Cake.IIS
             }
             else
             {
+
+                if (pool.State == ObjectState.Stopped)
+                {
+                    _Log.Information($"Pool '{name}' already stopped");
+                    return true;
+                }
+
                 try
                 {
                     pool.Stop();
                 }
                 catch (System.Runtime.InteropServices.COMException)
                 {
-                    _Log.Information("Waiting for IIS to activate new config");
-                    Task.Delay(1000).Wait();
+                    _Log.Information($"Error on stopping pool {name}");
+                    throw;
+                }
+
+                var timeout = 30;
+
+                while (pool.State != ObjectState.Stopped && timeout-- > 0)
+                    Thread.Sleep(1000);
+
+                if (pool.State != ObjectState.Stopped)
+                {
+                    var msg = $"Timeout on stopping pool {name}";
+                    _Log.Information(msg);
+                    throw new Exception(msg);
                 }
 
                 _Log.Information("Application pool '{0}' stopped.", pool.Name);
                 return true;
             }
         }
-                        
+
         /// <summary>
         /// Checks if an application pool exists
         /// </summary>
@@ -326,7 +363,7 @@ namespace Cake.IIS
                 return false;
             }
         }
-                                
+
         /// <summary>
         /// Checks if an application pool has a default name
         /// </summary>
