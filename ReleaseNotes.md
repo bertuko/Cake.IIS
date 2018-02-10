@@ -1,4 +1,4 @@
-### New in 0.3.4 (Released 2018/01/26)
+### New in 0.3.4 (Released 2018/02/10)
 * [Bug] Missing nuget reference
 
 ### New in 0.3.3 (Released 2018/01/26)
