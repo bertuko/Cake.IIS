@@ -26,13 +26,13 @@
         <file src="net461/Cake.IIS.dll" target="lib/net461" />
         <file src="net461/Cake.IIS.xml" target="lib/net461" />
         <file src="net461/Cake.IIS.pdb" target="lib/net461" />
+        
         <file src="net461/Microsoft.Web.Administration.dll" target="lib/net461" />
 
         <file src="netstandard1.6/Cake.IIS.dll" target="lib/netstandard1.6" />
         <file src="netstandard1.6/Cake.IIS.xml" target="lib/netstandard1.6" />
         <file src="netstandard1.6/Cake.IIS.pdb" target="lib/netstandard1.6" />
         <file src="netstandard1.6/Cake.IIS.deps.json" target="lib/netstandard1.6" />
-        <file src="netstandard1.6/Microsoft.Web.Administration.dll" target="lib/netstandard1.6" />
         
         <file src="LICENSE" />
     </files>
