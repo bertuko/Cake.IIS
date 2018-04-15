@@ -1,3 +1,6 @@
+### New in 0.4.0 (Released 2018/04/15)
+* [Improvement] Update to Cake.Core v0.26
+
 ### New in 0.3.4 (Released 2018/02/10)
 * [Bug] Missing nuget reference
 
