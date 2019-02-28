@@ -78,6 +78,17 @@ namespace Cake.IIS
         /// Checks if site virtual directory exists in remote IIS.
         /// </summary>
         /// <param name="context">The context.</param>
+        /// <param name="settings">The virtual directory settings.</param>
+        [CakeMethodAlias]
+        public static bool SiteVirtualDirectoryExists(this ICakeContext context, VirtualDirectorySettings settings)
+        {
+            return context.SiteVirtualDirectoryExists("", settings);
+        }
+
+        /// <summary>
+        /// Checks if site virtual directory exists in remote IIS.
+        /// </summary>
+        /// <param name="context">The context.</param>
         /// <param name="server">The remote server name.</param>
         /// <param name="settings">The virtual directory settings.</param>
         [CakeMethodAlias]
