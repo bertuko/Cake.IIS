@@ -46,4 +46,18 @@ var projectNames = new List<string>()
 // LOAD
 ///////////////////////////////////////////////////////////////////////////////
 
+Task("BuildWrapper")
+.IsDependentOn("Build")
+.Does(() =>
+{
+
+});
+
+Task("TestWrapper")
+.IsDependentOn("Run-Unit-Tests")
+.Does(() =>
+{
+
+});
+
 #load "./build/scripts/load.cake"
