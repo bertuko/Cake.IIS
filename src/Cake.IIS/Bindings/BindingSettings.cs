@@ -61,8 +61,6 @@ namespace Cake.IIS
         /// </summary>
         public string CertificateStoreName { get; set; }
 
-
-
         /// <summary>
         /// Gets IIS binding type.
         /// </summary>>
@@ -70,8 +68,14 @@ namespace Cake.IIS
         /// Returns <see cref="BindingProtocol"/> which will be used to determine IIS binding type.
         /// </returns>
         public BindingProtocol BindingProtocol { get; set; }
-        
 
+        /// <summary>
+        /// Gets or sets whether or not this binding requires Server Name Indication (SNI).
+        /// </summary>
+        /// <remarks>
+        /// This setting only has an effect on HTTPS bindings.
+        /// </remarks>
+        public bool RequireServerNameIndication { get; set; }
 
         /// <summary>
         /// Gets IIS binding information
