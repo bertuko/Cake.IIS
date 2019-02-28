@@ -1,13 +1,7 @@
-﻿#region Using Statements
-using System;
-
+﻿using System;
 using Microsoft.Web.Administration;
-
 using Xunit;
 using Shouldly;
-#endregion
-
-
 
 namespace Cake.IIS.Tests
 {
@@ -123,11 +117,12 @@ namespace Cake.IIS.Tests
             const string expectedIpAddress = "*";
             const int expectedPort = 981;
 
-            settings.Binding = IISBindings.Http
+            var binding = IISBindings.Http
                 .SetHostName(expectedHostName)
                 .SetIpAddress(expectedIpAddress)
                 .SetPort(expectedPort);
 
+            settings.Bindings = new BindingSettings[] { binding };
             CakeHelper.DeleteWebsite(settings.Name);
 
             // Act
@@ -135,7 +130,6 @@ namespace Cake.IIS.Tests
             manager.Create(settings);
 
             // Assert
-            var binding = settings.Binding;
             var website = CakeHelper.GetWebsite(settings.Name);
 
             website.ShouldNotBeNull();
@@ -162,7 +156,7 @@ namespace Cake.IIS.Tests
                 IpAddress = expectedIpAddress,
                 Port = expectedPort,
             };
-            settings.Binding = binding;
+            settings.Bindings = new BindingSettings[] { binding };
 
             CakeHelper.DeleteWebsite(settings.Name);
 

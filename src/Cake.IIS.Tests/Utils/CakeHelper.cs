@@ -131,10 +131,13 @@ namespace Cake.IIS.Tests
                 Overwrite = false
             };
 
-            settings.Binding = IISBindings.Http
+            settings.Bindings = new BindingSettings[]
+            {
+                IISBindings.Http
                 .SetHostName(name + ".web")
                 .SetIpAddress("*")
-                .SetPort(80);
+                .SetPort(80)
+            };
 
             return settings;
         }

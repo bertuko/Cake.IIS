@@ -6,7 +6,7 @@
         public WebsiteSettings()
             : base()
         {
-            Binding = IISBindings.Http;
+            Bindings = new BindingSettings[] { IISBindings.Http };
         }
         #endregion
 

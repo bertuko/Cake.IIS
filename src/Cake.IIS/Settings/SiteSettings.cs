@@ -1,4 +1,5 @@
 ﻿#region Using Statements
+using System.Collections.Generic;
 using Cake.Core.IO;
 #endregion
 
@@ -12,11 +13,9 @@ namespace Cake.IIS
         public SiteSettings()
             : base()
         {
-            this.Binding = IISBindings.Http;
-
+            this.Bindings = new BindingSettings[] { IISBindings.Http };
             this.ServerAutoStart = true;
             this.Overwrite = false;
-
             this.ApplicationPool = new ApplicationPoolSettings();
         }
         #endregion
@@ -34,7 +33,7 @@ namespace Cake.IIS
 
         public DirectoryPath PhysicalDirectory { get; set; }
 
-        public BindingSettings Binding { get; set; }
+        public IEnumerable<BindingSettings> Bindings { get; set; }
 
         public string AlternateEnabledProtocols { get; set; }
 

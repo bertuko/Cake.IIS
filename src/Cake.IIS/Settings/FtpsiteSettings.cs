@@ -6,7 +6,7 @@
         public FtpsiteSettings()
             : base()
         {
-            this.Binding = IISBindings.Ftp;
+            this.Bindings = new BindingSettings[] { IISBindings.Ftp };
         }
         #endregion
     }

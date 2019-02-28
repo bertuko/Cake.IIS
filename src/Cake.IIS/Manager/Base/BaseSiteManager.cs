@@ -93,14 +93,16 @@ namespace Cake.IIS
                 .Using(_Environment, _Log, _Server)
                 .Create(settings.ApplicationPool);
 
-
+            if (settings.Bindings == null || !settings.Bindings.Any())
+            {
+                settings.Bindings = new BindingSettings[] { IISBindings.Http };
+            }
 
             //Site Settings
             site = _Server.Sites.Add(
                 settings.Name,
                 this.GetPhysicalDirectory(settings),
-                settings.Binding.Port);
-
+                settings.Bindings.First().Port);
 
             if (!String.IsNullOrEmpty(settings.AlternateEnabledProtocols))
             {
@@ -108,31 +110,35 @@ namespace Cake.IIS
             }
 
             site.Bindings.Clear();
-            var binding = site.Bindings.CreateElement();
 
-            binding.Protocol = settings.Binding.BindingProtocol.ToString().ToLower();
-            binding.BindingInformation = settings.Binding.BindingInformation;
-
-
-            if (settings.Binding.CertificateHash != null)
+            foreach (var settingsBinding in settings.Bindings)
             {
-                binding.CertificateHash = settings.Binding.CertificateHash;
+                var binding = site.Bindings.CreateElement();
+
+                binding.Protocol = settingsBinding.BindingProtocol.ToString().ToLower();
+                binding.BindingInformation = settingsBinding.BindingInformation;
+
+
+                if (settingsBinding.CertificateHash != null)
+                {
+                    binding.CertificateHash = settingsBinding.CertificateHash;
+                }
+
+                if (!String.IsNullOrEmpty(settingsBinding.CertificateStoreName))
+                {
+                    binding.CertificateStoreName = settingsBinding.CertificateStoreName;
+                }
+
+                if (settingsBinding.RequireServerNameIndication)
+                {
+                    if (!string.Equals(settingsBinding.BindingProtocol.ToString(), BindingProtocol.Https.ToString(), StringComparison.Ordinal))
+                        throw new Exception("Require Server Name Indication (SNI) is only applicable for HTTPS bindings");
+
+                    binding.SslFlags |= SslFlags.Sni;
+                }
+
+                site.Bindings.Add(binding);
             }
-
-            if (!String.IsNullOrEmpty(settings.Binding.CertificateStoreName))
-            {
-                binding.CertificateStoreName = settings.Binding.CertificateStoreName;
-            }
-
-            if (settings.Binding.RequireServerNameIndication)
-            {
-                if (!string.Equals(settings.Binding.BindingProtocol.ToString(), BindingProtocol.Https.ToString(), StringComparison.Ordinal))
-                    throw new Exception("Require Server Name Indication (SNI) is only applicable for HTTPS bindings");
-
-                binding.SslFlags |= SslFlags.Sni;
-            }
-
-            site.Bindings.Add(binding);
 
             site.ServerAutoStart = settings.ServerAutoStart;
             site.ApplicationDefaults.ApplicationPoolName = settings.ApplicationPool.Name;
