@@ -36,8 +36,6 @@ namespace Cake.IIS
 
 
 
-        public string VirtualDirectory { get; set; }
-
         public DirectoryPath WorkingDirectory { get; set; }
 
         public DirectoryPath PhysicalDirectory { get; set; }
